@@ -1,0 +1,9 @@
+export interface ContactSubmission {
+  _id?: string;
+  name: string;
+  email: string;
+  subject?: string;
+  message: string;
+  status: "new" | "replied";
+  createdAt: Date;
+}

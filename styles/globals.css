@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --color-primary: #0F3D91;
+}
+
+html,body,#root{
+  height:100%;
+}
+
+body{
+  @apply bg-white text-gray-800 font-sans;
+}
+
+.container{
+  @apply max-w-6xl mx-auto px-6;
+}
+
+.section-heading{
+  @apply text-3xl md:text-4xl font-semibold text-primary mb-4;
+}
+
+.muted{
+  @apply text-gray-600;
+}

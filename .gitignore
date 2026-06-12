@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+.pnp/
+.pnp.*
+.yarn/
+
+# next.js
+.next/
+out/
+
+# production
+build/
+
+# testing
+coverage/
+
+# env files
+.env*
+
+# misc
+.DS_Store
+*.pem
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# vercel
+.vercel/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# generated / custom
+/src/lib/generated
+seed.ts
