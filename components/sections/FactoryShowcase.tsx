@@ -1,6 +1,8 @@
 
 "use client";
 
+import SectionHeader from "../ui/SectionHeader";
+
 export default function FactoryShowcase() {
   const areas = [
     {
@@ -11,13 +13,19 @@ export default function FactoryShowcase() {
     },
     {
       title: "Sewing Units",
-      video: "/sew.mp4",
+      video: "/sew2.mp4",
       description:
         "Skilled operators and modern machinery ensure precise stitching and durable garments.",
     },
+      {
+      title: "Cutting Area",
+      video: "/cutting.mp4",
+      description:
+        "Precision cutting equipment ensures accurate fabric pieces for seamless assembly.",
+    },
     {
       title: "Printing Area",
-      video: "/review.mp4",
+      video: "/printing1.mp4",
       description:
         "DTF, DTG, Screen Printing, and Sublimation facilities delivering vibrant results.",
     },
@@ -29,7 +37,7 @@ export default function FactoryShowcase() {
     },
     {
       title: "Packing Department",
-      video: "/review.mp4",
+      video: "/packing.mp4",
       description:
         "Quality inspection, folding, packaging, and shipment preparation under one roof.",
     },
@@ -40,20 +48,12 @@ export default function FactoryShowcase() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
 
       <div className="container-custom relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 text-primary text-sm font-medium">
-            Manufacturing Excellence
-          </span>
-
-          <h2 className="text-4xl md:text-6xl font-bold mt-6">
-            Inside Our Factory
-          </h2>
-
-          <p className="text-gray-400 text-lg mt-5">
-            From cutting and sewing to printing, embroidery, and packaging,
-            every step is managed under strict quality standards.
-          </p>
-        </div>
+      <SectionHeader
+  label="Factory"
+  title1="Inside Our"
+  title2="Production"
+  description="From cutting and sewing to printing, embroidery, and packaging, every step is managed under strict quality standards."
+/>
 
         <div className="grid lg:grid-cols-2 gap-8">
           {areas.map((area, index) => (

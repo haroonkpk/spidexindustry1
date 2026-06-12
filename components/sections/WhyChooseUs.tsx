@@ -7,6 +7,7 @@ import {
   CubeTransparentIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import SectionHeader from "../ui/SectionHeader";
 
 export default function WhyChooseUs() {
   const items = [
@@ -51,22 +52,12 @@ export default function WhyChooseUs() {
   return (
     <section className="py-20 bg-gradient-to-b from-white to-slate-50">
       <div className="container">
-        <div className="text-center max-w-3xl mx-auto">
-        
-
-          <h2 className="mt-5 text-4xl font-bold text-slate-900">
-            Trusted Manufacturing Partner
-            <span className="block text-blue-600">
-              For Growing Clothing Brands
-            </span>
-          </h2>
-
-          <p className="mt-4 text-slate-600">
-            We help startups, established brands, and wholesalers manufacture
-            premium-quality apparel with reliable production, quality control,
-            and worldwide logistics support.
-          </p>
-        </div>
+     <SectionHeader
+  label="Why Choose Us"
+  title1="Trusted Manufacturing"
+  title2="Partner"
+  description="We help startups, established brands, and wholesalers manufacture premium-quality apparel with reliable production, quality control, and worldwide logistics support."
+/>
 
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 mt-14">
           {items.map((item) => {

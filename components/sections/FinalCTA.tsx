@@ -5,23 +5,23 @@ export default function FinalCTA() {
     <section className="bg-white py-16">
       <div className="container text-center">
        {/* CTA */}
-        <div className="mt-20 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-700 p-12 text-center text-white">
-          <h3 className="text-3xl font-bold">
-            Ready To Start Your Clothing Brand?
-          </h3>
+      <div className="bg-blue-900 text-white">
+        <div className="container py-20 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold">
+            Ready To Start Your Project?
+          </h2>
 
-          <p className="mt-4 text-blue-100 max-w-2xl mx-auto">
-            Partner with a trusted manufacturing company and bring
-            your designs to life with premium quality production.
+          <p className="mt-5 max-w-2xl mx-auto text-blue-100">
+            Contact our team today and receive a custom quotation
+            tailored to your product specifications and production
+            requirements.
           </p>
 
-          <a
-            href="/get-quote"
-            className="inline-flex mt-6 px-8 py-4 bg-white text-blue-700 font-semibold rounded-xl hover:bg-slate-100 transition"
-          >
-            Request Free Quote
-          </a>
+          <button className="mt-8 px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-100 transition">
+            Request a Quote
+          </button>
         </div>
+      </div>
       </div>
     </section>
   );

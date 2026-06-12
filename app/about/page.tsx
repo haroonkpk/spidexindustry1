@@ -1,5 +1,6 @@
 
 import Image from "next/image";
+import FinalCTA from "../../components/sections/FinalCTA";
 
 export const metadata = {
   title: "About Us - Speedx Industry",
@@ -31,9 +32,26 @@ const teamMembers = [
 export default function About() {
   return (
     <section className="bg-white">
-      {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-700 to-blue-900 text-white">
-        <div className="container py-20">
+      {/* Hero Section with Video Background */}
+      <div className="relative bg-blue-900 text-white overflow-hidden">
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/hero2.mp4" type="video/mp4" />
+          {/* Fallback color if video fails to load */}
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-blue-950/70 z-10" />
+
+        {/* Hero Content */}
+        <div className="container relative py-20 z-20">
           <h1 className="text-4xl md:text-5xl font-bold">
             About Speedx Industry
           </h1>
@@ -214,24 +232,7 @@ export default function About() {
       </div>
 
       {/* CTA */}
-      <div className="bg-blue-900 text-white">
-        <div className="container py-20 text-center">
-          <h2 className="text-3xl font-bold">
-            Ready To Manufacture Your Brand?
-          </h2>
-
-          <p className="mt-4 text-blue-100 max-w-2xl mx-auto">
-            Whether you're launching a startup or scaling an
-            established brand, Speedx Industry is ready to
-            deliver premium manufacturing solutions tailored
-            to your requirements.
-          </p>
-
-          <button className="mt-8 bg-white text-blue-900 px-8 py-4 rounded-xl font-semibold hover:bg-blue-100 transition">
-            Request a Quote
-          </button>
-        </div>
-      </div>
+     <FinalCTA/>
     </section>
   );
 }

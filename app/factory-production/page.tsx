@@ -1,5 +1,6 @@
-"use clents"
+
 import Image from "next/image";
+import FinalCTA from "../../components/sections/FinalCTA";
 
 export const metadata = {
   title: "Factory & Production - Speedx Industry",
@@ -139,9 +140,25 @@ const videos = [
 export default function FactoryProductionPage() {
   return (
     <section className="bg-white">
-      {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-700 to-blue-900 text-white">
-        <div className="container py-24">
+      {/* Hero Section with Video Background */}
+      <div className="relative bg-blue-900 text-white overflow-hidden">
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/hero.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Dark Overlay for Text Readability */}
+        <div className="absolute inset-0 bg-blue-950/70 z-10" />
+
+        {/* Hero Content */}
+        <div className="container relative py-24 z-20">
           <h1 className="text-4xl md:text-5xl font-bold">
             Factory & Production
           </h1>
@@ -383,24 +400,7 @@ export default function FactoryProductionPage() {
       </div>
 
       {/* CTA */}
-      <div className="bg-blue-900 text-white">
-        <div className="container py-24 text-center">
-          <h2 className="text-4xl font-bold">
-            Ready To Start Your Project?
-          </h2>
-
-          <p className="mt-5 text-blue-100 max-w-2xl mx-auto">
-            Partner with Speedx Industry for reliable apparel
-            manufacturing, premium quality products, and worldwide
-            delivery.
-          </p>
-
-          <button className="mt-8 px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-100 transition">
-            Request a Quote
-          </button>
-        </div>
-      </div>
+    <FinalCTA/>
     </section>
   );
 }
-

@@ -11,6 +11,7 @@ import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import SectionHeader from "../ui/SectionHeader";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -75,23 +76,12 @@ export default function Testimonials() {
     >
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="testimonial-header text-center max-w-3xl mx-auto">
-          <span className="inline-flex px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
-            Client Video Reviews
-          </span>
-
-          <h2 className="mt-5 text-4xl md:text-5xl font-bold text-slate-900">
-            What Our Clients
-            <span className="block text-blue-600">
-              Say About Us
-            </span>
-          </h2>
-
-          <p className="mt-5 text-slate-600 text-lg">
-            Real feedback from international brands that trusted us
-            with their apparel manufacturing.
-          </p>
-        </div>
+       <SectionHeader
+  label="Testimonials"
+  title1="What Our Clients"
+  title2="Say About Us"
+  description="Real feedback from international brands that trusted us with their apparel manufacturing."
+/>
 
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-14">

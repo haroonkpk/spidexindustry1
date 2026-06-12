@@ -1,32 +1,24 @@
 "use client";
 
 import Image from "next/image";
+import SectionHeader from "../ui/SectionHeader";
 
 export default function TeamShowcase() {
   return (
     <section className="mt-20">
-      <div className="text-center max-w-3xl mx-auto">
-        <span className="text-primary font-semibold tracking-wider uppercase">
-          Our Team
-        </span>
-
-        <h2 className="mt-3 text-4xl font-bold text-white">
-          The People Behind Every Product
-        </h2>
-
-        <p className="mt-4 text-slate-400">
-          Our skilled designers, technicians, and production specialists work
-          together to ensure every product meets the highest standards of
-          quality and craftsmanship.
-        </p>
-      </div>
+    <SectionHeader
+  label="Our Team"
+  title1="The People Behind"
+  title2="Every Product"
+  description="Our skilled designers, technicians, and production specialists work together to ensure every product meets the highest standards of quality and craftsmanship."
+/>
 
       <div className="mt-12 max-w-6xl mx-auto">
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm">
           {/* Team Group Photo */}
           <div className="relative h-[300px] md:h-[500px] w-full">
             <Image
-              src="/team/team-group.jpg"
+              src="/speedxteam.jpg"
               alt="Our Team"
               fill
               className="object-cover"

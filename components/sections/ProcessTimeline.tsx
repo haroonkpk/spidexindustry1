@@ -1,3 +1,5 @@
+import SectionHeader from "../ui/SectionHeader";
+
 export default function ProcessTimeline() {
   const steps = [
     "Consultation",
@@ -11,13 +13,12 @@ export default function ProcessTimeline() {
 
   return (
     <section className="mt-16">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold">Manufacturing Process</h2>
-        <p className="mt-3 text-gray-400 max-w-2xl mx-auto">
-          From concept to delivery, every step is carefully managed to ensure
-          premium quality and customer satisfaction.
-        </p>
-      </div>
+     <SectionHeader
+  label="Process"
+  title1="Manufacturing"
+  title2="Journey"
+  description="From concept to delivery, every step is carefully managed to ensure premium quality and customer satisfaction."
+/>
 
       <div className="relative max-w-5xl mx-auto">
         {/* Vertical Line */}

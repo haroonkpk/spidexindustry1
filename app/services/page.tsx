@@ -1,5 +1,7 @@
+
 import { services } from "../../data/site";
 import ServiceCard from "../../components/cards/ServiceCard";
+import FinalCTA from "../../components/sections/FinalCTA";
 
 export const metadata = {
   title: "Services - Speedx Industry",
@@ -8,9 +10,26 @@ export const metadata = {
 export default function Services() {
   return (
     <section className="bg-white">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-700 to-blue-900 text-white">
-        <div className="container py-20">
+      {/* Hero Section with Video Background */}
+      <div className="relative bg-blue-900 text-white overflow-hidden">
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/hero.mp4" type="video/mp4" />
+          {/* Fallback texture color if video fails to load */}
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Dark Overlay for Text Readability */}
+        <div className="absolute inset-0 bg-blue-950/70 z-10" />
+
+        {/* Hero Content */}
+        <div className="container relative py-20 z-20">
           <h1 className="text-4xl md:text-5xl font-bold">
             Manufacturing Services
           </h1>
@@ -204,24 +223,7 @@ export default function Services() {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="bg-blue-900 text-white">
-        <div className="container py-20 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold">
-            Ready To Start Your Project?
-          </h2>
-
-          <p className="mt-5 max-w-2xl mx-auto text-blue-100">
-            Contact our team today and receive a custom quotation
-            tailored to your product specifications and production
-            requirements.
-          </p>
-
-          <button className="mt-8 px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-100 transition">
-            Request a Quote
-          </button>
-        </div>
-      </div>
+      <FinalCTA />
     </section>
   );
 }
