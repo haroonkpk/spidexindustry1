@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-900 text-slate-200 border-t border-slate-800 mt-20">
       {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="container mx-auto grid grid-cols-1 gap-10 px-4 py-14 md:grid-cols-2 lg:grid-cols-4 lg:py-16">
         
         {/* Column 1: Brand, About & Newsletter */}
         <div className="space-y-6">
@@ -24,11 +24,11 @@ export default function Footer() {
           {/* Email Newsletter Input */}
           <div className="space-y-2">
             <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-300">Newsletter</h5>
-            <form onSubmit={(e) => e.preventDefault()} className="flex max-w-sm relative items-center">
+            <form onSubmit={(e) => e.preventDefault()} className="relative flex max-w-sm items-center">
               <input 
                 type="email" 
                 placeholder="Enter your business email" 
-                className="w-full bg-slate-950/60 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all pr-12"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2.5 pr-12 text-sm text-white placeholder-slate-500 transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
               <button 
@@ -103,7 +103,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-800 bg-slate-950/50 py-6">
-        <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 text-xs text-slate-500 sm:flex-row">
           <div>
             © {new Date().getFullYear()} Speedx Industry. All rights reserved.
           </div>

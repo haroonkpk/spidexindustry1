@@ -49,15 +49,15 @@ export default function ShipmentTrackingPage() {
           return (
             <div
               key={shipment.tracking}
-              className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+              className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
             >
               {/* Header */}
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start justify-between gap-3 sm:gap-4">
                 <div>
                   <p className="text-sm uppercase tracking-[0.24em] text-slate-500">
                     {shipment.courier}
                   </p>
-                  <h2 className="mt-2 text-xl font-semibold text-slate-900">
+                  <h2 className="mt-2 text-lg font-semibold text-slate-900 sm:text-xl">
                     {shipment.tracking}
                   </h2>
                   <p className="mt-1 text-sm text-slate-500">
@@ -76,7 +76,7 @@ export default function ShipmentTrackingPage() {
                   <img
                       src={receiptImage}
                     alt="Shipment Receipt"
-                    className="h-64 w-full object-cover"
+                    className="h-56 w-full object-cover sm:h-64"
                   />
                 ) : (
                   <div className="flex h-64 items-center justify-center text-slate-400">

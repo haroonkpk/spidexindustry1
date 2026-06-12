@@ -101,7 +101,7 @@ export default function ClientAreaPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-3xl bg-white p-8 shadow-sm">
+          <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
             <h2 className="text-lg font-semibold text-slate-900">
               Recent notifications
             </h2>
@@ -123,7 +123,7 @@ export default function ClientAreaPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl bg-white p-8 shadow-sm">
+          <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h2 className="text-lg font-semibold text-slate-900">
@@ -139,7 +139,7 @@ export default function ClientAreaPage() {
                 <Link
                   key={action.title}
                   href={action.href}
-                  className="rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm font-semibold text-slate-900 hover:bg-slate-100"
+                  className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-semibold text-slate-900 transition hover:bg-slate-100 sm:px-5"
                 >
                   <p>{action.title}</p>
                   <p className="mt-1 text-sm font-normal text-slate-500">

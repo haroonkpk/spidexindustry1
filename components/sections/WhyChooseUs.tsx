@@ -50,7 +50,7 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-slate-50">
+    <section className="bg-gradient-to-b from-white to-slate-50 py-16 sm:py-20">
       <div className="container">
      <SectionHeader
   label="Why Choose Us"
@@ -59,25 +59,25 @@ export default function WhyChooseUs() {
   description="We help startups, established brands, and wholesalers manufacture premium-quality apparel with reliable production, quality control, and worldwide logistics support."
 />
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 mt-14">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-3 sm:mt-14">
           {items.map((item) => {
             const Icon = item.icon;
 
             return (
               <div
                 key={item.title}
-                className="group relative bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl sm:p-8"
               >
                 {/* Top Accent */}
                 <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-600 to-cyan-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
 
                 {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-300">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 transition-colors duration-300 group-hover:bg-blue-600 sm:mb-6 sm:h-14 sm:w-14">
                   <Icon className="h-7 w-7 text-blue-600 group-hover:text-white transition-colors duration-300" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-semibold text-slate-900">
+                <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">
                   {item.title}
                 </h3>
 
@@ -96,24 +96,24 @@ export default function WhyChooseUs() {
         </div>
 
         {/* Bottom Stats */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-xl p-6 text-center shadow-sm border">
-            <h3 className="text-3xl font-bold text-blue-600">500+</h3>
+        <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 md:mt-20 md:grid-cols-4">
+          <div className="rounded-xl border bg-white p-4 text-center shadow-sm sm:p-6">
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">500+</h3>
             <p className="text-slate-600 mt-2">Projects Completed</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 text-center shadow-sm border">
-            <h3 className="text-3xl font-bold text-blue-600">50+</h3>
+          <div className="rounded-xl border bg-white p-4 text-center shadow-sm sm:p-6">
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">50+</h3>
             <p className="text-slate-600 mt-2">Countries Served</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 text-center shadow-sm border">
-            <h3 className="text-3xl font-bold text-blue-600">99%</h3>
+          <div className="rounded-xl border bg-white p-4 text-center shadow-sm sm:p-6">
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">99%</h3>
             <p className="text-slate-600 mt-2">Quality Satisfaction</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 text-center shadow-sm border">
-            <h3 className="text-3xl font-bold text-blue-600">24/7</h3>
+          <div className="rounded-xl border bg-white p-4 text-center shadow-sm sm:p-6">
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">24/7</h3>
             <p className="text-slate-600 mt-2">Customer Support</p>
           </div>
         </div>

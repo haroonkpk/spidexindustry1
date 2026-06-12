@@ -158,12 +158,12 @@ export default function FactoryProductionPage() {
         <div className="absolute inset-0 bg-blue-950/70 z-10" />
 
         {/* Hero Content */}
-        <div className="container relative py-24 z-20">
-          <h1 className="text-4xl md:text-5xl font-bold">
+        <div className="container relative z-20 py-14 sm:py-20 lg:py-24">
+          <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
             Factory & Production
           </h1>
 
-          <p className="mt-6 max-w-3xl text-lg text-blue-100">
+          <p className="mt-5 max-w-3xl text-base text-blue-100 sm:mt-6 sm:text-lg">
             Explore our manufacturing facility, production process,
             machinery, quality control systems, and factory operations
             that help us deliver premium garments worldwide.
@@ -173,27 +173,27 @@ export default function FactoryProductionPage() {
 
       {/* Stats */}
       <div className="bg-blue-50">
-        <div className="container py-16">
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="bg-white rounded-2xl p-8 text-center shadow-sm">
-              <h3 className="text-4xl font-bold text-blue-700">10+</h3>
+        <div className="container py-12 sm:py-16">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-6">
+            <div className="rounded-2xl bg-white p-6 text-center shadow-sm sm:p-8">
+              <h3 className="text-3xl font-bold text-blue-700 sm:text-4xl">10+</h3>
               <p className="mt-2 text-slate-600">Years Experience</p>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 text-center shadow-sm">
-              <h3 className="text-4xl font-bold text-blue-700">40+</h3>
+            <div className="rounded-2xl bg-white p-6 text-center shadow-sm sm:p-8">
+              <h3 className="text-3xl font-bold text-blue-700 sm:text-4xl">40+</h3>
               <p className="mt-2 text-slate-600">Skilled Workers</p>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 text-center shadow-sm">
-              <h3 className="text-4xl font-bold text-blue-700">25,000+</h3>
+            <div className="rounded-2xl bg-white p-6 text-center shadow-sm sm:p-8">
+              <h3 className="text-3xl font-bold text-blue-700 sm:text-4xl">25,000+</h3>
               <p className="mt-2 text-slate-600">
                 Monthly Capacity
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 text-center shadow-sm">
-              <h3 className="text-4xl font-bold text-blue-700">20+</h3>
+            <div className="rounded-2xl bg-white p-6 text-center shadow-sm sm:p-8">
+              <h3 className="text-3xl font-bold text-blue-700 sm:text-4xl">20+</h3>
               <p className="mt-2 text-slate-600">
                 Countries Served
               </p>
@@ -203,25 +203,25 @@ export default function FactoryProductionPage() {
       </div>
 
       {/* Manufacturing Process */}
-      <div className="container py-24">
+      <div className="container py-14 sm:py-20 lg:py-24">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-slate-900">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             Manufacturing Process
           </h2>
 
-          <p className="mt-4 text-slate-600">
+          <p className="mt-4 text-sm text-slate-600 sm:text-base">
             A transparent production workflow trusted by brands
             worldwide.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 mt-16">
+        <div className="mt-10 grid gap-6 lg:mt-16 lg:grid-cols-2 lg:gap-8">
           {processSteps.map((item) => (
             <div
               key={item.step}
               className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition"
             >
-              <div className="relative h-64">
+              <div className="relative h-52 sm:h-60 md:h-64">
                 <Image
                   src={item.image}
                   alt={item.title}
@@ -230,12 +230,12 @@ export default function FactoryProductionPage() {
                 />
               </div>
 
-              <div className="p-8">
+              <div className="p-6 sm:p-8">
                 <span className="text-blue-700 font-bold text-sm">
                   STEP {item.step}
                 </span>
 
-                <h3 className="text-2xl font-semibold mt-2">
+                <h3 className="mt-2 text-xl font-semibold sm:text-2xl">
                   {item.title}
                 </h3>
 
@@ -250,24 +250,24 @@ export default function FactoryProductionPage() {
 
       {/* Factory Gallery */}
       <div className="bg-slate-50">
-        <div className="container py-24">
+        <div className="container py-14 sm:py-20 lg:py-24">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Factory Gallery
             </h2>
 
-            <p className="mt-4 text-slate-600">
+            <p className="mt-4 text-sm text-slate-600 sm:text-base">
               Inside our production facility.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-14">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-8">
             {departments.map((dept) => (
               <div
                 key={dept.title}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm"
+                className="overflow-hidden rounded-2xl bg-white shadow-sm"
               >
-                <div className="relative h-72">
+                <div className="relative h-56 sm:h-64 md:h-72">
                   <Image
                     src={dept.image}
                     alt={dept.title}
@@ -276,8 +276,8 @@ export default function FactoryProductionPage() {
                   />
                 </div>
 
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold">
+                <div className="p-5 sm:p-6">
+                  <h3 className="text-lg font-semibold sm:text-xl">
                     {dept.title}
                   </h3>
                 </div>
@@ -288,24 +288,24 @@ export default function FactoryProductionPage() {
       </div>
 
       {/* Machinery */}
-      <div className="container py-24">
+      <div className="container py-14 sm:py-20 lg:py-24">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-slate-900">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             Machinery & Equipment
           </h2>
 
-          <p className="mt-4 text-slate-600">
+          <p className="mt-4 text-sm text-slate-600 sm:text-base">
             Modern machinery ensuring precision and efficiency.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-14">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-8">
           {machines.map((machine) => (
             <div
               key={machine.name}
-              className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition"
+              className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-lg"
             >
-              <div className="relative h-72">
+              <div className="relative h-56 sm:h-64 md:h-72">
                 <Image
                   src={machine.image}
                   alt={machine.name}
@@ -314,8 +314,8 @@ export default function FactoryProductionPage() {
                 />
               </div>
 
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-slate-900">
+              <div className="p-5 sm:p-6">
+                <h3 className="text-lg font-semibold text-slate-900 sm:text-xl">
                   {machine.name}
                 </h3>
 
@@ -330,32 +330,32 @@ export default function FactoryProductionPage() {
 
       {/* Production Videos */}
       <div className="bg-blue-50">
-        <div className="container py-24">
+        <div className="container py-14 sm:py-20 lg:py-24">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Production Videos
             </h2>
 
-            <p className="mt-4 text-slate-600">
+            <p className="mt-4 text-sm text-slate-600 sm:text-base">
               Watch our production process in action.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mt-14">
+          <div className="mt-10 grid gap-6 md:mt-14 md:grid-cols-2 lg:gap-8">
             {videos.map((video) => (
               <div
                 key={video.title}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm"
+                className="overflow-hidden rounded-2xl bg-white shadow-sm"
               >
                 <video
                   controls
-                  className="w-full h-80 object-cover"
+                  className="h-52 w-full object-cover sm:h-64 md:h-80"
                 >
                   <source src={video.src} type="video/mp4" />
                 </video>
 
-                <div className="p-6">
-                  <h3 className="font-semibold text-lg">
+                <div className="p-5 sm:p-6">
+                  <h3 className="text-base font-semibold sm:text-lg">
                     {video.title}
                   </h3>
                 </div>

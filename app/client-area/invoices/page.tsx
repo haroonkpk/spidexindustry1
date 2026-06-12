@@ -235,27 +235,27 @@ export default function InvoicesPage() {
         </div>
 
         {/* STATS */}
-        <div className="grid gap-6 xl:grid-cols-4">
-          <div className="rounded-3xl border bg-white p-6 shadow-sm">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 sm:gap-6">
+          <div className="rounded-3xl border bg-white p-5 shadow-sm sm:p-6">
             <p className="text-sm text-slate-500">Total</p>
             <p className="text-2xl font-semibold">{totalInvoices}</p>
           </div>
 
-          <div className="rounded-3xl border bg-white p-6 shadow-sm">
+          <div className="rounded-3xl border bg-white p-5 shadow-sm sm:p-6">
             <p className="text-sm text-slate-500">Paid</p>
             <p className="text-2xl font-semibold text-emerald-600">
               {paidInvoices}
             </p>
           </div>
 
-          <div className="rounded-3xl border bg-white p-6 shadow-sm">
+          <div className="rounded-3xl border bg-white p-5 shadow-sm sm:p-6">
             <p className="text-sm text-slate-500">Pending</p>
             <p className="text-2xl font-semibold text-amber-600">
               {pendingInvoices}
             </p>
           </div>
 
-          <div className="rounded-3xl border bg-white p-6 shadow-sm">
+          <div className="rounded-3xl border bg-white p-5 shadow-sm sm:p-6">
             <p className="text-sm text-slate-500">Revenue</p>
             <p className="text-2xl font-semibold text-sky-600">
               ${totalRevenue}
@@ -264,19 +264,19 @@ export default function InvoicesPage() {
         </div>
 
         {/* FILTER BAR */}
-        <div className="flex flex-col md:flex-row gap-4 bg-white p-4 rounded-2xl shadow-sm">
+        <div className="flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-sm md:flex-row">
           <input
             type="text"
             placeholder="Search invoice or customer..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border rounded-xl px-4 py-2 w-full"
+            className="w-full rounded-xl border px-4 py-2"
           />
 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded-xl px-4 py-2"
+            className="rounded-xl border px-4 py-2"
           >
             <option value="all">All</option>
             <option value="Paid">Paid</option>
@@ -286,7 +286,7 @@ export default function InvoicesPage() {
 
         {/* TABLE */}
         <div className="overflow-hidden rounded-3xl bg-white shadow-sm">
-          <div className="border-b bg-slate-50 px-6 py-5 font-semibold">
+          <div className="border-b bg-slate-50 px-4 py-4 font-semibold sm:px-6 sm:py-5">
             Invoice list
           </div>
 

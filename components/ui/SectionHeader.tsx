@@ -13,21 +13,21 @@ export default function SectionHeader({
     "Advanced production facilities, skilled craftsmanship, and precision-driven quality control systems.",
 }: SectionHeaderProps) {
   return (
-    <div className="mb-24 max-w-5xl mx-auto text-center">
+    <div className="mx-auto mb-16 max-w-5xl px-4 text-center sm:mb-20 sm:px-0 md:mb-24">
 
       {/* Small Label */}
-      <div className="section-header-anim inline-flex items-center gap-3 mb-6">
-        <div className="h-px w-12 bg-zinc-700" />
+      <div className="section-header-anim mb-4 inline-flex items-center gap-2 sm:mb-6 sm:gap-3">
+        <div className="h-px w-8 bg-zinc-700 sm:w-12" />
 
-        <span className="text-xs md:text-sm uppercase tracking-[0.4em] text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+        <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-[10px] uppercase tracking-[0.3em] text-transparent sm:text-xs md:text-sm md:tracking-[0.4em]">
           {label}
         </span>
 
-        <div className="h-px w-12 bg-zinc-700" />
+        <div className="h-px w-8 bg-zinc-700 sm:w-12" />
       </div>
 
       {/* Heading */}
-      <h2 className="section-header-anim text-5xl sm:text-6xl md:text-8xl font-black tracking-tight uppercase leading-[0.9]">
+      <h2 className="section-header-anim text-3xl font-black uppercase tracking-tight leading-[0.92] sm:text-5xl sm:leading-[0.9] md:text-7xl lg:text-8xl">
         <span className="block text-blue-500">{title1}</span>
 
         <span className="block text-transparent bg-clip-text bg-gradient-to-b from-zinc-300 to-zinc-600">
@@ -36,7 +36,7 @@ export default function SectionHeader({
       </h2>
 
       {/* Description */}
-      <p className="section-header-anim mt-8 text-zinc-400 text-base md:text-xl leading-relaxed max-w-3xl mx-auto">
+      <p className="section-header-anim mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400 sm:mt-6 sm:text-base md:mt-8 md:max-w-3xl md:text-xl">
         {description}
       </p>
     </div>

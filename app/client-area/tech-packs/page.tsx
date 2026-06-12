@@ -161,23 +161,23 @@ export default function TechPacksPage() {
     <div className="space-y-8">
 
       {/* HEADER */}
-      <div className="rounded-3xl bg-white p-6 md:p-8 shadow-sm">
-        <h1 className="text-2xl md:text-3xl font-semibold">
+      <div className="rounded-3xl bg-white p-5 shadow-sm md:p-8">
+        <h1 className="text-2xl font-semibold md:text-3xl">
           Tech Pack Studio
         </h1>
       </div>
 
       {/* MAIN GRID */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid gap-6 lg:grid-cols-3">
 
 
         {/* FABRIC CANVAS + TOOLS  */}
-        <div className="lg:col-span-2 bg-white p-4 md:p-6 rounded-3xl shadow-sm space-y-4">
+        <div className="space-y-4 rounded-3xl bg-white p-4 shadow-sm md:p-6 lg:col-span-2">
 
           <h3 className="font-semibold">Design Studio</h3>
 
           {/* COLORS */}
-          <div className="grid sm:grid-cols-3 gap-3">
+          <div className="grid gap-3 sm:grid-cols-3">
 
             <input
               type="color"

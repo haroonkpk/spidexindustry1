@@ -51,12 +51,12 @@ export default function About() {
         <div className="absolute inset-0 bg-blue-950/70 z-10" />
 
         {/* Hero Content */}
-        <div className="container relative py-20 z-20">
-          <h1 className="text-4xl md:text-5xl font-bold">
+        <div className="container relative z-20 py-14 sm:py-20">
+          <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
             About Speedx Industry
           </h1>
 
-          <p className="mt-6 max-w-3xl text-blue-100 text-lg">
+          <p className="mt-5 max-w-3xl text-base text-blue-100 sm:mt-6 sm:text-lg">
             Speedx Industry is a trusted clothing manufacturing company
             specializing in premium custom apparel, private label production,
             OEM manufacturing, and worldwide export solutions for brands,
@@ -66,14 +66,14 @@ export default function About() {
       </div>
 
       {/* Company Story */}
-      <div className="container py-20">
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
+      <div className="container py-14 sm:py-20">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
-            <h2 className="text-3xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Our Story
             </h2>
 
-            <p className="mt-6 text-slate-600 leading-8">
+            <p className="mt-5 text-sm leading-7 text-slate-600 sm:mt-6 sm:text-base sm:leading-8">
               Speedx Industry was founded with a vision to provide premium
               quality garment manufacturing services to brands worldwide.
               Through years of dedication, innovation, and continuous
@@ -82,14 +82,14 @@ export default function About() {
               exceptional customer service.
             </p>
 
-            <p className="mt-4 text-slate-600 leading-8">
+            <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
               Today we proudly serve international clothing brands, startups,
               sportswear companies, gym wear labels, and fashion businesses
               seeking dependable manufacturing partners.
             </p>
           </div>
 
-          <div className="relative h-[420px] rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative h-[280px] overflow-hidden rounded-2xl shadow-xl sm:h-[360px] md:h-[420px]">
             <Image
               src="/factory/factory-main.jpg"
               alt="Speedx Industry Factory"
@@ -102,17 +102,17 @@ export default function About() {
 
       {/* Stats */}
       <div className="bg-blue-50">
-        <div className="container py-16">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-xl p-8 shadow-sm text-center">
-              <h3 className="text-4xl font-bold text-blue-700">10+</h3>
+        <div className="container py-12 sm:py-16">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-6">
+            <div className="rounded-xl bg-white p-6 text-center shadow-sm sm:p-8">
+              <h3 className="text-3xl font-bold text-blue-700 sm:text-4xl">10+</h3>
               <p className="mt-2 text-slate-600">
                 Years Experience
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-sm text-center">
-              <h3 className="text-4xl font-bold text-blue-700">
+            <div className="rounded-xl bg-white p-6 text-center shadow-sm sm:p-8">
+              <h3 className="text-3xl font-bold text-blue-700 sm:text-4xl">
                 25,000+
               </h3>
               <p className="mt-2 text-slate-600">
@@ -120,15 +120,15 @@ export default function About() {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-sm text-center">
-              <h3 className="text-4xl font-bold text-blue-700">40+</h3>
+            <div className="rounded-xl bg-white p-6 text-center shadow-sm sm:p-8">
+              <h3 className="text-3xl font-bold text-blue-700 sm:text-4xl">40+</h3>
               <p className="mt-2 text-slate-600">
                 Skilled Workers
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-sm text-center">
-              <h3 className="text-4xl font-bold text-blue-700">20+</h3>
+            <div className="rounded-xl bg-white p-6 text-center shadow-sm sm:p-8">
+              <h3 className="text-3xl font-bold text-blue-700 sm:text-4xl">20+</h3>
               <p className="mt-2 text-slate-600">
                 Countries Served
               </p>
@@ -138,10 +138,10 @@ export default function About() {
       </div>
 
       {/* Factory Information */}
-      <div className="container py-20">
-        <div className="grid md:grid-cols-2 gap-10">
-          <div className="bg-white border border-slate-200 rounded-2xl p-8">
-            <h3 className="text-2xl font-semibold text-slate-900">
+      <div className="container py-14 sm:py-20">
+        <div className="grid gap-6 md:grid-cols-2 md:gap-10">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+            <h3 className="text-xl font-semibold text-slate-900 sm:text-2xl">
               Factory Information
             </h3>
 
@@ -169,8 +169,8 @@ export default function About() {
             </ul>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-8">
-            <h3 className="text-2xl font-semibold text-slate-900">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+            <h3 className="text-xl font-semibold text-slate-900 sm:text-2xl">
               Quality Standards
             </h3>
 
@@ -188,9 +188,9 @@ export default function About() {
 
       {/* Team */}
       <div className="bg-slate-50">
-        <div className="container py-20">
+        <div className="container py-14 sm:py-20">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Meet Our Team
             </h2>
 
@@ -201,13 +201,13 @@ export default function About() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-14">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-8">
             {teamMembers.map((member) => (
               <div
                 key={member.name}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition"
+                className="overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-lg"
               >
-                <div className="relative h-72">
+                <div className="relative h-56 sm:h-64 md:h-72">
                   <Image
                     src={member.image}
                     alt={member.name}
@@ -216,8 +216,8 @@ export default function About() {
                   />
                 </div>
 
-                <div className="p-6 text-center">
-                  <h3 className="font-semibold text-lg text-slate-900">
+                <div className="p-5 text-center sm:p-6">
+                  <h3 className="text-base font-semibold text-slate-900 sm:text-lg">
                     {member.name}
                   </h3>
 

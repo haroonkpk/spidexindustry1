@@ -21,11 +21,11 @@ export default function PortfolioPreview({ full = false }: Props) {
       />
 
       {/* Grid */}
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 md:grid-cols-3">
         {items.map((p) => (
           <div
             key={p.id}
-            className="group border border-white/10 rounded-lg overflow-hidden bg-white/5 backdrop-blur-sm hover:border-blue-500/40 transition-all duration-500"
+            className="group overflow-hidden rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-500 hover:border-blue-500/40"
           >
             {/* Image */}
             <div className="relative overflow-hidden">
@@ -34,7 +34,7 @@ export default function PortfolioPreview({ full = false }: Props) {
                 alt={p.title}
                 width={600}
                 height={400}
-                className="w-full h-48 object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                className="h-40 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 sm:h-44 md:h-48"
               />
 
               {/* Hover overlay */}
@@ -42,7 +42,7 @@ export default function PortfolioPreview({ full = false }: Props) {
             </div>
 
             {/* Content */}
-            <div className="p-4">
+            <div className="p-3 sm:p-4">
               <h4 className="font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
                 {p.title}
               </h4>

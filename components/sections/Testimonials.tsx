@@ -84,24 +84,24 @@ export default function Testimonials() {
 />
 
         {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
-          <div className="bg-white rounded-2xl p-6 text-center shadow border">
-            <h3 className="text-3xl font-bold text-blue-600">500+</h3>
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          <div className="rounded-2xl border bg-white p-4 text-center shadow sm:p-6">
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">500+</h3>
             <p className="text-slate-600 mt-2">Orders Delivered</p>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 text-center shadow border">
-            <h3 className="text-3xl font-bold text-blue-600">50+</h3>
+          <div className="rounded-2xl border bg-white p-4 text-center shadow sm:p-6">
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">50+</h3>
             <p className="text-slate-600 mt-2">Countries Served</p>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 text-center shadow border">
-            <h3 className="text-3xl font-bold text-blue-600">98%</h3>
+          <div className="rounded-2xl border bg-white p-4 text-center shadow sm:p-6">
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">98%</h3>
             <p className="text-slate-600 mt-2">Satisfaction Rate</p>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 text-center shadow border">
-            <h3 className="text-3xl font-bold text-blue-600">7+</h3>
+          <div className="rounded-2xl border bg-white p-4 text-center shadow sm:p-6">
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">7+</h3>
             <p className="text-slate-600 mt-2">Years Experience</p>
           </div>
         </div>
@@ -128,7 +128,7 @@ export default function Testimonials() {
                   <video
                     controls
                     preload="metadata"
-                    className="w-full h-[600px] object-cover"
+                    className="h-[320px] w-full object-cover sm:h-[420px] md:h-[600px]"
                   >
                     <source
                       src={review.video}

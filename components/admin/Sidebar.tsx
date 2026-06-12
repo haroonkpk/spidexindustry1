@@ -27,13 +27,13 @@ const items = [
 export default function Sidebar() {
   const pathname = usePathname();
   return (
-    <aside className="w-64 bg-slate-50 dark:bg-slate-900 h-screen fixed left-0 top-0 border-r border-slate-200 dark:border-slate-800">
+    <aside className="fixed left-0 top-0 h-screen w-64 border-r border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
       <div className="p-4 border-b border-slate-200 dark:border-slate-800">
         <h2 className="text-xl font-bold text-slate-800 dark:text-white">
           Admin ERP
         </h2>
       </div>
-      <nav className="p-4 overflow-auto h-[calc(100vh-64px)]">
+      <nav className="h-[calc(100vh-64px)] overflow-auto p-4">
         <ul className="space-y-1">
           {items.map((it) => {
             const href = it === "dashboard" ? "/admin" : `/admin/${it}`;

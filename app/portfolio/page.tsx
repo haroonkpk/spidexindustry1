@@ -38,17 +38,17 @@ export default function Portfolio() {
       </div>
 
       {/* Stats Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-        <div className="p-6 bg-white rounded-xl shadow">
-          <h3 className="text-2xl font-bold">500+</h3>
+      <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3 sm:gap-6">
+        <div className="rounded-xl bg-white p-5 shadow sm:p-6">
+          <h3 className="text-xl font-bold sm:text-2xl">500+</h3>
           <p className="muted">Completed Orders</p>
         </div>
-        <div className="p-6 bg-white rounded-xl shadow">
-          <h3 className="text-2xl font-bold">100+</h3>
+        <div className="rounded-xl bg-white p-5 shadow sm:p-6">
+          <h3 className="text-xl font-bold sm:text-2xl">100+</h3>
           <p className="muted">Happy Clients</p>
         </div>
-        <div className="p-6 bg-white rounded-xl shadow">
-          <h3 className="text-2xl font-bold">5+ Years</h3>
+        <div className="rounded-xl bg-white p-5 shadow sm:p-6">
+          <h3 className="text-xl font-bold sm:text-2xl">5+ Years</h3>
           <p className="muted">Manufacturing Experience</p>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default function Portfolio() {
           Client Video Reviews
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {videoReviews.map((item, i) => (
             <div
               key={i}
@@ -67,7 +67,7 @@ export default function Portfolio() {
             >
               {/* Video */}
               <video
-                className="w-full h-64 object-cover"
+                className="h-52 w-full object-cover sm:h-60 md:h-64"
                 controls
               >
                 <source src={item.video} type="video/mp4" />
@@ -86,8 +86,8 @@ export default function Portfolio() {
       </div>
 
       {/* CTA Section */}
-      <div className="text-center bg-slate-900 text-white p-10 rounded-xl">
-        <h2 className="text-2xl font-bold mb-2">
+      <div className="rounded-xl bg-slate-900 p-6 text-center text-white sm:p-10">
+        <h2 className="mb-2 text-xl font-bold sm:text-2xl">
           Want Similar Manufacturing for Your Brand?
         </h2>
         <p className="opacity-80 mb-4">
@@ -95,7 +95,7 @@ export default function Portfolio() {
         </p>
         <a
           href="/contact"
-          className="inline-block bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold"
+          className="inline-block rounded-lg bg-white px-6 py-3 font-semibold text-slate-900"
         >
           Get a Quote
         </a>

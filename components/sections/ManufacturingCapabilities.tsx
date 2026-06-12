@@ -77,11 +77,11 @@ export default function ManufacturingCapabilities() {
   }, []);
 
   return (
-    <section ref={containerRef} className=" text-white py-24 md:py-32 font-sans overflow-hidden relative">
+    <section ref={containerRef} className="relative overflow-hidden py-16 font-sans text-white sm:py-20 md:py-32">
     
       <div className="absolute inset-0 opacity-60 pointer-events-none" />
       
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
+      <div className="container mx-auto max-w-7xl px-4 relative z-10 sm:px-6">
         
        <SectionHeader
  
@@ -92,7 +92,7 @@ export default function ManufacturingCapabilities() {
 />
 
         {/* Premium Streetwear Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-8">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-12 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
           {capabilities.map((c: any, index: number) => {
             const targetLink = c.slug || c.href || `/capabilities/${c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
             const imagePlaceholder = c.image || "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600&auto=format&fit=crop";
@@ -101,10 +101,10 @@ export default function ManufacturingCapabilities() {
               <Link 
                 href={targetLink} 
                 key={c.id || index} 
-                className="streetwear-card group flex flex-col h-full bg-zinc-900/40 border border-zinc-900 rounded-none overflow-hidden transition-all duration-500 hover:border-zinc-800 backdrop-blur-sm"
+                className="streetwear-card group flex h-full flex-col overflow-hidden rounded-none border border-zinc-900 bg-zinc-900/40 transition-all duration-500 hover:border-zinc-800 backdrop-blur-sm"
               >
                 {/* Product/Fabric Showcase Display */}
-              <div className="group relative aspect-[4/5] w-full bg-zinc-950 overflow-hidden border-b border-zinc-900">
+              <div className="group relative aspect-[4/5] w-full overflow-hidden border-b border-zinc-900 bg-zinc-950">
   <img
     src={imagePlaceholder}
     alt={c.title}
@@ -127,17 +127,17 @@ export default function ManufacturingCapabilities() {
 </div>
 
                 {/* Content Section */}
-                <div className="flex flex-col flex-grow p-6 bg-black relative">
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <h3 className="text-xl font-bold uppercase tracking-tight text-white group-hover:text-blue-400 transition-colors duration-300">
+                <div className="relative flex flex-grow flex-col bg-black p-5 sm:p-6">
+                  <div className="mb-3 flex items-start justify-between gap-3 sm:gap-4">
+                    <h3 className="text-lg font-bold uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-blue-400 sm:text-xl">
                       {c.title}
                     </h3>
-                    <div className="arrow-rotate w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-white group-hover:bg-blue-600 group-hover:border-blue-500 transition-colors duration-300">
+                    <div className="arrow-rotate flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-zinc-400 transition-colors duration-300 group-hover:border-blue-500 group-hover:bg-blue-600 group-hover:text-white">
                       <ArrowUpRight className="w-4 h-4" />
                     </div>
                   </div>
                   
-                  <p className="text-zinc-400 text-sm font-normal leading-relaxed flex-grow">
+                  <p className="flex-grow text-sm font-normal leading-relaxed text-zinc-400 sm:text-[15px]">
                     {c.description}
                   </p>
 

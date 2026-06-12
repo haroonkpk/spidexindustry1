@@ -111,8 +111,8 @@ export default function PortalShell({
         </aside>
 
         <div className="flex-1 md:ml-72">
-          <div className="sticky top-0 z-40 flex items-center justify-between bg-slate-100 px-4 py-4 shadow-sm md:px-8">
-            <div className="flex items-center gap-3">
+          <div className="sticky top-0 z-40 flex items-center justify-between gap-3 bg-slate-100 px-4 py-4 shadow-sm md:px-8">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={() => setSidebarOpen((prev) => !prev)}
@@ -131,7 +131,7 @@ export default function PortalShell({
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button className="hidden rounded-2xl bg-slate-950 px-4 py-2 text-sm text-white md:inline-flex">
                 Quick Actions
               </button>
@@ -144,7 +144,7 @@ export default function PortalShell({
               <button
                 type="button"
                 onClick={() => setProfileMenuOpen((prev) => !prev)}
-                className="inline-flex items-center gap-3 rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700"
+                className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 sm:gap-3"
               >
                 <div className="h-9 w-9 rounded-full bg-slate-700 text-white grid place-items-center">
                   JD

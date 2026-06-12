@@ -89,7 +89,7 @@ export default function MyOrdersPage() {
     <div className="space-y-8">
 
       {/* HEADER */}
-      <div className="rounded-3xl bg-white p-8 shadow-sm">
+      <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
           <div>
@@ -106,18 +106,18 @@ export default function MyOrdersPage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
 
             <button
               onClick={openCreateModal}
-              className="rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-700 transition"
+              className="rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-700"
             >
               + New Order
             </button>
 
             <Link
               href="/client-area/my-orders/1002"
-              className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 transition"
+              className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
             >
               View Latest
             </Link>
@@ -130,7 +130,7 @@ export default function MyOrdersPage() {
       {/* TABLE */}
       <div className="overflow-hidden rounded-3xl bg-white shadow-sm">
 
-        <div className="border-b border-slate-200 bg-slate-50 px-6 py-5">
+        <div className="border-b border-slate-200 bg-slate-50 px-4 py-4 sm:px-6 sm:py-5">
           <p className="text-sm font-semibold text-slate-900">
             Order Table
           </p>
@@ -138,16 +138,16 @@ export default function MyOrdersPage() {
 
         <div className="overflow-x-auto">
 
-          <table className="min-w-full divide-y divide-slate-200">
+            <table className="min-w-full divide-y divide-slate-200 text-sm">
 
             <thead className="bg-slate-100 text-left text-xs uppercase tracking-[0.24em] text-slate-500">
               <tr>
-                <th className="px-6 py-4">Order ID</th>
-                <th className="px-6 py-4">Product</th>
-                <th className="px-6 py-4">Quantity</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4">Date</th>
-                <th className="px-6 py-4">Actions</th>
+                <th className="px-4 py-4 sm:px-6">Order ID</th>
+                <th className="px-4 py-4 sm:px-6">Product</th>
+                <th className="px-4 py-4 sm:px-6">Quantity</th>
+                <th className="px-4 py-4 sm:px-6">Status</th>
+                <th className="px-4 py-4 sm:px-6">Date</th>
+                <th className="px-4 py-4 sm:px-6">Actions</th>
               </tr>
             </thead>
 
@@ -155,14 +155,14 @@ export default function MyOrdersPage() {
 
               {orders.map((order) => (
                 <tr key={order.id}>
-                  <td className="px-6 py-5 font-semibold text-slate-900">
+                  <td className="px-4 py-5 font-semibold text-slate-900 sm:px-6">
                     #{order.id}
                   </td>
 
-                  <td className="px-6 py-5">{order.product}</td>
-                  <td className="px-6 py-5">{order.quantity}</td>
+                  <td className="px-4 py-5 sm:px-6">{order.product}</td>
+                  <td className="px-4 py-5 sm:px-6">{order.quantity}</td>
 
-                  <td className="px-6 py-5">
+                  <td className="px-4 py-5 sm:px-6">
                     <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
                       order.status === "Completed"
                         ? "bg-emerald-100 text-emerald-700"
@@ -174,9 +174,9 @@ export default function MyOrdersPage() {
                     </span>
                   </td>
 
-                  <td className="px-6 py-5">{order.date}</td>
+                  <td className="px-4 py-5 sm:px-6">{order.date}</td>
 
-                  <td className="px-6 py-5 flex gap-2">
+                  <td className="flex gap-2 px-4 py-5 sm:px-6">
 
                     {/* VIEW POPUP */}
                     <button
@@ -203,7 +203,7 @@ export default function MyOrdersPage() {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
 
-          <div className="w-full max-w-3xl rounded-3xl bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto flex flex-col">
+          <div className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-y-auto rounded-3xl bg-white p-4 shadow-xl sm:p-6">
 
             {/* HEADER */}
             <div className="flex items-center justify-between border-b pb-4">

@@ -80,27 +80,27 @@ export default function TechPacksPage() {
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
             Total Tech Packs
           </p>
-          <p className="mt-4 text-4xl font-semibold text-slate-900 dark:text-white">
+          <p className="mt-4 text-3xl font-semibold text-slate-900 dark:text-white sm:text-4xl">
             {techPacks.length}
           </p>
         </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
             Pending Review
           </p>
-          <p className="mt-4 text-4xl font-semibold text-amber-600">
+          <p className="mt-4 text-3xl font-semibold text-amber-600 sm:text-4xl">
             {
               techPacks.filter((pack) => pack.status === "Pending Review")
                 .length
             }
           </p>
         </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
             Approved
           </p>
@@ -111,7 +111,7 @@ export default function TechPacksPage() {
       </div>
 
       <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
               Tech Pack Library
@@ -128,7 +128,7 @@ export default function TechPacksPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search tech packs"
-                className="w-full min-w-[220px] rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                className="w-full min-w-0 rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 sm:min-w-[220px]"
               />
             </div>
             <button className="inline-flex items-center gap-2 rounded-full bg-sky-600 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-700">

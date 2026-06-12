@@ -44,10 +44,10 @@ export default function FactoryShowcase() {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="relative overflow-hidden py-16 sm:py-20 md:py-24">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
 
-      <div className="container-custom relative z-10">
+      <div className="container-custom relative z-10 px-4 sm:px-6">
       <SectionHeader
   label="Factory"
   title1="Inside Our"
@@ -55,14 +55,14 @@ export default function FactoryShowcase() {
   description="From cutting and sewing to printing, embroidery, and packaging, every step is managed under strict quality standards."
 />
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
           {areas.map((area, index) => (
             <div
               key={index}
               className="group rounded-3xl overflow-hidden border border-white/10 bg-white/[0.03] backdrop-blur-sm hover:border-primary/40 transition-all duration-500 hover:-translate-y-2"
             >
               {/* Video */}
-              <div className="relative h-[320px] overflow-hidden">
+              <div className="relative h-[240px] overflow-hidden sm:h-[280px] md:h-[320px]">
                 <video
                   autoPlay
                   muted
@@ -77,32 +77,32 @@ export default function FactoryShowcase() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
                 {/* Number */}
-                <div className="absolute top-5 right-5">
-                  <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">
+                <div className="absolute top-4 right-4 sm:top-5 sm:right-5">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-sm font-bold text-white sm:h-14 sm:w-14 sm:text-lg">
                     {String(index + 1).padStart(2, "0")}
                   </div>
                 </div>
 
                 {/* Title */}
-                <div className="absolute bottom-6 left-6">
-                  <h3 className="text-3xl font-bold text-white">
+                <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
+                  <h3 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
                     {area.title}
                   </h3>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-8">
-                <p className="text-gray-400 leading-relaxed text-lg">
+              <div className="p-5 sm:p-6 md:p-8">
+                <p className="text-sm leading-relaxed text-gray-400 sm:text-base md:text-lg">
                   {area.description}
                 </p>
 
-                <div className="mt-6 flex items-center justify-between">
+                <div className="mt-5 flex items-center justify-between sm:mt-6">
                   <span className="text-primary font-semibold">
                     View Process
                   </span>
 
-                  <div className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full border border-primary/30 transition-all duration-300 group-hover:bg-primary group-hover:text-white sm:h-10 sm:w-10">
                     →
                   </div>
                 </div>
@@ -112,24 +112,24 @@ export default function FactoryShowcase() {
         </div>
 
         {/* Bottom Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
-          <div className="text-center p-6 rounded-2xl border border-white/10 bg-white/[0.03]">
-            <h3 className="text-4xl font-bold text-primary">15+</h3>
+        <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:mt-20 lg:grid-cols-4">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center sm:p-6">
+            <h3 className="text-2xl font-bold text-primary sm:text-3xl md:text-4xl">15+</h3>
             <p className="text-gray-400 mt-2">Years Experience</p>
           </div>
 
-          <div className="text-center p-6 rounded-2xl border border-white/10 bg-white/[0.03]">
-            <h3 className="text-4xl font-bold text-primary">100K+</h3>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center sm:p-6">
+            <h3 className="text-2xl font-bold text-primary sm:text-3xl md:text-4xl">100K+</h3>
             <p className="text-gray-400 mt-2">Monthly Capacity</p>
           </div>
 
-          <div className="text-center p-6 rounded-2xl border border-white/10 bg-white/[0.03]">
-            <h3 className="text-4xl font-bold text-primary">50+</h3>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center sm:p-6">
+            <h3 className="text-2xl font-bold text-primary sm:text-3xl md:text-4xl">50+</h3>
             <p className="text-gray-400 mt-2">Team Members</p>
           </div>
 
-          <div className="text-center p-6 rounded-2xl border border-white/10 bg-white/[0.03]">
-            <h3 className="text-4xl font-bold text-primary">100%</h3>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center sm:p-6">
+            <h3 className="text-2xl font-bold text-primary sm:text-3xl md:text-4xl">100%</h3>
             <p className="text-gray-400 mt-2">Quality Checked</p>
           </div>
         </div>

@@ -31,7 +31,7 @@ export default function AdminPage() {
   return (
     <div className="space-y-8">
       <div className="grid gap-6 xl:grid-cols-[1.4fr,0.8fr]">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">
@@ -67,7 +67,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
@@ -112,7 +112,7 @@ export default function AdminPage() {
       <DashboardWidgets />
 
       <section className="rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
-        <div className="border-b border-slate-200 px-6 py-5 dark:border-slate-700">
+        <div className="border-b border-slate-200 px-4 py-4 dark:border-slate-700 sm:px-6 sm:py-5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
@@ -128,7 +128,7 @@ export default function AdminPage() {
             </button>
           </div>
         </div>
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           <OrdersTable rows={recentOrders} />
         </div>
       </section>

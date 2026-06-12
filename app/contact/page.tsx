@@ -19,10 +19,10 @@ export default function Contact() {
         </div>
 
         {/* GRID */}
-        <div className="mt-14 grid lg:grid-cols-2 gap-10">
+        <div className="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-2 lg:gap-10">
 
           {/* LEFT - INFO CARD */}
-          <div className="rounded-3xl border border-sky-100 bg-sky-50 p-8">
+          <div className="rounded-3xl border border-sky-100 bg-sky-50 p-6 sm:p-8">
 
             <h3 className="text-lg font-semibold text-slate-900">
               Company Information
@@ -31,7 +31,7 @@ export default function Contact() {
             <div className="mt-6 space-y-5 text-slate-700">
 
               {/* WhatsApp */}
-              <div className="flex justify-between items-start">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                 <span className="text-slate-500">WhatsApp</span>
                 <a
                   href="https://wa.me/923001234567"
@@ -43,7 +43,7 @@ export default function Contact() {
               </div>
 
               {/* Email */}
-              <div className="flex justify-between items-start">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                 <span className="text-slate-500">Email</span>
                 <a
                   href="mailto:sales@yourbrand.com"
@@ -54,17 +54,17 @@ export default function Contact() {
               </div>
 
               {/* Address */}
-              <div className="flex justify-between items-start">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                 <span className="text-slate-500">Address</span>
-                <span className="text-right">
+                <span className="sm:text-right">
                   Industrial Area, Karachi, Pakistan
                 </span>
               </div>
 
               {/* Business */}
-              <div className="flex justify-between items-start">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                 <span className="text-slate-500">Business</span>
-                <span className="text-right">
+                <span className="sm:text-right">
                   Clothing Manufacturing & Production
                 </span>
               </div>
@@ -72,19 +72,19 @@ export default function Contact() {
             </div>
 
             {/* Buttons */}
-            <div className="mt-8 flex gap-3">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
 
               <a
                 href="https://wa.me/923001234567"
                 target="_blank"
-                className="flex-1 text-center bg-green-500 text-white py-3 rounded-xl text-sm font-semibold hover:bg-green-600 transition"
+                className="flex-1 rounded-xl bg-green-500 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-green-600"
               >
                 WhatsApp
               </a>
 
               <a
                 href="mailto:sales@yourbrand.com"
-                className="flex-1 text-center bg-sky-600 text-white py-3 rounded-xl text-sm font-semibold hover:bg-sky-700 transition"
+                className="flex-1 rounded-xl bg-sky-600 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-sky-700"
               >
                 Email
               </a>
@@ -96,7 +96,7 @@ export default function Contact() {
           <div className="rounded-3xl border border-sky-100 overflow-hidden bg-white shadow-sm">
 
             {/* Map Header */}
-            <div className="bg-sky-600 px-6 py-4">
+            <div className="bg-sky-600 px-5 py-4 sm:px-6">
               <h3 className="text-white font-semibold">
                 Our Location
               </h3>
@@ -107,7 +107,7 @@ export default function Contact() {
 
             {/* Map */}
             <iframe
-              className="w-full h-[420px]"
+              className="h-[320px] w-full sm:h-[380px] md:h-[420px]"
               loading="lazy"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115816.0!2d67.0011!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1"
             ></iframe>

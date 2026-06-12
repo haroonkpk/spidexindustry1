@@ -12,16 +12,16 @@ export default async function OrderDetailsPage({
   const order = orders.find((item) => String(item.id) === orderId) ?? orders[0];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-sky-50 px-4 py-10 md:px-10">
+    <div className="min-h-screen bg-gradient-to-b from-white to-sky-50 px-4 py-8 sm:py-10 md:px-10">
       {/* HEADER */}
       <div className="mx-auto max-w-6xl space-y-8">
-        <div className="rounded-3xl border border-sky-100 bg-white p-8 shadow-sm">
+        <div className="rounded-3xl border border-sky-100 bg-white p-6 shadow-sm sm:p-8">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">
                 Order details
               </p>
-              <h1 className="mt-3 text-3xl font-bold text-slate-900">
+              <h1 className="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">
                 Order #{order.id}
               </h1>
               <p className="mt-2 text-slate-600">
@@ -44,7 +44,7 @@ export default async function OrderDetailsPage({
           {/* LEFT SIDE */}
           <div className="space-y-6">
             {/* PRODUCT INFO */}
-            <div className="rounded-3xl border border-sky-100 bg-white p-8 shadow-sm">
+            <div className="rounded-3xl border border-sky-100 bg-white p-6 shadow-sm sm:p-8">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600">
                 Product specifications
               </p>
@@ -115,7 +115,7 @@ export default async function OrderDetailsPage({
           {/* RIGHT SIDE */}
           <div className="space-y-6">
             {/* FABRIC */}
-            <div className="rounded-3xl border border-sky-100 bg-white p-6 shadow-sm">
+            <div className="rounded-3xl border border-sky-100 bg-white p-5 shadow-sm sm:p-6">
               <h2 className="text-lg font-bold text-slate-900">
                 Fabric Details
               </h2>
@@ -138,7 +138,7 @@ export default async function OrderDetailsPage({
             </div>
 
             {/* PRINT */}
-            <div className="rounded-3xl border border-sky-100 bg-white p-6 shadow-sm">
+            <div className="rounded-3xl border border-sky-100 bg-white p-5 shadow-sm sm:p-6">
               <h2 className="text-lg font-bold text-slate-900">
                 Printing Details
               </h2>

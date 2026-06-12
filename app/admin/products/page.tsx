@@ -97,31 +97,31 @@ export default function ProductsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
             Product Catalog
           </p>
-          <p className="mt-4 text-4xl font-semibold text-slate-900 dark:text-white">
+          <p className="mt-4 text-3xl font-semibold text-slate-900 dark:text-white sm:text-4xl">
             {productData.length}
           </p>
         </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
             Categories
           </p>
-          <p className="mt-4 text-4xl font-semibold text-sky-600">5</p>
+          <p className="mt-4 text-3xl font-semibold text-sky-600 sm:text-4xl">5</p>
         </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
             Low Stock
           </p>
-          <p className="mt-4 text-4xl font-semibold text-amber-600">1</p>
+          <p className="mt-4 text-3xl font-semibold text-amber-600 sm:text-4xl">1</p>
         </div>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
               Products
@@ -138,7 +138,7 @@ export default function ProductsPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search products"
-                className="w-full min-w-[220px] rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                className="w-full min-w-0 rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 sm:min-w-[220px]"
               />
             </div>
             <select

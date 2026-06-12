@@ -11,7 +11,7 @@ export default function Services() {
   return (
     <section className="bg-white">
       {/* Hero Section with Video Background */}
-      <div className="relative bg-blue-900 text-white overflow-hidden">
+      <div className="relative overflow-hidden bg-blue-900 text-white">
         {/* Background Video */}
         <video
           autoPlay
@@ -29,12 +29,12 @@ export default function Services() {
         <div className="absolute inset-0 bg-blue-950/70 z-10" />
 
         {/* Hero Content */}
-        <div className="container relative py-20 z-20">
-          <h1 className="text-4xl md:text-5xl font-bold">
+        <div className="container relative z-20 py-14 sm:py-20 lg:py-24">
+          <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
             Manufacturing Services
           </h1>
 
-          <p className="mt-6 max-w-3xl text-lg text-blue-100">
+          <p className="mt-5 max-w-3xl text-base text-blue-100 sm:mt-6 sm:text-lg">
             Speedx Industry provides complete apparel manufacturing
             solutions for startups, fashion brands, wholesalers,
             sportswear companies, and private label businesses
@@ -44,20 +44,20 @@ export default function Services() {
       </div>
 
       {/* Services Grid */}
-      <div className="container py-20">
+      <div className="container py-14 sm:py-20">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-slate-900">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             What We Offer
           </h2>
 
-          <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-slate-600 sm:text-base">
             From concept development to final delivery, we handle
             every stage of the manufacturing process with strict
             quality control and industry-leading expertise.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-14">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-8">
           {services.map((service) => (
             <ServiceCard
               key={service.id}
@@ -69,18 +69,18 @@ export default function Services() {
 
       {/* Core Services */}
       <div className="bg-blue-50">
-        <div className="container py-20">
+        <div className="container py-14 sm:py-20">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Core Manufacturing Solutions
             </h2>
 
-            <p className="mt-4 text-slate-600">
+            <p className="mt-4 text-sm text-slate-600 sm:text-base">
               Professional services designed to help brands grow.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-6">
             {[
               {
                 title: "Custom Manufacturing",
@@ -101,13 +101,13 @@ export default function Services() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="bg-white rounded-2xl p-8 shadow-sm border border-blue-100"
+                className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm sm:p-8"
               >
-                <h3 className="text-xl font-semibold text-blue-800">
+                <h3 className="text-lg font-semibold text-blue-800 sm:text-xl">
                   {item.title}
                 </h3>
 
-                <p className="mt-4 text-slate-600 leading-7">
+                <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
                   {item.desc}
                 </p>
               </div>
@@ -117,19 +117,19 @@ export default function Services() {
       </div>
 
       {/* Printing & Decoration */}
-      <div className="container py-20">
+      <div className="container py-14 sm:py-20">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-slate-900">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             Printing & Decoration Services
           </h2>
 
-          <p className="mt-4 text-slate-600">
+          <p className="mt-4 text-sm text-slate-600 sm:text-base">
             High-quality branding and decoration methods for
             apparel and sportswear.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-6">
           {[
             {
               title: "Embroidery",
@@ -150,13 +150,13 @@ export default function Services() {
           ].map((item) => (
             <div
               key={item.title}
-              className="bg-white rounded-2xl border border-slate-200 p-8 hover:shadow-lg transition"
+              className="rounded-2xl border border-slate-200 bg-white p-6 transition hover:shadow-lg sm:p-8"
             >
-              <h3 className="text-xl font-semibold text-blue-800">
+              <h3 className="text-lg font-semibold text-blue-800 sm:text-xl">
                 {item.title}
               </h3>
 
-              <p className="mt-4 text-slate-600 leading-7">
+              <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
                 {item.desc}
               </p>
             </div>
@@ -166,18 +166,18 @@ export default function Services() {
 
       {/* Process */}
       <div className="bg-slate-50">
-        <div className="container py-20">
+        <div className="container py-14 sm:py-20">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Our Manufacturing Process
             </h2>
 
-            <p className="mt-4 text-slate-600">
+            <p className="mt-4 text-sm text-slate-600 sm:text-base">
               A streamlined process ensuring quality and efficiency.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-5 gap-6 mt-14">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-5 lg:gap-6">
             {[
               "Design Review",
               "Sampling",
@@ -187,13 +187,13 @@ export default function Services() {
             ].map((step, index) => (
               <div
                 key={step}
-                className="bg-white rounded-2xl p-8 text-center shadow-sm"
+                className="rounded-2xl bg-white p-6 text-center shadow-sm sm:p-8"
               >
-                <div className="w-14 h-14 mx-auto rounded-full bg-blue-700 text-white flex items-center justify-center font-bold text-lg">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-700 text-sm font-bold text-white sm:h-14 sm:w-14 sm:text-lg">
                   {index + 1}
                 </div>
 
-                <h3 className="mt-5 font-semibold text-slate-900">
+                <h3 className="mt-4 text-sm font-semibold text-slate-900 sm:mt-5 sm:text-base">
                   {step}
                 </h3>
               </div>
@@ -203,8 +203,8 @@ export default function Services() {
       </div>
 
       {/* Why Choose Us */}
-      <div className="container py-20">
-        <div className="grid lg:grid-cols-4 gap-6">
+      <div className="container py-14 sm:py-20">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {[
             "Low MOQ Available",
             "Premium Quality Fabrics",
@@ -213,9 +213,9 @@ export default function Services() {
           ].map((item) => (
             <div
               key={item}
-              className="bg-blue-50 border border-blue-100 rounded-2xl p-8 text-center"
+              className="rounded-2xl border border-blue-100 bg-blue-50 p-6 text-center sm:p-8"
             >
-              <h3 className="font-semibold text-blue-800 text-lg">
+              <h3 className="text-base font-semibold text-blue-800 sm:text-lg">
                 {item}
               </h3>
             </div>

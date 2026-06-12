@@ -85,13 +85,13 @@ export default function QuotationsPage() {
 
       {/* TABLE */}
       <div className="overflow-hidden rounded-3xl bg-white shadow-sm">
-        <div className="border-b border-slate-200 bg-slate-50 px-6 py-5">
+        <div className="border-b border-slate-200 bg-slate-50 px-4 py-4 sm:px-6 sm:py-5">
           <p className="text-sm font-semibold text-slate-900">
             Quotation details
           </p>
         </div>
 
-        <div className="min-w-full overflow-x-auto">
+        <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-700">
             <thead className="bg-slate-100 text-left uppercase tracking-[0.24em] text-slate-500">
               <tr>
