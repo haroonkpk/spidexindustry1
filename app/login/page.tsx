@@ -25,6 +25,7 @@ export default function LoginPage() {
 
     try {
       const result = await loginAction({ email, password });
+
       if (!result.ok) {
         setError(result.error || "Invalid credentials. Please try again.");
         return;
@@ -58,6 +59,7 @@ export default function LoginPage() {
               Create an account
             </Link>
           </p>
+
           <Link
             href="/get-quote"
             className="text-sm font-semibold text-primary hover:underline"
@@ -73,6 +75,7 @@ export default function LoginPage() {
             name="email"
             type="email"
             placeholder="you@example.com"
+            autoComplete="email"
             required
           />
         </Field>
@@ -82,13 +85,14 @@ export default function LoginPage() {
             name="password"
             type="password"
             placeholder="Enter your password"
+            autoComplete="current-password"
             required
           />
         </Field>
 
         {error && <p className="text-sm text-rose-600">{error}</p>}
 
-        <Button type="submit" className="w-full px-5 py-3">
+        <Button type="submit" className="w-full px-5 py-3" disabled={isSubmitting}>
           {isSubmitting ? "Logging in..." : "Login"}
         </Button>
       </form>

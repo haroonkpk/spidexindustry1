@@ -26,6 +26,7 @@ export default function SignupPage() {
 
     try {
       const result = await signupAction({ name, email, password });
+
       if (!result.ok) {
         setError(result.error || "Unable to create account.");
         return;
@@ -55,6 +56,7 @@ export default function SignupPage() {
               Login here
             </Link>
           </p>
+
           <Link
             href="/get-quote"
             className="text-sm font-semibold text-primary hover:underline"
@@ -70,6 +72,7 @@ export default function SignupPage() {
             name="name"
             type="text"
             placeholder="Your full name"
+            autoComplete="name"
             required
           />
         </Field>
@@ -79,6 +82,7 @@ export default function SignupPage() {
             name="email"
             type="email"
             placeholder="you@example.com"
+            autoComplete="email"
             required
           />
         </Field>
@@ -88,13 +92,18 @@ export default function SignupPage() {
             name="password"
             type="password"
             placeholder="Create a password"
+            autoComplete="new-password"
             required
           />
         </Field>
 
         {error && <p className="text-sm text-rose-600">{error}</p>}
 
-        <Button type="submit" className="w-full px-5 py-3">
+        <Button
+          type="submit"
+          className="w-full px-5 py-3"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Creating account..." : "Sign Up"}
         </Button>
       </form>

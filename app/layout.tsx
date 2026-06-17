@@ -5,6 +5,7 @@ import WhatsAppWidget from "../components/ui/WhatsAppWidget";
 import ScrollRevealProvider from "../components/animations/ScrollRevealProvider";
 
 export const metadata = {
+  metadataBase: new URL("http://localhost:3000"),
   title: "Premium Custom Clothing Manufacturing",
   description:
     "Premium custom clothing manufacturing for global brands — private label, low MOQ, quality assurance, worldwide shipping.",
