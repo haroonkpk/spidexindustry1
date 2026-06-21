@@ -83,14 +83,16 @@ export default function Sidebar({
 
   return (
     <>
-      {/* Mobile Toggle Hamburger Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 md:hidden flex items-center justify-center h-10 w-10 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95 shadow-md shadow-black/20"
-        aria-label="Toggle menu"
-      >
-        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </button>
+      {/* Mobile Toggle Hamburger Button (hidden when sidebar is open) */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed top-4 left-4 z-50 md:hidden flex items-center justify-center h-10 w-10 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition active:scale-95 shadow-md shadow-black/20"
+          aria-label="Open menu"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+      )}
 
       {/* Backdrop overlay for mobile */}
       {isOpen && (
@@ -107,11 +109,9 @@ export default function Sidebar({
         }`}
       >
         {/* Sidebar Header */}
-        <div className="flex h-20 items-center px-6 border-b border-slate-900 bg-slate-950/80">
+        <div className="flex h-20 items-center justify-between px-6 border-b border-slate-900 bg-slate-950/80">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-600/30">
-              S
-            </div>
+            
             <div>
               <h2 className="text-base font-bold text-white tracking-wider uppercase leading-none">
                 {brandName}
@@ -121,6 +121,15 @@ export default function Sidebar({
               </span>
             </div>
           </div>
+          
+          {/* Close button inside sidebar (visible only on mobile) */}
+          <button
+            onClick={() => setIsOpen(false)}
+            className="md:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition active:scale-95"
+            aria-label="Close menu"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
 
         {/* Sidebar Navigation */}
