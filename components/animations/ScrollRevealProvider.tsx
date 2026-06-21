@@ -53,6 +53,10 @@ export default function ScrollRevealProvider() {
   const pathname = usePathname();
 
   useLayoutEffect(() => {
+    if (pathname?.startsWith("/admin") || pathname?.startsWith("/client-area")) {
+      return;
+    }
+
     const { sections, cards } = getRevealTargets();
 
     if (sections.length === 0 && cards.length === 0) {
