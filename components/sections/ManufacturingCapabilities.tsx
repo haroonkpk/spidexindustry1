@@ -7,7 +7,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-react';
 import SectionHeader from '../ui/SectionHeader';
+import FootballAnimation from '../ui/FootballAnimation';
 import DetailModal, { type CapabilityDetail } from '../ui/DetailModal';
+import ArrowCircle from '../ui/ArrowCircle';
 
 const premiumCapabilities: CapabilityDetail[] = [
   {
@@ -121,7 +123,6 @@ if (typeof window !== "undefined") {
 export default function ManufacturingCapabilities() {
   const containerRef = useRef<HTMLDivElement>(null);
   const blurPlaceholderUrl = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTExIi8+PC9zdmc+";
-  const footballRef = useRef<HTMLImageElement>(null);
   const [selectedCard, setSelectedCard] = useState<CapabilityDetail | null>(null);
 
   useEffect(() => {
@@ -152,66 +153,7 @@ export default function ManufacturingCapabilities() {
         start: "top 88%",
         once: true
       });
-      /* =========================
-   FOOTBALL ANIMATION
-========================= */
-      if (footballRef.current) {
 
-        if (footballRef.current) {
-          const tl = gsap.timeline({
-            repeat: -1,
-            yoyo: true,
-            defaults: { ease: "power2.inOut" },
-          });
-
-          // 🟢 floating + horizontal move
-          tl.to(footballRef.current, {
-            x: 120,
-            y: -20,
-            rotate: 180,
-            duration: 1.2,
-          });
-
-          // 🟢 jump (bounce effect)
-          tl.to(footballRef.current, {
-            y: -80,
-            scale: 1.1,
-            rotate: 260,
-            duration: 0.6,
-            ease: "power2.out",
-          });
-
-          // 🟢 drop (gravity feel)
-          tl.to(footballRef.current, {
-            y: 0,
-            scale: 1,
-            rotate: 360,
-            duration: 0.8,
-            ease: "bounce.out",
-          });
-
-          // 🟢 scroll based movement (extra layer)
-          gsap.to(footballRef.current, {
-            y: -140,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top 90%",
-              end: "bottom 10%",
-              scrub: 1,
-            },
-          });
-        }
-
-        gsap.to(footballRef.current, {
-          y: -120,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 90%",
-            end: "bottom 10%",
-            scrub: 1,
-          },
-        });
-      }
 
       const cards = gsap.utils.toArray<HTMLElement>('.streetwear-card');
       cards.forEach((card) => {
@@ -238,15 +180,7 @@ export default function ManufacturingCapabilities() {
     <>
       <section ref={containerRef} className="relative overflow-hidden py-16 font-sans text-white sm:py-20 md:py-24">
 
-        <img
-
-          ref={footballRef}
-
-          src="/images/football.webp"
-
-          className="absolute top-20 left-10 w-12 h-12 pointer-events-none z-20"
-
-        />
+        <FootballAnimation className="absolute top-20 left-10 w-12 h-12 pointer-events-none z-20" />
 
         <div className="absolute inset-0 opacity-60 pointer-events-none" />
 
@@ -282,13 +216,13 @@ export default function ManufacturingCapabilities() {
                   </div>
 
                   <div className="relative flex flex-grow flex-col bg-black p-4 sm:p-5">
+
                     <div className="mb-3 flex items-start justify-between gap-2 sm:gap-4">
                       <h3 className="text-base font-bold uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-blue-400 sm:text-lg">
                         {c.title}
                       </h3>
-                      <div className="arrow-rotate flex h-8 w-8 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-zinc-400 transition-colors duration-300 group-hover:border-blue-500 group-hover:bg-blue-600 group-hover:text-white shrink-0">
-                        <ArrowUpRight className="w-4 h-4" />
-                      </div>
+
+                      <ArrowCircle />
                     </div>
 
                     <p className="flex-grow text-xs font-normal leading-relaxed text-zinc-400 sm:text-sm">

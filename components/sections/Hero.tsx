@@ -349,49 +349,13 @@ export default function Hero() {
           scale: 0.6,
           opacity: 0,
           duration: 0.8,
-          ease: Back.easeOut.config(1.7),
+          ease: "back.out(1.7)",
           stagger: 0.15,
         },
         "-=0.5"
       );
 
-      //  FOOTBALL SUPER KICK
-      tl.fromTo(
-        ".football",
-        {
-          x: "-45vw",
-          y: 120,
-          scale: 0.25,
-          rotate: -540,
-          opacity: 0,
-        },
-        {
-          x: "120vw",
-          y: -100,
-          scale: 1.6,
-          rotate: 1080,
-          opacity: 1,
-          duration: 2.2,
-          ease: "power2.out",
-          onStart: () => {
-            //  SCREEN SHAKE ON KICK
-            gsap.to(heroRef.current, {
-              x: 10,
-              duration: 0.05,
-              repeat: 10,
-              yoyo: true,
-            });
-          },
-        },
-        "-=1"
-      );
 
-      // football exit fade
-      tl.to(".football", {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.6,
-      });
 
       //  CTA pulse premium
       gsap.to(".hero-btn-primary", {
@@ -427,11 +391,7 @@ export default function Hero() {
 
       <div className="light-sweep absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent opacity-60" />
 
-      <img
-        src="/images/football.webp"
-        alt="football"
-        className="football pointer-events-none absolute bottom-10 left-10 z-20 w-20 opacity-0"
-      />
+
 
       <div className="relative z-10 container mx-auto flex min-h-[92vh] items-center px-4 py-20 sm:px-6 md:px-8">
 

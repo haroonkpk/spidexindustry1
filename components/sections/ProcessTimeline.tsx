@@ -1,6 +1,7 @@
 "use client";
 
 import SectionHeader from "../ui/SectionHeader";
+import FootballAnimation from "../ui/FootballAnimation";
 import Image from "next/image";
 
 interface ProcessStep {
@@ -15,7 +16,6 @@ import React, { useEffect, useRef } from "react";
 
 export default function ProcessTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const footballRef = useRef<HTMLImageElement>(null);
   const steps: ProcessStep[] = [
     {
       title: "Consultation",
@@ -55,53 +55,6 @@ export default function ProcessTimeline() {
   ];
 
   const blurPlaceholderUrl = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjIyIi8+PC9zdmc+";
-  /* =========================
-    FOOTBALL ANIMATION
-  ========================= */
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    if (footballRef.current) {
-      const tl = gsap.timeline({
-        repeat: -1,
-        yoyo: true,
-        defaults: { ease: "power2.inOut" },
-      });
-
-      tl.to(footballRef.current, {
-        x: 120,
-        y: -20,
-        rotate: 180,
-        duration: 1.2,
-      });
-
-      tl.to(footballRef.current, {
-        y: -80,
-        scale: 1.1,
-        rotate: 260,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-
-      tl.to(footballRef.current, {
-        y: 0,
-        scale: 1,
-        rotate: 360,
-        duration: 0.8,
-        ease: "bounce.out",
-      });
-
-      gsap.to(footballRef.current, {
-        y: -140,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 90%",
-          end: "bottom 10%",
-          scrub: 1,
-        },
-      });
-    }
-  }, []);
 
   return (
     <section className="mt-8 py-10 sm:mt-16 sm:py-12">
@@ -111,15 +64,7 @@ export default function ProcessTimeline() {
         title2="Journey"
         description="From concept to delivery, every step is carefully managed to ensure premium quality and customer satisfaction."
       />
-      <img
-
-        ref={footballRef}
-
-        src="/images/football.webp"
-
-        className="absolute top-20 left-10 w-12 h-12 pointer-events-none z-20"
-
-      />
+      <FootballAnimation className="absolute top-20 left-10 w-12 h-12 pointer-events-none z-20" />
 
       <div className="relative max-w-7xl mx-auto mt-10 px-4 sm:mt-16 sm:px-6 lg:px-8">
         <div className="absolute left-6 lg:left-1/2 top-0 h-full w-[2px] bg-primary/20 -translate-x-1/2 hidden sm:block"></div>
