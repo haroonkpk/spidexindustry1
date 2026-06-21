@@ -11,6 +11,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import SectionHeader from "../ui/SectionHeader";
+import FootballAnimation from "../ui/FootballAnimation";
 import CountUpNumber from "../ui/CountUpNumber";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -44,7 +45,6 @@ const reviews = [
 
 export default function Testimonials() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const footballRef = useRef<HTMLImageElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeVideos, setActiveVideos] = useState<{ [key: number]: boolean }>({});
 
@@ -79,53 +79,6 @@ export default function Testimonials() {
 
     return () => ctx.revert();
   }, []);
-  /* =========================
-       FOOTBALL ANIMATION
-     ========================= */
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    if (footballRef.current) {
-      const tl = gsap.timeline({
-        repeat: -1,
-        yoyo: true,
-        defaults: { ease: "power2.inOut" },
-      });
-
-      tl.to(footballRef.current, {
-        x: 120,
-        y: -20,
-        rotate: 180,
-        duration: 1.2,
-      });
-
-      tl.to(footballRef.current, {
-        y: -80,
-        scale: 1.1,
-        rotate: 260,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-
-      tl.to(footballRef.current, {
-        y: 0,
-        scale: 1,
-        rotate: 360,
-        duration: 0.8,
-        ease: "bounce.out",
-      });
-
-      gsap.to(footballRef.current, {
-        y: -140,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 90%",
-          end: "bottom 10%",
-          scrub: 1,
-        },
-      });
-    }
-  }, []);
 
   return (
     <section
@@ -140,15 +93,7 @@ export default function Testimonials() {
             title2="Say About Us"
             description="Real feedback from international brands that trusted us with their apparel manufacturing."
           />
-          <img
-
-            ref={footballRef}
-
-            src="/images/football.webp"
-
-            className="absolute top-20 left-10 w-12 h-12 pointer-events-none z-20"
-
-          />
+          <FootballAnimation className="absolute top-20 left-10 w-12 h-12 pointer-events-none z-20" />
         </div>
 
         <div className="mt-10 grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4 lg:mt-14">
