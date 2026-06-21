@@ -141,8 +141,8 @@ export default function Sidebar({
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 group ${
                   active
-                    ? "bg-blue-600/10 border-l-4 border-blue-500 text-blue-400 font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
-                    : "text-slate-400 hover:text-white hover:bg-slate-900 border-l-4 border-transparent"
+                    ? "bg-blue-600/10 text-blue-400 font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
+                    : "text-slate-400 hover:text-white hover:bg-slate-900"
                 }`}
               >
                 {Icon && (
