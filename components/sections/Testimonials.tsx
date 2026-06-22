@@ -47,38 +47,9 @@ export default function Testimonials() {
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeVideos, setActiveVideos] = useState<{ [key: number]: boolean }>({});
-
   const handlePlayVideo = (index: number) => {
     setActiveVideos((prev) => ({ ...prev, [index]: true }));
   };
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".testimonial-header", {
-        opacity: 0,
-        y: 80,
-        duration: 1,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: ".testimonial-header",
-          start: "top 85%",
-        },
-      });
-
-      gsap.from(".review-slider", {
-        opacity: 0,
-        y: 80,
-        duration: 1,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: ".review-slider",
-          start: "top 80%",
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
   return (
     <section

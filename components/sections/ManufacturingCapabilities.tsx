@@ -128,33 +128,6 @@ export default function ManufacturingCapabilities() {
   useEffect(() => {
     const ctx = gsap.context(() => {
 
-      gsap.fromTo(".section-header-anim",
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1, ease: "power4.out", stagger: 0.2 }
-      );
-
-      ScrollTrigger.batch(".streetwear-card", {
-        interval: 0.1,
-        batchMax: 3,
-        onEnter: (elements) => {
-          gsap.fromTo(elements,
-            { opacity: 0, y: 60, scale: 0.98 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 1.2,
-              ease: "power4.out",
-              stagger: 0.15,
-              overwrite: "auto"
-            }
-          );
-        },
-        start: "top 88%",
-        once: true
-      });
-
-
       const cards = gsap.utils.toArray<HTMLElement>('.streetwear-card');
       cards.forEach((card) => {
         const image = card.querySelector('.product-image-zoom');

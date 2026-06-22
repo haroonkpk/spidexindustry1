@@ -1,37 +1,4 @@
-// "use client";
 
-// import React, { useEffect, useRef } from "react";
-// import { gsap } from "gsap";
-
-// export default function FootballAnimation({
-//   className = "absolute top-20 left-10 w-12 h-12 pointer-events-none z-20",
-// }: {
-//   className?: string;
-// }) {
-//   const footballRef = useRef<HTMLImageElement>(null);
-
-//   useEffect(() => {
-//     if (footballRef.current) {
-
-//       gsap.to(footballRef.current, {
-//         y: -15,
-//         repeat: -1,
-//         yoyo: true,
-//         duration: 1.2,
-//         ease: "power1.inOut",
-//       });
-//     }
-//   }, []);
-
-//   return (
-//     <img
-//       ref={footballRef}
-//       src="/images/football.webp"
-//       alt="football animation"
-//       className={className}
-//     />
-//   );
-// }
 "use client";
 
 import React, { useEffect, useRef } from "react";

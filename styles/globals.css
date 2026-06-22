@@ -36,16 +36,11 @@ body {
   overflow-x: hidden;
 }
 
-body {
-  @apply bg-white text-gray-800 font-sans;
-}
 
-/* Responsive container: fluid padding across all breakpoints */
 .container {
   @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-/* Legacy container-custom alias used in FactoryShowcase */
 .container-custom {
   @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
 }
@@ -58,11 +53,11 @@ body {
   @apply text-gray-600;
 }
 
-/* Hide scrollbar for subcategory pill overflow */
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
