@@ -6,7 +6,19 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-export default function CardLayout({ children, className = "" }: CardProps) {
+export default function CardLayout({
+  variant = "white",
+  children,
+  className = "",
+  ...props
+}: CardProps) {
+  const variantStyles = {
+    white: "bg-white text-[#0A2540]",
+    primary: "bg-[var(--color-primary)] text-white",
+    pending: "bg-[var(--color-pending-bg)] text-[var(--color-pending)]",
+    secondary: "bg-[#E5F0F6] text-[#053B70]",
+  };
+
   return (
     <div
       className={cn(
@@ -19,4 +31,4 @@ export default function CardLayout({ children, className = "" }: CardProps) {
       {children}
     </div>
   );
-};
+}

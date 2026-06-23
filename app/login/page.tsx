@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { loginAction } from "../../src/actions/auth";
 import AuthShell from "../../components/ui/AuthShell";
-import Button from "../../components/ui/Button";
+import { Button } from "../../components/ui/Button";
 import Field from "../../components/ui/Field";
-import Input from "../../components/ui/Input";
+import { Input } from "../../components/ui/Input";
 
 export default function LoginPage() {
   const router = useRouter();
