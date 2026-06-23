@@ -45,7 +45,7 @@ export default function ClientAreaPage() {
 
   return (
     <div className="space-y-[clamp(1.5rem,3vw,2rem)]">
-      <Card className="p-[clamp(1.25rem,2.5vw,2rem)] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+      <Card className="p-[clamp(1.25rem,2.5vw,2rem)] rounded-none bg-slate-900 border border-slate-100 border-slate-800 shadow-sm">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-[clamp(11px,1vw,12px)] font-semibold uppercase tracking-[0.24em] text-sky-600">
@@ -59,12 +59,7 @@ export default function ClientAreaPage() {
               production, invoices and shipments.
             </p>
           </div>
-          <Card className="bg-slate-950 border-none px-[clamp(1.25rem,2vw,1.5rem)] py-[clamp(1rem,1.5vw,1.25rem)] text-white shadow-lg">
-            <p className="text-[clamp(11px,1vw,12px)] uppercase tracking-[0.24em] text-slate-400">
-              Premium client access
-            </p>
-            <p className="mt-4 text-[clamp(1.25rem,2vw,1.5rem)] font-semibold">Global Apparel</p>
-          </Card>
+          
         </div>
       </Card>
 
@@ -100,7 +95,7 @@ export default function ClientAreaPage() {
       </section>
 
       <section className="grid gap-[clamp(1rem,2vw,1.5rem)] xl:grid-cols-[1.4fr_0.6fr]">
-        <div className="overflow-hidden bg-white rounded-3xl shadow-sm border border-slate-100">
+        <Card className="border border-slate-100 p-0">
           <DataTable
             heading="Latest production updates"
             TableHeaders={tableHeaders}
@@ -112,56 +107,27 @@ export default function ClientAreaPage() {
             totalEntries={productionStages.length}
             headerActions={headerActions}
           />
-        </div>
+        </Card>
 
         <div className="space-y-6">
-          <Card className="p-[clamp(1.25rem,2.5vw,2rem)] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
-            <h2 className="text-[clamp(15px,1.3vw,17px)] font-semibold text-slate-900 dark:text-white">
+          <Card className="p-[clamp(1rem,1.5vw,1.5rem)] bg-[var(--color-secondary)] shadow-sm">
+            <h2 className="text-[clamp(15px,1.3vw,17px)] font-semibold text-slate-900 ">
               Recent notifications
             </h2>
             <div className="mt-[clamp(1rem,1.5vw,1.25rem)] space-y-[clamp(0.75rem,1vw,1rem)]">
               {notifications.map((item) => (
                 <Card
                   key={item.id}
-                  className="border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 p-[clamp(0.875rem,1.2vw,1rem)]"
+                  className="border border-slate-200 bg-slate-50 p-[clamp(0.875rem,1.2vw,1rem)]"
                 >
-                  <p className="text-[clamp(13px,1.2vw,14px)] font-semibold text-slate-900 dark:text-slate-100">{item.title}</p>
-                  <p className="mt-1 text-[clamp(12px,1.1vw,13px)] text-slate-600 dark:text-slate-300">
+                  <p className="text-[clamp(13px,1.2vw,14px)] font-semibold text-slate-900 ">{item.title}</p>
+                  <p className="mt-1 text-[clamp(12px,1.1vw,13px)] text-slate-600 ">
                     {item.description}
                   </p>
                   <p className="mt-2 text-[clamp(10px,0.9vw,11px)] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
                     {item.date}
                   </p>
                 </Card>
-              ))}
-            </div>
-          </Card>
-
-          <Card className="p-[clamp(1.25rem,2.5vw,2rem)] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <h2 className="text-[clamp(15px,1.3vw,17px)] font-semibold text-slate-900 dark:text-white">
-                  Quick actions
-                </h2>
-                <p className="mt-2 text-[clamp(12px,1.1vw,13px)] text-slate-500 dark:text-slate-400">
-                  Launch common tasks in one click.
-                </p>
-              </div>
-            </div>
-            <div className="mt-[clamp(1rem,1.5vw,1.25rem)] grid gap-[clamp(0.75rem,1vw,1rem)]">
-              {quickActions.map((action) => (
-                <Link
-                  key={action.title}
-                  href={action.href}
-                  className="block"
-                >
-                  <Card className="border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 p-[clamp(0.875rem,1.2vw,1rem)] hover:bg-slate-100 dark:hover:bg-slate-800/80 transition duration-150">
-                    <p className="text-[clamp(13px,1.2vw,14px)] font-semibold text-slate-900 dark:text-slate-100">{action.title}</p>
-                    <p className="mt-1 text-[clamp(12px,1.1vw,13px)] font-normal text-slate-500 dark:text-slate-400">
-                      {action.description}
-                    </p>
-                  </Card>
-                </Link>
               ))}
             </div>
           </Card>

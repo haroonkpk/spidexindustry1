@@ -173,7 +173,7 @@ export default function Sidebar({
         {/* User profile & Logout footer */}
         {user && (
           <div className="p-3 md:p-4 border-t border-slate-900 bg-slate-950/40">
-            <div className="flex items-center justify-between gap-2 md:gap-3 p-2.5 md:p-3 rounded-2xl bg-slate-900/50 border border-slate-900/80 shadow-lg">
+            <div className="flex items-center justify-between gap-2 md:gap-3 p-2.5 md:p-3  bg-slate-900/50 border border-slate-900/80 shadow-lg">
               <div className="flex items-center gap-2.5 md:gap-3 min-w-0">
                 <div className="h-9 w-9 md:h-10 md:w-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white font-bold text-[clamp(0.65rem,1.6vw,0.8rem)] flex items-center justify-center shadow-md shrink-0">
                   {getInitials(user.name)}
@@ -189,7 +189,7 @@ export default function Sidebar({
               </div>
               <button
                 onClick={handleLogout}
-                className="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition shrink-0"
+                className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition shrink-0"
                 title="Log out"
               >
                 <LogOut className="h-[clamp(0.95rem,2.4vw,1.125rem)] w-[clamp(0.95rem,2.4vw,1.125rem)]" />

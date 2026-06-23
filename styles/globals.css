@@ -4,14 +4,15 @@
 
 :root {
   --color-primary: #0F3D91;
+  --color-secondary: #E5F0F6;
   
-  /* Table Theme Variables - matching site primary theme */
-  --color-table-header-bg: #E5F0F6;     /* Soft blue header background */
-  --color-table-header-text: #0F3D91;   /* Primary theme blue text */
-  --color-table-border: #E2E8F0;        /* Cool grey borders */
-  --color-table-hover: #F8FAFC;         /* Light slate hover background */
-  --color-table-even: #F8FAFC;          /* Light slate alternating row background */
-  --color-table-accent: #0F3D91;        /* Primary theme blue for active pagination */
+ 
+  --color-table-header-bg: #E5F0F6;    
+  --color-table-header-text: #0F3D91;   
+  --color-table-border: #E2E8F0;       
+  --color-table-hover: #F8FAFC;         
+  --color-table-even: #F8FAFC;          
+  --color-table-accent: #0F3D91;        
 }
 
 .dark {

@@ -7,6 +7,7 @@ import { Card } from "./card";
 export interface TableHeader {
   key: string;
   label: string;
+  className?: string;
 }
 
 interface TableButton<T> {
@@ -75,7 +76,7 @@ export const DataTable = <T extends { id: string }>({
               {TableHeaders.map((header) => (
                 <th
                   key={header.key}
-                  className={`border ${BorderColor} px-[clamp(12px,1.5vw,16px)] py-[clamp(10px,1vw,12px)] text-start text-[clamp(13px,1.2vw,14px)] font-bold whitespace-nowrap`}
+                  className={cn(`border ${BorderColor} px-[clamp(12px,1.5vw,16px)] py-[clamp(10px,1vw,12px)] text-start text-[clamp(13px,1.2vw,14px)] font-bold whitespace-nowrap`, header.className)}
                 >
                   {header.label}
                 </th>
@@ -106,7 +107,7 @@ export const DataTable = <T extends { id: string }>({
                   {TableHeaders.map((header) => (
                     <td
                       key={`${row.id}-${header.key}`}
-                      className={`border ${BorderColor} px-[clamp(12px,1.5vw,16px)] py-[clamp(10px,1vw,12px)] text-[clamp(13px,1.2vw,14px)] text-gray-800 whitespace-wrap`}
+                      className={cn(`border ${BorderColor} px-[clamp(12px,1.5vw,16px)] py-[clamp(10px,1vw,12px)] text-[clamp(13px,1.2vw,14px)] text-gray-800 whitespace-nowrap`, header.className)}
                     >
                       {row[header.key as keyof T] as React.ReactNode}
                     </td>
