@@ -1,3 +1,4 @@
+
 "use client";
 import {
   ShieldCheckIcon,
@@ -13,6 +14,7 @@ import CountUpNumber from "../ui/CountUpNumber";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useEffect, useRef } from "react";
+import Link from "next/link";
 
 export default function WhyChooseUs() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,14 +57,13 @@ export default function WhyChooseUs() {
       icon: UserGroupIcon,
     },
   ];
+
   return (
-    // <section className="bg-gradient-to-b from-white to-slate-50 py-16 sm:py-20">
     <section
       ref={containerRef}
       className="bg-gradient-to-b from-white to-slate-50 py-16 sm:py-20 relative"
     >
-      <div className="container">
-
+      <div className="container mx-auto px-4">
         <SectionHeader
           label="Why Choose Us"
           title1="Trusted Manufacturing"
@@ -70,6 +71,8 @@ export default function WhyChooseUs() {
           description="We help startups, established brands, and wholesalers manufacture premium-quality apparel with reliable production, quality control, and worldwide logistics support."
         />
         <FootballAnimation className="absolute top-20 left-10 w-12 h-12 pointer-events-none z-20" />
+        
+        {/* Grid Container */}
         <div className="mt-10 grid gap-5 sm:grid-cols-2 md:gap-6 xl:grid-cols-3 sm:mt-12 md:mt-14">
           {items.map((item) => {
             const Icon = item.icon;
@@ -77,14 +80,14 @@ export default function WhyChooseUs() {
             return (
               <div
                 key={item.title}
-                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl sm:p-8"
+                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl sm:p-8"
               >
-                {/* Top Accent */}
-                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-600 to-cyan-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                {/* Top Accent - Always Visible Now */}
+                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-600 to-cyan-500" />
 
-                {/* Icon */}
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 transition-colors duration-300 group-hover:bg-blue-600 sm:mb-6 sm:h-14 sm:w-14">
-                  <Icon className="h-7 w-7 text-blue-600 group-hover:text-white transition-colors duration-300" />
+                {/* Icon - Always Blue background with white icon */}
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 sm:mb-6 sm:h-14 sm:w-14">
+                  <Icon className="h-7 w-7 text-white" />
                 </div>
 
                 {/* Content */}
@@ -96,11 +99,15 @@ export default function WhyChooseUs() {
                   {item.description}
                 </p>
 
-                {/* Hover Arrow */}
-                <div className="mt-6 text-blue-600 font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  Learn More
-                  <span>→</span>
-                </div>
+             <Link
+  href="/get-quote"
+  className="mt-6 text-blue-600 font-medium flex items-center gap-2 transition-all duration-300"
+>
+  Learn More
+  <span className="transform transition-transform duration-300 group-hover:translate-x-1">
+    →
+  </span>
+</Link>
               </div>
             );
           })}
@@ -109,17 +116,23 @@ export default function WhyChooseUs() {
         {/* Bottom Stats */}
         <div className="mt-10 grid grid-cols-2 gap-4 sm:gap-5 md:mt-16 md:grid-cols-4">
           <div className="rounded-xl border bg-white p-4 text-center shadow-sm sm:p-6">
-            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl"><CountUpNumber value="500+" /></h3>
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">
+              <CountUpNumber value="500+" />
+            </h3>
             <p className="text-slate-600 mt-2">Projects Completed</p>
           </div>
 
           <div className="rounded-xl border bg-white p-4 text-center shadow-sm sm:p-6">
-            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl"><CountUpNumber value="50+" /></h3>
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">
+              <CountUpNumber value="50+" />
+            </h3>
             <p className="text-slate-600 mt-2">Countries Served</p>
           </div>
 
           <div className="rounded-xl border bg-white p-4 text-center shadow-sm sm:p-6">
-            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl"><CountUpNumber value="99%" /></h3>
+            <h3 className="text-2xl font-bold text-blue-600 sm:text-3xl">
+              <CountUpNumber value="99%" />
+            </h3>
             <p className="text-slate-600 mt-2">Quality Satisfaction</p>
           </div>
 

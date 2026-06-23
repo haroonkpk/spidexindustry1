@@ -73,7 +73,7 @@ export default function FactoryShowcase() {
           label="Factory"
           title1="Inside Our"
           title2="Production"
-          description="From cutting and sewing to printing, embroidery, and packaging, every step is managed under strict quality standards."
+          description="From cutting and sewing to printing, embroidery and packaging, every step is managed under strict quality standards."
         />
         <FootballAnimation className="absolute top-20 left-10 w-12 h-12 pointer-events-none z-20" />
 

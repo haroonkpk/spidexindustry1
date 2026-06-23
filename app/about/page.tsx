@@ -53,8 +53,8 @@ export default function About() {
     <section className="bg-white">
 
       <PageHero
-        title="About Speedx Industry"
-        description="Speedx Industry is a trusted clothing manufacturing company specializing in premium custom apparel, private label production, OEM manufacturing, and worldwide export solutions for brands, startups, and wholesalers."
+        title="About Spidex Industry"
+        description="Spidex Industry is a trusted clothing manufacturing company specializing in premium custom apparel, private label production, OEM manufacturing, and worldwide export solutions for brands, startups, and wholesalers."
         videoSrc="/hero.mp4"
         overlayClass="bg-blue-950/70"
       />
@@ -64,20 +64,21 @@ export default function About() {
           <div>
             <SectionHeading title="Our Story" />
 
-            <p className="mt-5 text-sm leading-7 text-slate-600 sm:mt-6 sm:text-base sm:leading-8">
-              Speedx Industry was founded with a vision to provide premium
-              quality garment manufacturing services to brands worldwide.
-              Through years of dedication, innovation, and continuous
-              improvement, we have built a reputation for delivering
-              high-quality products, reliable production timelines, and
-              exceptional customer service.
-            </p>
+        <p className="mt-5 text-sm leading-7 text-slate-600 sm:mt-6 sm:text-base sm:leading-8">
+  Spidex Industry is a trusted garment manufacturing company committed to
+  delivering premium-quality apparel solutions to brands across the globe.
+  With years of experience in the industry. we specialize in transforming
+  ideas into high-quality finished products through precision, innovation
+  and strict quality control at every stage of production.
+</p>
 
-            <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
-              Today we proudly serve international clothing brands, startups,
-              sportswear companies, gym wear labels, and fashion businesses
-              seeking dependable manufacturing partners.
-            </p>
+<p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
+  We proudly work with international clothing brands, startups, sportswear
+  labels, gym wear companies and fashion businesses, offering complete
+  manufacturing solutions including custom designs, bulk production and
+  private labeling. Our focus is on reliability, timely delivery and
+  building long-term partnerships based on trust and consistency.
+</p>
           </div>
 
           <div className="relative h-[280px] overflow-hidden rounded-2xl shadow-xl sm:h-[360px] md:h-[420px]">
@@ -213,43 +214,27 @@ export default function About() {
 
       {/* 5. Team Section */}
       <div className="bg-slate-50">
-        <div className="container mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+  <div className="container mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
 
-          <SectionHeading
-            title="Meet Our Team"
-            description="Our experienced team ensures smooth production, strict quality control, and professional customer support for every project."
-            center={true}
-          />
+    <SectionHeading
+      title="Meet Our Team"
+      description="Our experienced team ensures smooth production, strict quality control, and professional customer support for every project."
+      center={true}
+    />
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-8">
-            {teamMembers.map((member) => (
-              <div
-                key={member.name}
-                className="overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-lg"
-              >
-                <div className="relative h-56 sm:h-64 md:h-72">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-
-                <div className="p-5 text-center sm:p-6">
-                  <h3 className="text-base font-semibold text-slate-900 sm:text-lg">
-                    {member.name}
-                  </h3>
-
-                  <p className="text-blue-700 text-sm font-medium mt-1">
-                    {member.role}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className="mt-10 flex justify-center lg:mt-14">
+      <div className="relative w-full max-w-5xl h-[300px] sm:h-[400px] md:h-[500px] overflow-hidden rounded-2xl shadow-sm hover:shadow-lg transition">
+        <Image
+          src="/speedxteam.jpg"  
+          alt="Spidex Industry Team"
+          fill
+          className="object-cover"
+        />
       </div>
+    </div>
+
+  </div>
+</div>
 
       {/* 6. CTA */}
       <FinalCTA />

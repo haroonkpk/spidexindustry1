@@ -7,28 +7,27 @@ import { Mail, Phone, MapPin, ArrowUpRight, Send } from "lucide-react";
 export default function Footer() {
   const pathname = usePathname();
 
-  // Hide footer in admin and client area panels
   if (pathname?.startsWith("/admin") || pathname?.startsWith("/client-area")) {
     return null;
   }
 
   return (
     <footer className="bg-slate-900 text-slate-200 border-t border-slate-800 mt-20">
-      {/* Main Footer Content */}
+   
       <div className="container mx-auto grid grid-cols-1 gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:py-16 sm:gap-10">
         
-        {/* Column 1: Brand, About & Newsletter */}
+       
         <div className="space-y-6">
           <div className="space-y-3">
             <h4 className="font-bold text-xl tracking-wider text-white">
-              SPEEDX <span className="text-blue-500">INDUSTRY</span>
+              SPIDEX <span className="text-blue-500">INDUSTRY</span>
             </h4>
             <p className="text-slate-400 text-sm leading-relaxed">
               A premier textile and apparel manufacturing partner. Delivering high-quality solutions for global brands.
             </p>
           </div>
 
-          {/* Email Newsletter Input */}
+  
           <div className="space-y-2">
             <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-300">Newsletter</h5>
             <form onSubmit={(e) => e.preventDefault()} className="relative flex w-full max-w-sm items-center">
@@ -93,15 +92,15 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-slate-400">
             <li className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
-              <span>12 KM Sialkot Bypass, Industrial Zone, Sialkot - Pakistan</span>
+              <span>Sialkot, punjab, pakistan </span>
             </li>
             <li className="flex items-center gap-3">
               <Phone className="w-4 h-4 text-blue-500 shrink-0" />
-              <a href="tel:+923001234567" className="hover:text-blue-400 transition-colors">+92 (300) 123-4567</a>
+              <a href="tel:+92 325-2252130" className="hover:text-blue-400 transition-colors">+92 325-2252130</a>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="w-4 h-4 text-blue-500 shrink-0" />
-              <a href="mailto:info@speedxindustry.com" className="hover:text-blue-400 transition-colors">info@speedxindustry.com</a>
+              <a href="mailto:info@spidexindustry.com" className="hover:text-blue-400 transition-colors">info@spidexindustry.com</a>
             </li>
           </ul>
         </div>
