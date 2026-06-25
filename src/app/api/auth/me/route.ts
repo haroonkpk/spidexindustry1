@@ -27,12 +27,17 @@ export async function GET() {
       user.user_metadata?.full_name ||
       user.email?.split("@")[0] ||
       "";
+    const avatarUrl: string =
+      user.user_metadata?.avatar_url ||
+      user.user_metadata?.picture ||
+      "";
 
     return NextResponse.json({
       user: {
         id: user.id,
         email: user.email,
         name,
+        avatarUrl,
       },
       role,
     });

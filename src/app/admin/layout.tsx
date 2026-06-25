@@ -45,6 +45,7 @@ export default async function AdminLayout({
     name: user.name || "Admin User",
     email: user.email || "admin@speedxindustry.com",
     role: "Administrator",
+    avatarUrl: user.avatarUrl,
   };
 
   return (

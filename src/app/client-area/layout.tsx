@@ -50,6 +50,7 @@ export default async function ClientAreaLayout({
     name: user.name || "Client User",
     email: user.email || "client@speedxindustry.com",
     role: user.role === "admin" ? "Administrator" : "Premium Buyer",
+    avatarUrl: user.avatarUrl,
   };
 
   return (

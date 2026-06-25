@@ -16,12 +16,17 @@ export async function getCurrentUserAction() {
       user.user_metadata?.full_name ||
       user.email?.split("@")[0] ||
       "";
+    const avatarUrl: string =
+      user.user_metadata?.avatar_url ||
+      user.user_metadata?.picture ||
+      "";
 
     return {
       sub: user.id,
       email: user.email || "",
       name,
       role,
+      avatarUrl,
     };
   } catch (error) {
     console.error("Failed to get current user:", error);

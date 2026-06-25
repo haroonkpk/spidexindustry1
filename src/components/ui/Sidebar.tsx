@@ -10,7 +10,7 @@ import {
   MessageSquare, LifeBuoy, Users2, BarChart3, Globe, Bell, Settings,
   Box, Package, FileText, Building2
 } from "lucide-react";
-import { logoutAction } from "@/actions/auth";
+import { createClient } from "@/lib/supabase/client";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   dashboard: LayoutDashboard,
@@ -66,9 +66,13 @@ export default function Sidebar({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
-    await logoutAction();
-    router.replace("/");
-    router.refresh();
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const getInitials = (name: string) => {
@@ -175,15 +179,24 @@ export default function Sidebar({
           <div className="p-3 md:p-4 border-t border-slate-900 bg-slate-950/40">
             <div className="flex items-center justify-between gap-2 md:gap-3 p-2.5 md:p-3  bg-slate-900/50 border border-slate-900/80 shadow-lg">
               <div className="flex items-center gap-2.5 md:gap-3 min-w-0">
-                <div className="h-9 w-9 md:h-10 md:w-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white font-bold text-[clamp(0.65rem,1.6vw,0.8rem)] flex items-center justify-center shadow-md shrink-0">
-                  {getInitials(user.name)}
-                </div>
+                {user.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={user.name}
+                    className="h-9 w-9 md:h-10 md:w-10 rounded-full object-cover shadow-md shrink-0 border border-slate-800"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <div className="h-9 w-9 md:h-10 md:w-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white font-bold text-[clamp(0.65rem,1.6vw,0.8rem)] flex items-center justify-center shadow-md shrink-0">
+                    {getInitials(user.name)}
+                  </div>
+                )}
                 <div className="min-w-0 text-left">
                   <p className="text-[clamp(0.65rem,1.7vw,0.75rem)] font-semibold text-white truncate leading-tight">
                     {user.name}
                   </p>
                   <p className="text-[clamp(0.55rem,1.4vw,0.625rem)] text-slate-500 truncate mt-0.5 leading-none">
-                    {user.role || user.email}
+                    {user.email}
                   </p>
                 </div>
               </div>

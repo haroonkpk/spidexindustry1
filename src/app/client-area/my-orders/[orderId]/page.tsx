@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { getClientOrderDetailsAction } from "@/actions/client";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export default async function OrderDetailsPage({
   params,
@@ -18,27 +19,20 @@ export default async function OrderDetailsPage({
   return (
     <div className="space-y-[clamp(1.5rem,3vw,2rem)]">
       {/* HEADER */}
-      <Card className="p-[clamp(1.25rem,2.5vw,2rem)] rounded-none bg-slate-900 border border-slate-800 shadow-sm">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-[clamp(11px,1vw,12px)] font-semibold uppercase tracking-[0.24em] text-sky-500">
-              Order Details
-            </p>
-            <h1 className="mt-3 text-[clamp(1.5rem,2.5vw,1.875rem)] font-semibold text-white">
-              Order #{order.id}
-            </h1>
-            <p className="mt-2 text-[clamp(13px,1.1vw,14px)] text-slate-300">
-              Complete product specifications, production summary, and live timeline tracking.
-            </p>
-          </div>
-          <Link
-            href="/client-area/my-orders"
-            className="self-start rounded-lg bg-sky-600 px-5 py-2.5 text-[clamp(13px,1.2vw,14px)] font-semibold text-white transition hover:bg-sky-700 lg:self-auto"
-          >
-            ← Back to orders
-          </Link>
-        </div>
-      </Card>
+      <PageHeader
+        variant="dark"
+        label="Order Details"
+        title={`Order #${order.id}`}
+        description="Complete product specifications, production summary, and live timeline tracking."
+      >
+        <Link
+          href="/client-area/my-orders"
+          className="rounded-lg bg-sky-600 px-5 py-2.5 text-[clamp(13px,1.2vw,14px)] font-semibold text-white transition hover:bg-sky-700 block"
+        >
+          ← Back to orders
+        </Link>
+      </PageHeader>
+
 
       {/* MAIN GRID */}
       <section className="grid gap-[clamp(1rem,2vw,1.5rem)] xl:grid-cols-[1.4fr_0.6fr]">

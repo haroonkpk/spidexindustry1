@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Package, Box, CreditCard, Bell, ArrowRight, RefreshCw, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { getClientDashboardData } from "@/actions/client";
 
 export default function ClientAreaPage() {
@@ -87,34 +88,22 @@ export default function ClientAreaPage() {
   return (
     <div className="space-y-[clamp(1.5rem,3vw,2rem)]">
       {/* HEADER */}
-      <Card className="p-[clamp(1.25rem,2.5vw,2rem)] bg-slate-900 border border-slate-800 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4">
-          <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            title="Refresh"
-            className="rounded-full bg-slate-800 p-2 text-slate-400 hover:bg-slate-700 hover:text-white transition"
-          >
-            <RefreshCw
-              className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
-            />
-          </button>
-        </div>
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-[clamp(11px,1vw,12px)] font-semibold uppercase tracking-[0.24em] text-sky-500">
-              Dashboard
-            </p>
-            <h1 className="mt-3 text-[clamp(1.5rem,2.5vw,1.875rem)] font-semibold text-white">
-              Welcome back, {data?.user?.name || "Client"}.
-            </h1>
-            <p className="mt-2 text-[clamp(13px,1.1vw,14px)] text-slate-300">
-              Your apparel manufacturing portal — track orders, invoices, and
-              production in real time.
-            </p>
-          </div>
-        </div>
-      </Card>
+      <PageHeader
+        variant="dark"
+        label="Dashboard"
+        title={`Welcome back, ${data?.user?.name || "Client"}.`}
+        description="Your apparel manufacturing portal — track orders, invoices, and production in real time."
+      >
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          title="Refresh"
+          className="rounded-full bg-slate-800 p-2 text-slate-400 hover:bg-slate-700 hover:text-white transition"
+        >
+          <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
+        </button>
+      </PageHeader>
+
 
       {/* STATS */}
       <section className="grid gap-[clamp(1rem,2vw,1.5rem)] sm:grid-cols-2 xl:grid-cols-4">

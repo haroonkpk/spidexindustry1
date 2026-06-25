@@ -9,7 +9,7 @@ import { ChevronDownIcon, XMarkIcon, UserIcon, Squares2X2Icon, BuildingOfficeIco
 import { createClient } from "@/lib/supabase/client";
 
 // Shape returned by /api/auth/me
-type MeResponse = { user: { id: string; email: string; name: string } | null; role: string | null };
+type MeResponse = { user: { id: string; email: string; name: string; avatarUrl?: string } | null; role: string | null };
 
 const navLinks = [
   { href: "/about", label: "About Us", isDropdown: true },
@@ -333,10 +333,19 @@ export default function Navbar() {
           <div className="relative" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => setAuthDropdownOpen(!authDropdownOpen)}
-              className="flex items-center justify-center p-2 rounded-full border border-slate-800 text-slate-300 hover:text-white hover:bg-white/5 hover:border-slate-700 transition-all active:scale-95"
+              className="flex items-center justify-center w-9 h-9 rounded-full border border-slate-800 text-slate-300 hover:text-white hover:bg-white/5 hover:border-slate-700 transition-all active:scale-95 overflow-hidden p-0"
               title="Account"
             >
-              <UserIcon className="w-[20px] h-[20px]" />
+              {user?.avatarUrl ? (
+                <img
+                  src={user.avatarUrl}
+                  alt={user.name || "User profile"}
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <UserIcon className="w-[20px] h-[20px]" />
+              )}
             </button>
 
             {/* Dropdown Menu */}
@@ -484,8 +493,23 @@ export default function Navbar() {
           <div className="mt-8 flex flex-col gap-3">
             {user ? (
               <>
-                <div className="px-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Signed in as: <span className="text-white normal-case font-semibold">{user.name || user.email}</span>
+                <div className="px-2 flex items-center gap-3 mb-2">
+                  {user.avatarUrl ? (
+                    <img
+                      src={user.avatarUrl}
+                      alt={user.name || "User profile"}
+                      className="w-10 h-10 rounded-full object-cover border border-white/10"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-white/10 text-slate-400">
+                      <UserIcon className="w-5 h-5" />
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Signed in as</span>
+                    <span className="text-white text-sm font-semibold truncate block">{user.name || user.email}</span>
+                  </div>
                 </div>
                 <Link
                   href={userRole === "admin" ? "/admin" : "/client-area"}

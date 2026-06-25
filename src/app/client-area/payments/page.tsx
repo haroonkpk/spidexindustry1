@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { getClientPaymentsAction, payInvoiceAction } from "@/actions/client";
 import CountUpNumber from "@/components/ui/CountUpNumber";
 import { Card } from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { CheckCircle2, Clock, Banknote } from "lucide-react";
 
 export default function PaymentsPage() {
   const [paymentsList, setPaymentsList] = useState<any[]>([]);
@@ -23,251 +26,199 @@ export default function PaymentsPage() {
     }
   };
 
-  useEffect(() => {
-    fetchPayments();
-  }, []);
+  useEffect(() => { fetchPayments(); }, []);
 
-  // STATS
-  const paidInvoices = paymentsList.filter(
-    (p) => p.status === "Completed"
-  ).length;
+  const paidCount     = paymentsList.filter((p) => p.status === "Completed").length;
+  const pendingCount  = paymentsList.filter((p) => p.status === "Pending").length;
+  const lastTx        = paymentsList.length > 0 ? paymentsList[0] : null;
 
-  const pendingInvoices = paymentsList.filter(
-    (p) => p.status === "Pending"
-  ).length;
-
-  const lastTransaction =
-    paymentsList.length > 0 ? paymentsList[0] : null;
-
-  // REAL PAYMENT OPERATION
   const handlePayment = async () => {
     if (!selected || processing) return;
-
     setProcessing(true);
     try {
-      // payment record uses `invoice` field as the invoice identifier
       const res = await payInvoiceAction(selected.invoice, paymentMethod);
-      if (res.ok) {
-        alert(`Payment processed successfully for invoice ${selected.invoice}`);
-        setSelected(null);
-        fetchPayments();
-      }
+      if (res.ok) { setSelected(null); fetchPayments(); }
     } catch (err) {
       console.error("Error processing payment:", err);
-      alert("Failed to process payment. Please try again.");
     } finally {
       setProcessing(false);
     }
   };
 
-  // DOWNLOAD RECEIPT
   const downloadReceipt = (payment: any) => {
     const receiptHTML = `
-      <html>
-        <head>
-          <title>Receipt_${payment.paymentId}</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 40px; color: #333; background: #f8fafc; }
-            .receipt-card { border: 1px solid #e2e8f0; padding: 30px; border-radius: 20px; max-width: 500px; margin: auto; bg: white; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-            h2 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-top: 0; }
-            p { margin: 12px 0; font-size: 14px; display: flex; justify-content: space-between; }
-            .label { color: #64748b; font-weight: 500; }
-            .val { color: #0f172a; font-weight: 600; }
-            .brand { text-align: center; margin-top: 20px; font-size: 12px; color: #94a3b8; font-weight: 700; letter-spacing: 0.1em; }
-          </style>
-        </head>
-        <body>
-          <div class="receipt-card">
-            <h2>Payment Receipt</h2>
-            <p><span class="label">Transaction ID:</span><span class="val">${payment.paymentId}</span></p>
-            <p><span class="label">Invoice ID:</span><span class="val">${payment.invoice}</span></p>
-            <p><span class="label">Date:</span><span class="val">${payment.date}</span></p>
-            <p><span class="label">Amount Paid:</span><span class="val">${payment.amount}</span></p>
-            <p><span class="label">Payment Method:</span><span class="val">${payment.method}</span></p>
-            <p><span class="label">Status:</span><span class="val">${payment.status}</span></p>
-            <div class="brand">SPEEDX INDUSTRY</div>
-          </div>
-        </body>
-      </html>
-    `;
-
+      <html><head><title>Receipt_${payment.paymentId}</title>
+      <style>body{font-family:Arial,sans-serif;padding:40px;color:#333;background:#f8fafc}
+      .card{border:1px solid #e2e8f0;padding:30px;border-radius:20px;max-width:500px;margin:auto;background:white;box-shadow:0 4px 6px -1px rgb(0 0 0/.1)}
+      h2{color:#0f172a;border-bottom:2px solid #e2e8f0;padding-bottom:12px;margin-top:0}
+      p{margin:12px 0;font-size:14px;display:flex;justify-content:space-between}
+      .label{color:#64748b;font-weight:500}.val{color:#0f172a;font-weight:600}
+      .brand{text-align:center;margin-top:20px;font-size:12px;color:#94a3b8;font-weight:700;letter-spacing:.1em}
+      </style></head><body><div class="card">
+      <h2>Payment Receipt</h2>
+      <p><span class="label">Transaction ID:</span><span class="val">${payment.paymentId}</span></p>
+      <p><span class="label">Invoice ID:</span><span class="val">${payment.invoice}</span></p>
+      <p><span class="label">Date:</span><span class="val">${payment.date}</span></p>
+      <p><span class="label">Amount:</span><span class="val">${payment.amount}</span></p>
+      <p><span class="label">Method:</span><span class="val">${payment.method}</span></p>
+      <p><span class="label">Status:</span><span class="val">${payment.status}</span></p>
+      <div class="brand">SPEEDX INDUSTRY</div></div></body></html>`;
     const blob = new Blob([receiptHTML], { type: "text/html" });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement("a");
-    a.href = url;
-    a.download = `receipt_${payment.paymentId}.html`;
-    document.body.appendChild(a);
-    a.click();
-
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    a.href = url; a.download = `receipt_${payment.paymentId}.html`;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
   };
 
   if (loading) {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center space-y-4">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-sky-600"></div>
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-sky-600" />
         <p className="text-sm font-medium text-slate-500">Loading payments log...</p>
       </div>
     );
   }
 
+  // Table config
+  const tableHeaders = [
+    { key: "txId",     label: "Transaction ID" },
+    { key: "invoice",  label: "Invoice ID" },
+    { key: "amount",   label: "Amount" },
+    { key: "method",   label: "Method" },
+    { key: "status",   label: "Status" },
+  ];
+
+  const tableData = paymentsList.map((p) => ({
+    id: p.id,
+    txId:    <span className="font-mono font-semibold text-slate-700">{p.paymentId}</span>,
+    invoice: <span className="font-mono text-xs text-slate-500">{p.invoice}</span>,
+    amount:  <span className="font-semibold text-slate-900">{p.amount}</span>,
+    method:  p.method || "Bank Transfer",
+    status: (
+      <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+        p.status === "Completed" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+      }`}>
+        {p.status === "Completed" ? "Completed" : "Pending"}
+      </span>
+    ),
+  }));
+
+  const tableButtons = [
+    {
+      icon: <span className="text-xs">💳</span>,
+      text: "Pay Now",
+      className: "bg-sky-600 text-white",
+      onClick: (row: { id: string }) => {
+        const p = paymentsList.find((x) => x.id === row.id && x.status !== "Completed");
+        if (p) setSelected(p);
+      },
+    },
+    {
+      icon: <span className="text-xs">🧳</span>,
+      text: "Receipt",
+      className: "border border-slate-200 bg-slate-50 text-slate-900",
+      onClick: (row: { id: string }) => {
+        const p = paymentsList.find((x) => x.id === row.id && x.status === "Completed");
+        if (p) downloadReceipt(p);
+      },
+    },
+  ];
+
+  const stats = [
+    { icon: CheckCircle2, title: "Completed", value: paidCount,    desc: "Transactions paid" },
+    { icon: Clock,        title: "Pending",   value: pendingCount,  desc: "Awaiting payment" },
+    { icon: Banknote,     title: "Last Tx",   value: lastTx?.amount ?? "$0", desc: "Most recent amount", isText: true },
+  ];
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-[clamp(1.5rem,3vw,2rem)]">
       {/* HEADER */}
-      <div className="rounded-3xl bg-white p-8 shadow-sm">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-sky-600">
-          Payments
-        </p>
-        <h1 className="mt-3 text-3xl font-semibold text-slate-900">
-          Payment system
-        </h1>
-        <p className="mt-2 text-slate-600">
-          Manage and process manufacturer payments in real time.
-        </p>
-      </div>
+      <PageHeader
+        variant="dark"
+        label="Payments"
+        title="Payment System"
+        description="Manage and process manufacturer payments in real time."
+      />
 
       {/* STATS */}
-      <div className="grid gap-6 xl:grid-cols-3">
-        <div className="rounded-3xl border bg-white p-6 shadow-sm">
-          <p className="text-sm uppercase text-slate-500 font-semibold tracking-wider">Completed Transactions</p>
-          <p className="mt-4 text-3xl font-bold text-slate-900">
-            <CountUpNumber value={paidInvoices} />
-          </p>
-        </div>
-
-        <div className="rounded-3xl border bg-white p-6 shadow-sm">
-          <p className="text-sm uppercase text-slate-500 font-semibold tracking-wider">Awaiting Payments</p>
-          <p className="mt-4 text-3xl font-bold text-slate-900">
-            <CountUpNumber value={pendingInvoices} />
-          </p>
-        </div>
-
-        <div className="rounded-3xl border bg-white p-6 shadow-sm">
-          <p className="text-sm uppercase text-slate-500 font-semibold tracking-wider">Last Transaction Amount</p>
-          <p className="mt-4 text-3xl font-bold text-sky-600">
-            {lastTransaction ? lastTransaction.amount : "$0"}
-          </p>
-        </div>
-      </div>
+      <section className="grid gap-[clamp(1rem,2vw,1.5rem)] sm:grid-cols-3">
+        {stats.map((stat, i) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={i} variant="primary" className="relative overflow-hidden p-[clamp(1.25rem,2vw,1.5rem)]">
+              <div className="absolute -top-3 -right-3 h-24 w-24 text-white/[0.07] pointer-events-none rotate-12">
+                <Icon className="h-full w-full" />
+              </div>
+              <div className="flex flex-col justify-between h-full">
+                <div>
+                  <p className="text-[clamp(10px,0.9vw,11px)] font-semibold uppercase tracking-[0.24em] text-slate-300">
+                    {stat.title}
+                  </p>
+                  <div className="mt-4 text-[clamp(1.5rem,2.5vw,1.875rem)] font-semibold text-white">
+                    {stat.isText ? stat.value : <CountUpNumber value={stat.value as number} />}
+                  </div>
+                </div>
+                <p className="mt-4 text-[clamp(12px,1.1vw,13px)] text-slate-300">{stat.desc}</p>
+              </div>
+            </Card>
+          );
+        })}
+      </section>
 
       {/* TABLE */}
-      <div className="overflow-hidden rounded-3xl bg-white shadow-sm border border-slate-200">
-        <div className="border-b bg-slate-50 px-6 py-5 font-semibold text-slate-900">
-          Transaction log
-        </div>
+      <Card className="border border-slate-100 p-0 overflow-hidden bg-white">
+        <DataTable
+          heading="Transaction Log"
+          TableHeaders={tableHeaders}
+          TableData={tableData}
+          TableButtons={tableButtons}
+          currentPage={1}
+          totalPages={1}
+          onPageChange={() => {}}
+          pageSize={paymentsList.length || 10}
+          totalEntries={paymentsList.length}
+        />
+      </Card>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead className="bg-slate-100 text-left uppercase text-slate-500">
-              <tr>
-                <th className="px-6 py-4">Transaction ID</th>
-                <th className="px-6 py-4">Invoice ID</th>
-                <th className="px-6 py-4">Amount</th>
-                <th className="px-6 py-4">Method</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4">Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {paymentsList.length > 0 ? (
-                paymentsList.map((p) => (
-                  <tr key={p.id} className="border-t hover:bg-slate-50/50">
-                    <td className="px-6 py-4 font-mono font-semibold text-slate-900">{p.paymentId}</td>
-                    <td className="px-6 py-4 font-mono text-xs text-slate-500">{p.invoice}</td>
-                    <td className="px-6 py-4 font-semibold text-slate-900">{p.amount}</td>
-                    <td className="px-6 py-4 text-slate-600">{p.method || "Bank Transfer"}</td>
-
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          p.status === "Completed"
-                            ? "bg-emerald-100 text-emerald-700"
-                            : "bg-amber-100 text-amber-700"
-                        }`}
-                      >
-                        {p.status === "Completed" ? "Completed" : "Pending"}
-                      </span>
-                    </td>
-
-                    <td className="px-6 py-4 flex gap-2">
-                      {p.status !== "Completed" ? (
-                        <button
-                          onClick={() => setSelected(p)}
-                          className="bg-sky-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-sky-700 transition"
-                        >
-                          Pay Now
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => downloadReceipt(p)}
-                          className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition"
-                        >
-                          Receipt
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
-                    No transactions found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* MODAL */}
+      {/* PAYMENT MODAL */}
       {selected && (
-        <div className="fixed inset-0 bg-black/45 flex items-center justify-center z-50 animate-in fade-in">
-          <div className="bg-white p-6 rounded-3xl w-full max-w-sm space-y-4 shadow-xl">
-            <h2 className="text-lg font-bold text-slate-900">Pay Invoice</h2>
-
-            <p className="text-sm text-slate-600">
-              Invoice ID: <span className="font-semibold text-slate-900">{selected.invoice}</span>
-            </p>
-
-            <p className="text-sm text-slate-600">
-              Total Amount: <span className="font-bold text-sky-600">{selected.amount}</span>
-            </p>
-
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Select payment method
-              </label>
-              <select
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-                className="w-full border rounded-xl p-2.5 text-sm bg-slate-50"
-              >
-                <option value="Bank Transfer">Bank Wire / Transfer</option>
-                <option value="Stripe">Credit / Debit Card (Stripe)</option>
-                <option value="JazzCash">JazzCash Mobile Wallet</option>
-                <option value="EasyPaisa">EasyPaisa Mobile Wallet</option>
-              </select>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl w-full max-w-sm shadow-xl overflow-hidden">
+            <div className="bg-slate-900 px-6 py-4 flex items-center justify-between">
+              <h2 className="font-semibold text-white text-sm">Pay Invoice</h2>
+              <button onClick={() => setSelected(null)} className="text-white/70 hover:text-white transition">✕</button>
             </div>
-
-            <div className="flex gap-2 pt-2">
-              <button
-                onClick={() => setSelected(null)}
-                className="flex-1 bg-slate-100 py-2.5 rounded-xl text-sm font-semibold hover:bg-slate-200 transition"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={handlePayment}
-                disabled={processing}
-                className="flex-1 bg-sky-600 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-sky-700 transition"
-              >
-                {processing ? "Processing..." : "Confirm Pay"}
-              </button>
+            <div className="p-6 space-y-4">
+              <div className="rounded-xl bg-slate-50 border border-slate-100 p-4 space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Invoice ID</span>
+                  <span className="font-semibold">{selected.invoice}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Amount Due</span>
+                  <span className="font-bold text-sky-600">{selected.amount}</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Payment Method</label>
+                <select
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="w-full border border-slate-200 rounded-xl p-2.5 text-sm bg-slate-50 outline-none focus:border-sky-500"
+                >
+                  <option value="Bank Transfer">Bank Wire / Transfer</option>
+                  <option value="Stripe">Credit / Debit Card (Stripe)</option>
+                  <option value="JazzCash">JazzCash Mobile Wallet</option>
+                  <option value="EasyPaisa">EasyPaisa Mobile Wallet</option>
+                </select>
+              </div>
+              <div className="flex gap-3">
+                <button onClick={() => setSelected(null)} className="flex-1 bg-slate-100 py-2.5 rounded-xl text-sm font-semibold hover:bg-slate-200 transition">Cancel</button>
+                <button onClick={handlePayment} disabled={processing} className="flex-1 bg-sky-600 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-sky-700 transition disabled:opacity-60">
+                  {processing ? "Processing..." : "Confirm Pay"}
+                </button>
+              </div>
             </div>
           </div>
         </div>

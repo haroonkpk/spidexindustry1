@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Eye, RefreshCw, Package, X } from "lucide-react";
+import { Eye, RefreshCw, Package, X, Upload, ImageIcon, FileText, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import { DataTable } from "@/components/ui/data-table";
@@ -11,6 +11,29 @@ import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import { getClientOrdersAction, createClientOrderAction } from "@/actions/client";
 import type { Order } from "@/types/order";
+import { PageHeader } from "@/components/ui/PageHeader";
+
+/** Upload a single File to Cloudinary via our server-side API route */
+async function uploadFileToCloudinary(file: File): Promise<string> {
+  const fd = new FormData();
+  fd.append("file", file);
+  const res = await fetch("/api/upload-image", { method: "POST", body: fd });
+  if (!res.ok) throw new Error(`Upload failed for ${file.name}`);
+  const json = await res.json();
+  return json.url as string;
+}
+
+/** Parse techPackFile field — may be a JSON array of URLs or a plain string */
+function parseTechPackUrls(raw: string): string[] {
+  if (!raw || raw === "No file attached") return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+  } catch {}
+  // Legacy: single URL or filename
+  if (raw.startsWith("http")) return [raw];
+  return [];
+}
 
 type OrderForm = {
   product: string;
@@ -24,10 +47,20 @@ type OrderForm = {
 export default function MyOrdersPage() {
   const [ordersList, setOrdersList] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string[]>([]);
+
+  // Form-level feedback
+  const [formError, setFormError] = useState<string | null>(null);
+  const [formSuccess, setFormSuccess] = useState<string | null>(null);
+
+  // Field-level validation errors
+  const [fieldErrors, setFieldErrors] = useState<{ product?: string; quantity?: string }>({});
 
   const [form, setForm] = useState<OrderForm>({
     product: "",
@@ -44,8 +77,11 @@ export default function MyOrdersPage() {
     try {
       const res = await getClientOrdersAction();
       setOrdersList(res);
-    } catch (err) {
+      setFetchError(null);
+    } catch (err: unknown) {
       console.error("Error fetching client orders:", err);
+      const msg = err instanceof Error ? err.message : "Failed to load orders.";
+      setFetchError(msg);
     } finally {
       setLoading(false);
     }
@@ -69,7 +105,14 @@ export default function MyOrdersPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    // Clear field error on change
+    if (name in fieldErrors) {
+      setFieldErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+    // Clear form-level error on any change
+    setFormError(null);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,23 +132,66 @@ export default function MyOrdersPage() {
   const openCreateModal = () => {
     setForm({ product: "", quantity: "", sizes: "", color: "", gsm: "", designNotes: "" });
     setFiles([]);
+    setFormError(null);
+    setFormSuccess(null);
+    setFieldErrors({});
+    setUploadProgress([]);
     setIsCreateOpen(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (submitting) return;
+    if (submitting || uploading) return;
 
+    // ── Client-side field validation ─────────────────────────────────────────
+    const newFieldErrors: { product?: string; quantity?: string } = {};
+    if (!form.product.trim()) {
+      newFieldErrors.product = "Product name is required.";
+    }
+    const quantityNum = parseInt(form.quantity, 10);
+    if (!form.quantity.trim()) {
+      newFieldErrors.quantity = "Quantity is required.";
+    } else if (isNaN(quantityNum) || quantityNum <= 0) {
+      newFieldErrors.quantity = "Please enter a valid quantity (positive number).";
+    }
+    if (Object.keys(newFieldErrors).length > 0) {
+      setFieldErrors(newFieldErrors);
+      setFormError("Please fix the errors below before submitting.");
+      return;
+    }
+
+    setFormError(null);
+    setFormSuccess(null);
     setSubmitting(true);
-    try {
-      const quantityNum = parseInt(form.quantity, 10);
-      if (isNaN(quantityNum) || quantityNum <= 0) {
-        alert("Please enter a valid quantity.");
-        setSubmitting(false);
-        return;
-      }
 
-      const techPackFile = files.length > 0 ? files[0].name : "No file attached";
+    try {
+      // ── Upload files to Cloudinary (server-side) ──────────────────────────
+      let techPackFile = "";
+      if (files.length > 0) {
+        setUploading(true);
+        setUploadProgress(files.map((f) => `Uploading ${f.name}…`));
+
+        const urls: string[] = [];
+        for (let i = 0; i < files.length; i++) {
+          try {
+            const url = await uploadFileToCloudinary(files[i]);
+            urls.push(url);
+            setUploadProgress((prev) =>
+              prev.map((s, idx) => (idx === i ? `✓ ${files[i].name}` : s))
+            );
+          } catch {
+            setUploadProgress((prev) =>
+              prev.map((s, idx) => (idx === i ? `✗ Failed: ${files[i].name}` : s))
+            );
+            setFormError(`File upload failed for "${files[i].name}". Please remove it or try again.`);
+            setUploading(false);
+            setSubmitting(false);
+            return;
+          }
+        }
+        techPackFile = JSON.stringify(urls);
+        setUploading(false);
+      }
 
       const res = await createClientOrderAction({
         product: form.product,
@@ -118,13 +204,21 @@ export default function MyOrdersPage() {
       });
 
       if (res.ok) {
-        alert(`Order ${res.order.id} submitted successfully!`);
-        setIsCreateOpen(false);
-        fetchOrders();
+        setFormSuccess(`Order ${res.order.id} submitted successfully! Our team will review it within 24 hours.`);
+        setUploadProgress([]);
+        setTimeout(() => {
+          setIsCreateOpen(false);
+          setFormSuccess(null);
+          fetchOrders();
+        }, 2000);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error creating order:", err);
-      alert("Failed to submit order. Please try again.");
+      const raw = err instanceof Error ? err.message : String(err);
+      // Strip noisy Prisma/Next internals, show the relevant part
+      const clean = raw.split("\n")[0].replace(/^Error:\s*/i, "");
+      setFormError(clean || "Failed to submit order. Please try again.");
+      setUploading(false);
     } finally {
       setSubmitting(false);
     }
@@ -134,16 +228,20 @@ export default function MyOrdersPage() {
     setForm({
       product: order.product,
       quantity: String(order.quantity),
-      sizes: order.fabricDetails.includes("Sizes:") 
+      sizes: order.fabricDetails.includes("Sizes:")
         ? order.fabricDetails.split("Sizes:")[1].trim()
         : "",
-      color: order.fabricDetails.includes("Color:") 
+      color: order.fabricDetails.includes("Color:")
         ? order.fabricDetails.split("Color:")[1].split("|")[0].trim()
         : "",
       gsm: order.fabricDetails.split("|")[0].trim(),
       designNotes: order.printingDetails,
     });
     setFiles([]);
+    setFormError(null);
+    setFormSuccess(null);
+    setFieldErrors({});
+    setUploadProgress([]);
     setIsCreateOpen(true);
   };
 
@@ -226,24 +324,35 @@ export default function MyOrdersPage() {
     );
   }
 
+  if (fetchError) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center space-y-4 px-4">
+        <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 px-5 py-4 text-red-700 max-w-lg w-full">
+          <AlertCircle className="h-5 w-5 shrink-0" />
+          <div>
+            <p className="font-semibold text-sm">Failed to load orders</p>
+            <p className="text-xs mt-0.5 text-red-600">{fetchError}</p>
+          </div>
+        </div>
+        <button
+          onClick={() => { setLoading(true); fetchOrders(); }}
+          className="text-sm font-semibold text-sky-600 hover:underline"
+        >
+          Try again
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-[clamp(1.5rem,3vw,2rem)]">
       {/* HEADER */}
-      <Card className="p-[clamp(1.25rem,2.5vw,2rem)] rounded-none bg-slate-900 border border-slate-800 shadow-sm">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-[clamp(11px,1vw,12px)] font-semibold uppercase tracking-[0.24em] text-sky-500">
-              My Orders
-            </p>
-            <h1 className="mt-3 text-[clamp(1.5rem,2.5vw,1.875rem)] font-semibold text-white">
-              Order Management
-            </h1>
-            <p className="mt-2 text-[clamp(13px,1.1vw,14px)] text-slate-300">
-              Create production orders, track status, and manage your workflow.
-            </p>
-          </div>
-        </div>
-      </Card>
+      <PageHeader
+        variant="dark"
+        label="My Orders"
+        title="Order Management"
+        description="Create production orders, track status, and manage your workflow."
+      />
 
       {/* TABLE */}
       <Card className="border border-slate-100 p-0 overflow-hidden bg-white">
@@ -398,9 +507,9 @@ export default function MyOrdersPage() {
                   </div>
                 </div>
 
-                {/* Right — product image & action */}
+                {/* Right — Tech Pack Attachments */}
                 <div
-                  className="w-full shrink-0 bg-slate-50 md:w-[280px]"
+                  className="w-full shrink-0 bg-slate-50 md:w-[300px]"
                   style={{ padding: "clamp(14px,2.5vw,24px)" }}
                 >
                   <h3
@@ -410,13 +519,49 @@ export default function MyOrdersPage() {
                       marginBottom: "clamp(10px,1.5vw,18px)",
                     }}
                   >
-                    Product Spec Image
+                    Tech Pack / Mockup Files
                   </h3>
-                  <img
-                    src="/receptPlaceholder.png"
-                    alt={selectedOrder.product}
-                    className="h-auto max-w-full rounded border border-slate-200 object-contain mx-auto"
-                  />
+
+                  {(() => {
+                    const urls = parseTechPackUrls(selectedOrder.techPackFile);
+                    if (urls.length === 0) {
+                      return (
+                        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-slate-200 bg-white py-10 text-center">
+                          <ImageIcon className="mb-2 h-8 w-8 text-slate-300" />
+                          <p className="text-xs text-slate-400">No files attached</p>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div className="space-y-3">
+                        {urls.map((url, idx) => {
+                          const isPdf = url.toLowerCase().includes(".pdf") || url.includes("/raw/upload/");
+                          return isPdf ? (
+                            <a
+                              key={idx}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 rounded-md border border-slate-200 bg-white p-2.5 text-xs font-medium text-sky-600 hover:bg-sky-50 transition"
+                            >
+                              <FileText className="h-4 w-4 shrink-0 text-red-500" />
+                              <span className="truncate">PDF File {idx + 1}</span>
+                            </a>
+                          ) : (
+                            <a key={idx} href={url} target="_blank" rel="noopener noreferrer">
+                              <img
+                                src={url}
+                                alt={`Attachment ${idx + 1}`}
+                                className="w-full rounded-md border border-slate-200 object-cover transition hover:opacity-90"
+                                style={{ maxHeight: "180px", objectFit: "contain" }}
+                              />
+                            </a>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
+
                   <Link
                     href={`/client-area/my-orders/${selectedOrder.id}`}
                     className="mt-6 block w-full rounded-lg bg-sky-600 px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-sky-700"
@@ -467,26 +612,64 @@ export default function MyOrdersPage() {
           className="overflow-y-auto"
           style={{ maxHeight: "calc(85vh - 70px)", padding: "clamp(16px,3vw,28px)" }}
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+
+            {/* ── Error Banner ─────────────────────────────────────────── */}
+            {formError && (
+              <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                <div className="flex-1 text-sm">
+                  <p className="font-semibold">Something went wrong</p>
+                  <p className="mt-0.5 text-xs text-red-600">{formError}</p>
+                </div>
+                <button type="button" onClick={() => setFormError(null)} className="text-red-400 hover:text-red-600">
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+
+            {/* ── Success Banner ────────────────────────────────────────── */}
+            {formSuccess && (
+              <div className="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-700">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+                <p className="text-sm font-medium">{formSuccess}</p>
+              </div>
+            )}
             <div className="grid gap-4 sm:grid-cols-2">
-              <Input
-                id="product"
-                name="product"
-                label="Product Name"
-                placeholder="e.g. Custom Hoodie"
-                value={form.product}
-                onChange={handleChange}
-                required
-              />
-              <Input
-                id="quantity"
-                name="quantity"
-                label="Quantity"
-                placeholder="e.g. 100"
-                value={form.quantity}
-                onChange={handleChange}
-                required
-              />
+              <div className="flex flex-col gap-1">
+                <Input
+                  id="product"
+                  name="product"
+                  label="Product Name"
+                  placeholder="e.g. Custom Hoodie"
+                  value={form.product}
+                  onChange={handleChange}
+                  required
+                />
+                {fieldErrors.product && (
+                  <p className="flex items-center gap-1 text-xs text-red-500">
+                    <AlertCircle className="h-3 w-3" />
+                    {fieldErrors.product}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-1">
+                <Input
+                  id="quantity"
+                  name="quantity"
+                  label="Quantity"
+                  placeholder="e.g. 100"
+                  value={form.quantity}
+                  onChange={handleChange}
+                  required
+                />
+                {fieldErrors.quantity && (
+                  <p className="flex items-center gap-1 text-xs text-red-500">
+                    <AlertCircle className="h-3 w-3" />
+                    {fieldErrors.quantity}
+                  </p>
+                )}
+              </div>
               <Input
                 id="sizes"
                 name="sizes"
@@ -550,24 +733,49 @@ export default function MyOrdersPage() {
             {files.length > 0 && (
               <div className="space-y-2 rounded-md border border-slate-200 bg-slate-50 p-3">
                 <p className="text-[clamp(12px,1.1vw,13px)] font-semibold text-slate-700">
-                  Attached files
+                  Attached files ({files.length})
                 </p>
-                {files.map((file, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between text-[clamp(12px,1.1vw,13px)] text-slate-700"
-                  >
-                    <span>📎 {file.name}</span>
-                    <Button
-                      type="button"
-                      variant="danger"
-                      onClick={() => removeFile(i)}
-                      className="!py-0.5 !px-2 text-xs"
+                {files.map((file, i) => {
+                  const isImage = file.type.startsWith("image/");
+                  const preview = isImage ? URL.createObjectURL(file) : null;
+                  const status = uploadProgress[i];
+                  return (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 rounded-md bg-white border border-slate-100 p-2 text-[clamp(12px,1.1vw,13px)] text-slate-700"
                     >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
+                      {preview ? (
+                        <img
+                          src={preview}
+                          alt={file.name}
+                          className="h-10 w-10 rounded object-cover shrink-0 border border-slate-200"
+                        />
+                      ) : (
+                        <FileText className="h-8 w-8 shrink-0 text-red-400" />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="truncate font-medium text-slate-800">{file.name}</p>
+                        {status && (
+                          <p className={`text-xs mt-0.5 ${
+                            status.startsWith("✓") ? "text-emerald-600" : "text-sky-500"
+                          }`}>
+                            {status}
+                          </p>
+                        )}
+                      </div>
+                      {!uploading && (
+                        <Button
+                          type="button"
+                          variant="danger"
+                          onClick={() => removeFile(i)}
+                          className="!py-0.5 !px-2 text-xs shrink-0"
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
 
@@ -579,8 +787,17 @@ export default function MyOrdersPage() {
               >
                 Cancel
               </Button>
-              <Button type="submit" variant="primary" disabled={submitting}>
-                {submitting ? "Submitting..." : "Submit Order"}
+              <Button type="submit" variant="primary" disabled={submitting || uploading}>
+                {uploading ? (
+                  <span className="flex items-center gap-2">
+                    <Upload className="h-3.5 w-3.5 animate-bounce" />
+                    Uploading files…
+                  </span>
+                ) : submitting ? (
+                  "Submitting…"
+                ) : (
+                  "Submit Order"
+                )}
               </Button>
             </div>
           </form>
