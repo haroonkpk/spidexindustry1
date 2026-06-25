@@ -1,104 +1,42 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, Search, X } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import {
+  DollarSign,
+  Search,
+  Eye,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  X,
+  CreditCard,
+  Building,
+  FileText
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/Button";
 import { listAdminPaymentsAction } from "@/actions/adminInvoices";
-import CountUpNumber from "@/components/ui/CountUpNumber";
 
-interface PaymentRecord {
-  id: string;
-  paymentId: string;
-  invoice: string;
-  date: string;
-  amount: string;
-  status: string;
-  method: string;
-  billingEmail: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export default function AdminPaymentsPage() {
+  const [payments, setPayments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(value);
-}
-
-function badgeClass(status: string) {
-  switch (status) {
-    case "Completed":
-      return "bg-emerald-100 text-emerald-700 border border-emerald-200";
-    case "Processing":
-      return "bg-amber-100 text-amber-700 border border-amber-200";
-    case "Failed":
-      return "bg-rose-100 text-rose-700 border border-rose-200";
-    default:
-      return "bg-slate-100 text-slate-700 border border-slate-200";
-  }
-}
-
-function Modal({
-  open,
-  onClose,
-  children,
-}: {
-  open: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-}) {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/50 px-4 py-8">
-      <div className="w-full max-w-3xl overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900">
-        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-            Payment details
-          </h2>
-          <button
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-            onClick={onClose}
-            aria-label="Close payment details dialog"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-        <div className="max-h-[80vh] overflow-y-auto p-6">{children}</div>
-      </div>
-    </div>
-  );
-}
-
-function EmptyState() {
-  return (
-    <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm dark:border-slate-700 dark:bg-slate-900">
-      <p className="text-sm font-semibold text-slate-900 dark:text-white">
-        No payments found.
-      </p>
-      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-        Use filters to locate payment records or add a new transaction.
-      </p>
-    </div>
-  );
-}
-
-export default function PaymentsPage() {
-  const [payments, setPayments] = useState<PaymentRecord[]>([]);
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("All");
-  const [selectedPayment, setSelectedPayment] = useState<PaymentRecord | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Modal state
+  const [selectedPayment, setSelectedPayment] = useState<any | null>(null);
 
   const fetchPayments = async () => {
-    setIsLoading(true);
     try {
-      const data = await listAdminPaymentsAction();
-      setPayments(data as any[]);
+      const res = await listAdminPaymentsAction();
+      setPayments(res);
     } catch (err) {
-      console.error("Error fetching admin payments:", err);
+      console.error("Error loading admin payments:", err);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -106,228 +44,209 @@ export default function PaymentsPage() {
     fetchPayments();
   }, []);
 
-  const filteredPayments = useMemo(() => {
-    return payments.filter((payment) => {
-      const query = search.toLowerCase();
-      const matchesSearch =
-        payment.paymentId.toLowerCase().includes(query) ||
-        payment.invoice.toLowerCase().includes(query) ||
-        payment.billingEmail.toLowerCase().includes(query);
-      const matchesStatus =
-        statusFilter === "All" || payment.status === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-  }, [payments, search, statusFilter]);
+  // Stats calculation
+  const stats = useMemo(() => {
+    const totalCompleted = payments
+      .filter((p) => p.status === "Completed")
+      .reduce((sum, p) => {
+        const val = Number(p.amount.replace(/[^0-9.-]+/g, ""));
+        return sum + (isNaN(val) ? 0 : val);
+      }, 0);
 
-  const totals = useMemo(() => {
-    return {
-      totalReceived: payments
-        .filter((payment) => payment.status === "Completed")
-        .reduce((sum, payment) => {
-          const val = Number(payment.amount.replace(/[^0-9.-]+/g, ""));
-          return sum + (isNaN(val) ? 0 : val);
-        }, 0),
-      pending: payments
-        .filter((payment) => payment.status === "Pending" || payment.status === "Processing")
-        .reduce((sum, payment) => {
-          const val = Number(payment.amount.replace(/[^0-9.-]+/g, ""));
-          return sum + (isNaN(val) ? 0 : val);
-        }, 0),
-      failed: payments
-        .filter((payment) => payment.status === "Failed")
-        .reduce((sum, payment) => {
-          const val = Number(payment.amount.replace(/[^0-9.-]+/g, ""));
-          return sum + (isNaN(val) ? 0 : val);
-        }, 0),
-    };
+    const totalProcessing = payments
+      .filter((p) => p.status === "Processing" || p.status === "Pending")
+      .reduce((sum, p) => {
+        const val = Number(p.amount.replace(/[^0-9.-]+/g, ""));
+        return sum + (isNaN(val) ? 0 : val);
+      }, 0);
+
+    const totalFailed = payments
+      .filter((p) => p.status === "Failed")
+      .reduce((sum, p) => {
+        const val = Number(p.amount.replace(/[^0-9.-]+/g, ""));
+        return sum + (isNaN(val) ? 0 : val);
+      }, 0);
+
+    return { totalCompleted, totalProcessing, totalFailed };
   }, [payments]);
 
+  // Filters
+  const filteredPayments = useMemo(() => {
+    return payments.filter((p) => {
+      const matchSearch =
+        p.paymentId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.invoice.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.billingEmail.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchStatus = statusFilter === "All" || p.status === statusFilter;
+      return matchSearch && matchStatus;
+    });
+  }, [payments, searchQuery, statusFilter]);
+
+  // Table headers
+  const tableHeaders = [
+    { key: "paymentId", label: "Payment ID" },
+    { key: "invoice", label: "Invoice ID" },
+    { key: "amount", label: "Amount" },
+    { key: "method", label: "Method" },
+    { key: "date", label: "Date" },
+    { key: "status", label: "Status" },
+  ];
+
+  // Table data mapping
+  const tableData = filteredPayments.map((p) => ({
+    id: p.id,
+    paymentId: <span className="font-mono font-semibold text-slate-700">{p.paymentId}</span>,
+    invoice: <span className="font-mono text-xs text-slate-500">{p.invoice}</span>,
+    amount: <span className="font-semibold text-slate-900">{p.amount}</span>,
+    method: <span className="font-medium text-slate-600">{p.method}</span>,
+    date: p.date,
+    status: (
+      <span
+        className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+          p.status === "Completed"
+            ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+            : p.status === "Failed"
+            ? "bg-rose-50 text-rose-700 border border-rose-100"
+            : "bg-amber-50 text-amber-700 border border-amber-100 animate-pulse"
+        }`}
+      >
+        {p.status}
+      </span>
+    ),
+  }));
+
+  const tableButtons = [
+    {
+      icon: <Eye className="h-3.5 w-3.5" />,
+      text: "View Details",
+      className: "bg-slate-950 text-white hover:bg-slate-800 transition-colors",
+      onClick: (row: { id: string }) => {
+        const found = payments.find((p) => p.id === row.id);
+        if (found) setSelectedPayment(found);
+      },
+    },
+  ];
+
+  const headerActions = (
+    <div className="flex flex-wrap items-center gap-3">
+      <input
+        type="text"
+        placeholder="Search payment ID, invoice, email..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-800 outline-none focus:border-sky-500 bg-white"
+      />
+      <select
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+        className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-800 outline-none focus:border-sky-500"
+      >
+        <option value="All">All Statuses</option>
+        <option value="Completed">Completed</option>
+        <option value="Processing">Processing</option>
+        <option value="Failed">Failed</option>
+      </select>
+    </div>
+  );
+
+  if (loading) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center space-y-4">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-sky-600" />
+        <p className="text-sm font-medium text-slate-500">Loading payment ledger...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-[clamp(1.5rem,3vw,2rem)]">
+      {/* HEADER */}
+      <PageHeader
+        variant="dark"
+        label="Financial Logging"
+        title="Apparel Payments Log"
+        description="Audit completed bank receipts, card transfers, and fail/refund history for accounts reconciliation."
+      />
+
       {/* STATS */}
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-            Total Received
-          </p>
-          <p className="mt-4 text-4xl font-semibold text-emerald-600">
-            <CountUpNumber value={formatCurrency(totals.totalReceived)} />
-          </p>
-        </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-            Pending / Processing
-          </p>
-          <p className="mt-4 text-4xl font-semibold text-amber-600">
-            <CountUpNumber value={formatCurrency(totals.pending)} />
-          </p>
-        </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-            Failed
-          </p>
-          <p className="mt-4 text-4xl font-semibold text-rose-600">
-            <CountUpNumber value={formatCurrency(totals.failed)} />
-          </p>
-        </div>
-      </div>
+      <section className="grid gap-[clamp(1rem,2vw,1.5rem)] sm:grid-cols-3">
+        <Card variant="primary" className="p-5 flex flex-col justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-300">Total Cleared</p>
+          <p className="text-2xl font-bold mt-2 text-white">${stats.totalCompleted.toLocaleString()}</p>
+        </Card>
+        <Card variant="primary" className="p-5 flex flex-col justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-300">Pending Wire Clears</p>
+          <p className="text-2xl font-bold mt-2 text-white">${stats.totalProcessing.toLocaleString()}</p>
+        </Card>
+        <Card variant="primary" className="p-5 flex flex-col justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-300">Failed / Rejected Proofs</p>
+          <p className="text-2xl font-bold mt-2 text-white">${stats.totalFailed.toLocaleString()}</p>
+        </Card>
+      </section>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
-              Payments Log
-            </h1>
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-              Review payment performance, reconcile transactions, and manage outstanding balances.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search payments"
-                className="w-full min-w-[220px] rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-              />
-            </div>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-2xl border border-slate-200 bg-slate-50 py-3 px-4 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-              aria-label="Filter by payment status"
-            >
-              <option value="All">All</option>
-              <option value="Completed">Completed</option>
-              <option value="Processing">Processing</option>
-              <option value="Pending">Pending</option>
-              <option value="Failed">Failed</option>
-            </select>
-          </div>
-        </div>
+      {/* TABLE */}
+      <Card className="border border-slate-100 p-0 overflow-hidden bg-white">
+        <DataTable
+          heading="Accounts Receivable Cleared Ledger"
+          TableHeaders={tableHeaders}
+          TableData={tableData}
+          TableButtons={tableButtons}
+          currentPage={1}
+          totalPages={1}
+          onPageChange={() => {}}
+          pageSize={filteredPayments.length || 10}
+          totalEntries={filteredPayments.length}
+          headerActions={headerActions}
+        />
+      </Card>
 
-        <div className="mt-6 overflow-x-auto">
-          {isLoading ? (
-            <div className="space-y-4 py-6">
-              {[...Array(3)].map((_, index) => (
-                <div
-                  key={index}
-                  className="h-16 rounded-3xl bg-slate-100 animate-pulse dark:bg-slate-800"
-                />
-              ))}
-            </div>
-          ) : filteredPayments.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
-              <thead className="bg-slate-50 text-slate-700 dark:bg-slate-950 dark:text-slate-200">
-                <tr>
-                  <th className="px-5 py-4 text-left">Payment ID</th>
-                  <th className="px-5 py-4 text-left">Invoice #</th>
-                  <th className="px-5 py-4 text-left">Client Email</th>
-                  <th className="px-5 py-4 text-left">Amount</th>
-                  <th className="px-5 py-4 text-left">Method</th>
-                  <th className="px-5 py-4 text-left">Status</th>
-                  <th className="px-5 py-4 text-left">Date</th>
-                  <th className="px-5 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                {filteredPayments.map((payment) => (
-                  <tr
-                    key={payment.id}
-                    className="hover:bg-slate-50 dark:hover:bg-slate-800"
-                  >
-                    <td className="px-5 py-4 text-slate-900 dark:text-white font-mono font-semibold">
-                      {payment.paymentId}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600 dark:text-slate-300 font-mono text-xs">
-                      {payment.invoice}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600 dark:text-slate-300">
-                      {payment.billingEmail}
-                    </td>
-                    <td className="px-5 py-4 text-slate-900 dark:text-white font-semibold">
-                      {payment.amount}
-                    </td>
-                    <td className="px-5 py-4 text-slate-600 dark:text-slate-300">
-                      {payment.method}
-                    </td>
-                    <td className="px-5 py-4">
-                      <span
-                        className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${badgeClass(payment.status)}`}
-                      >
-                        {payment.status}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-slate-600 dark:text-slate-300">
-                      {payment.date}
-                    </td>
-                    <td className="px-5 py-4 text-right">
-                      <button
-                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200"
-                        onClick={() => setSelectedPayment(payment)}
-                      >
-                        Details
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </div>
-
-      <Modal open={!!selectedPayment} onClose={() => setSelectedPayment(null)}>
+      {/* DETAIL MODAL */}
+      <Modal
+        isOpen={selectedPayment !== null}
+        onClose={() => setSelectedPayment(null)}
+        showHeader={false}
+        className="w-full max-w-md overflow-hidden bg-white"
+      >
         {selectedPayment && (
-          <div className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-950">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Payment Reference
-                </p>
-                <p className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white font-mono">
-                  {selectedPayment.paymentId}
-                </p>
+          <>
+            <div className="flex items-center justify-between bg-slate-900 p-4">
+              <div className="flex items-center gap-2">
+                <CreditCard className="text-white h-5 w-5" />
+                <span className="font-medium text-white text-sm">Payment Details: {selectedPayment.paymentId}</span>
               </div>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-950">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Invoice Reference
-                </p>
-                <p className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white font-mono">
-                  {selectedPayment.invoice}
-                </p>
+              <button
+                onClick={() => setSelectedPayment(null)}
+                className="text-white/85 hover:text-white transition"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-3 rounded-xl bg-slate-50 border border-slate-100 p-4 text-xs">
+                {[
+                  { label: "Payment ID", value: selectedPayment.paymentId },
+                  { label: "Invoice ID Reference", value: selectedPayment.invoice },
+                  { label: "Amount Settle", value: selectedPayment.amount },
+                  { label: "Transfer Method", value: selectedPayment.method },
+                  { label: "Billing Email", value: selectedPayment.billingEmail },
+                  { label: "Payment Date", value: selectedPayment.date },
+                  { label: "Status", value: selectedPayment.status },
+                ].map(({ label, value }) => (
+                  <div key={label} className="col-span-2 sm:col-span-1 border-b border-slate-100 pb-1.5">
+                    <span className="text-slate-400 block font-medium mb-0.5">{label}</span>
+                    <span className="font-semibold text-slate-800 text-sm">{value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <Button variant="outline" onClick={() => setSelectedPayment(null)}>
+                  Close
+                </Button>
               </div>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Client Email
-                </p>
-                <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
-                  {selectedPayment.billingEmail}
-                </p>
-              </div>
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Method
-                </p>
-                <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
-                  {selectedPayment.method}
-                </p>
-              </div>
-            </div>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-950">
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                Amount
-              </p>
-              <p className="mt-2 text-3xl font-bold text-sky-600">
-                {selectedPayment.amount}
-              </p>
-            </div>
-          </div>
+          </>
         )}
       </Modal>
     </div>

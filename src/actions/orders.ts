@@ -56,7 +56,12 @@ function mapPrismaOrder(row: any): Order {
     shippingMethod: row.shippingMethod || "",
     estimatedDelivery: row.estimatedDelivery || "",
     paymentMethod: row.paymentMethod || "",
-    productionTimeline: Array.isArray(row.productionTimeline) ? row.productionTimeline : [],
+    productionTimeline:
+      typeof row.productionTimeline === "string"
+        ? JSON.parse(row.productionTimeline)
+        : Array.isArray(row.productionTimeline)
+        ? row.productionTimeline
+        : [],
   };
 }
 
@@ -188,6 +193,17 @@ export async function listOrdersAction(): Promise<OrdersResult> {
   }
 }
 
+export async function getOrderByIdAction(orderId: string): Promise<OrderResult> {
+  try {
+    await requireAdminSession();
+    const row = await prisma.order.findFirst({ where: { orderId } });
+    if (!row) return { ok: false, error: "Order not found." };
+    return { ok: true, order: mapPrismaOrder(row) };
+  } catch (error: any) {
+    return { ok: false, error: error?.message || "Unable to load order." };
+  }
+}
+
 export async function createOrderAction(input: OrderInput): Promise<OrderResult> {
   try {
     await requireAdminSession();
@@ -253,6 +269,52 @@ export async function updateOrderAction(
   }
 }
 
+export async function updateOrderAdminFieldsAction(
+  orderId: string,
+  input: {
+    clientName?: string;
+    product?: string;
+    quantity?: number;
+    country?: string;
+    paymentStatus?: PaymentStatus;
+    productionStatus?: string;
+    status?: OrderStatus;
+    amount?: number;
+    fabricDetails?: string;
+    printingDetails?: string;
+    techPackFile?: string;
+    clientPhone?: string;
+    billingEmail?: string;
+    address?: string;
+    shippingMethod?: string;
+    estimatedDelivery?: string;
+    paymentMethod?: string;
+    productionTimeline?: any[];
+  }
+): Promise<OrderResult> {
+  try {
+    await requireAdminSession();
+    
+    // Build update data
+    const updateData: any = { ...input };
+    if (input.productionTimeline) {
+      updateData.productionTimeline = JSON.stringify(input.productionTimeline);
+    }
+    
+    const row = await prisma.order.update({
+      where: { orderId },
+      data: {
+        ...updateData,
+        updatedAt: new Date(),
+      },
+    });
+
+    return { ok: true, order: mapPrismaOrder(row) };
+  } catch (error: any) {
+    return { ok: false, error: error?.message || "Unable to update order." };
+  }
+}
+
 export async function deleteOrderAction(orderId: string) {
   try {
     await requireAdminSession();
@@ -260,5 +322,55 @@ export async function deleteOrderAction(orderId: string) {
     return { ok: true };
   } catch (error: any) {
     return { ok: false, error: error?.message || "Unable to delete order." };
+  }
+}
+
+export async function getAdminDashboardDataAction() {
+  try {
+    await requireAdminSession();
+
+    const totalClients = await prisma.user.count({ where: { role: "client" } });
+    const totalOrders = await prisma.order.count();
+    const activeOrders = await prisma.order.count({
+      where: {
+        status: { in: ["Pending", "In Production"] },
+      },
+    });
+
+    const paidOrders = await prisma.order.findMany({
+      where: { paymentStatus: "Paid" },
+      select: { amount: true },
+    });
+    const revenue = paidOrders.reduce((sum, o) => sum + o.amount, 0);
+
+    const processingPayments = await prisma.invoice.count({
+      where: { status: "Processing" },
+    });
+
+    const recentOrders = await prisma.order.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 5,
+    });
+
+    const pendingPayments = await prisma.invoice.findMany({
+      where: { status: "Processing" },
+      orderBy: { updatedAt: "desc" },
+      take: 5,
+    });
+
+    return {
+      ok: true,
+      stats: {
+        totalClients,
+        totalOrders,
+        activeOrders,
+        revenue,
+        processingPayments,
+      },
+      recentOrders: recentOrders.map(mapPrismaOrder),
+      pendingPayments,
+    };
+  } catch (error: any) {
+    return { ok: false, error: error?.message || "Unable to load dashboard data." };
   }
 }

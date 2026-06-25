@@ -32,7 +32,6 @@ const clientLinks = [
     label: "Shipment Tracking",
     iconName: "shipments",
   },
-  { href: "/client-area/messages", label: "Messages", iconName: "messages" },
 ];
 
 export default async function ClientAreaLayout({
