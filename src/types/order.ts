@@ -1,5 +1,5 @@
-export type OrderStatus = "Pending" | "In Production" | "Completed" | "Cancelled";
-export type PaymentStatus = "Paid" | "Pending" | "Failed";
+export type OrderStatus = "Awaiting Quote" | "Confirmed" | "Pending" | "In Production" | "Completed" | "Cancelled";
+export type PaymentStatus = "Paid" | "Pending" | "Failed" | "Partially Paid";
 
 export interface ProductionStage {
   label: string;

@@ -20,7 +20,12 @@ import { DataTable } from "@/components/ui/data-table";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/Button";
-import { listAdminInvoicesAction, verifyInvoiceAction } from "@/actions/adminInvoices";
+import { Input } from "@/components/ui/Input";
+import {
+  listAdminInvoicesAction,
+  verifyInvoiceAction,
+  getInvoicePaymentDetailsAction
+} from "@/actions/adminInvoices";
 
 export default function AdminInvoicesPage() {
   const [invoices, setInvoices] = useState<any[]>([]);
@@ -35,6 +40,11 @@ export default function AdminInvoicesPage() {
   const [rejectionReason, setRejectionReason] = useState("");
   const [actionError, setActionError] = useState<string | null>(null);
   const [actionSuccess, setActionSuccess] = useState<string | null>(null);
+
+  // Partial Payment states
+  const [paymentDetails, setPaymentDetails] = useState<any | null>(null);
+  const [loadingPaymentDetails, setLoadingPaymentDetails] = useState(false);
+  const [verifiedAmount, setVerifiedAmount] = useState<string>("");
 
   const fetchInvoices = async () => {
     try {
@@ -58,6 +68,12 @@ export default function AdminInvoicesPage() {
       return;
     }
 
+    const parsedVerifiedAmount = status === "Paid" ? parseFloat(verifiedAmount) : undefined;
+    if (status === "Paid" && (isNaN(parsedVerifiedAmount as number) || (parsedVerifiedAmount as number) <= 0)) {
+      setActionError("Please enter a valid verified payment amount.");
+      return;
+    }
+
     setVerifying(true);
     setActionError(null);
     setActionSuccess(null);
@@ -65,7 +81,8 @@ export default function AdminInvoicesPage() {
       const res = await verifyInvoiceAction(
         selectedInvoice.invoiceId,
         status,
-        status === "Rejected" ? rejectionReason : undefined
+        status === "Rejected" ? rejectionReason : undefined,
+        parsedVerifiedAmount
       );
 
       if (res.ok) {
@@ -160,7 +177,30 @@ export default function AdminInvoicesPage() {
       className: "bg-slate-950 text-white hover:bg-slate-800 transition-colors",
       onClick: (row: { id: string }) => {
         const found = invoices.find((i) => i.id === row.id);
-        if (found) setSelectedInvoice(found);
+        if (found) {
+          setSelectedInvoice(found);
+          setPaymentDetails(null);
+          setVerifiedAmount("");
+          setLoadingPaymentDetails(true);
+
+          getInvoicePaymentDetailsAction(found.invoiceId)
+            .then((pay) => {
+              setPaymentDetails(pay);
+              if (pay) {
+                const numericVal = Number(pay.amount.replace(/[^0-9.-]+/g, ""));
+                setVerifiedAmount(isNaN(numericVal) ? "" : String(numericVal));
+              } else {
+                const numericInvoice = Number(found.amount.replace(/[^0-9.-]+/g, ""));
+                setVerifiedAmount(isNaN(numericInvoice) ? "" : String(numericInvoice));
+              }
+            })
+            .catch((err) => {
+              console.error("Failed to load invoice payment details:", err);
+            })
+            .finally(() => {
+              setLoadingPaymentDetails(false);
+            });
+        }
       },
     },
     {
@@ -346,6 +386,40 @@ export default function AdminInvoicesPage() {
                   </div>
                 )}
               </div>
+
+              {/* Payment Verification Override */}
+              {selectedInvoice.status === "Processing" && (
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Payment Verification</p>
+                  
+                  {loadingPaymentDetails ? (
+                    <div className="flex items-center text-xs text-slate-400">
+                      <div className="mr-2 h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-sky-500" />
+                      Retrieving client claimed payment...
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex justify-between text-xs text-slate-600">
+                        <span>Client Claimed Amount:</span>
+                        <span className="font-semibold text-slate-800">
+                          {paymentDetails ? paymentDetails.amount : selectedInvoice.amount}
+                        </span>
+                      </div>
+                      
+                      <Input
+                        id="verify-override-amount"
+                        label="Verified Payment Amount (USD $)"
+                        type="number"
+                        min="1"
+                        value={verifiedAmount}
+                        onChange={(e) => setVerifiedAmount(e.target.value)}
+                        required
+                        className="bg-white text-slate-800"
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Action Buttons */}
               {selectedInvoice.status === "Processing" && (

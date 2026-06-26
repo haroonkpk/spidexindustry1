@@ -73,9 +73,17 @@ export async function getClientDashboardData() {
     (o) => o.status !== "Completed" && o.status !== "Cancelled"
   ).length;
 
-  const pendingPaymentsSum = orders
-    .filter((o) => o.paymentStatus !== "Paid")
-    .reduce((sum, o) => sum + o.amount, 0);
+  const unpaidInvoices = await prisma.invoice.findMany({
+    where: {
+      billingEmail: user.email,
+      status: { not: "Paid" },
+    },
+  });
+
+  const pendingPaymentsSum = unpaidInvoices.reduce((sum, inv) => {
+    const val = parseFloat(inv.amount.replace(/[^0-9.-]+/g, ""));
+    return sum + (isNaN(val) ? 0 : val);
+  }, 0);
 
   const alertsCount = orders.filter(
     (o) => o.status === "Pending" || o.paymentStatus === "Failed"
@@ -190,7 +198,7 @@ export async function createClientOrderAction(input: {
       country: "",
       paymentStatus: "Pending",
       productionStatus: "Order Received",
-      status: "Pending",
+      status: "Awaiting Quote",
       orderDate,
       amount,
       fabricDetails,
@@ -208,34 +216,7 @@ export async function createClientOrderAction(input: {
 
   const suffix = orderId.replace("ORD-", "");
 
-  // Auto-create Invoice for this order
-  const invoiceId = `INV-${suffix}`;
-  await prisma.invoice.create({
-    data: {
-      invoiceId,
-      date: orderDate,
-      amount: "Awaiting Quote",
-      status: "Pending",
-      customer: user.name,
-      orderId,
-      pdfUrl: `/invoices/${invoiceId}.pdf`,
-      billingEmail: user.email,
-    },
-  });
-
-  // Auto-create Payment record
-  const paymentId = `PAY-${suffix}`;
-  await prisma.payment.create({
-    data: {
-      paymentId,
-      invoice: invoiceId,
-      date: orderDate,
-      amount: `$${amount.toLocaleString()}`,
-      status: "Pending",
-      method: "To be confirmed",
-      billingEmail: user.email,
-    },
-  });
+  // (Invoice will be created by admin when they confirm the order with a quoted price)
 
   // Create Notification
   await prisma.notification.create({
@@ -293,7 +274,12 @@ export async function getClientPaymentsAction() {
   });
 }
 
-export async function payInvoiceAction(invoiceId: string, method: string, receiptUrl?: string) {
+export async function payInvoiceAction(
+  invoiceId: string,
+  method: string,
+  receiptUrl?: string,
+  amountPaid?: number
+) {
   const user = await requireUserSession();
 
   const invoice = await prisma.invoice.findFirst({
@@ -301,6 +287,12 @@ export async function payInvoiceAction(invoiceId: string, method: string, receip
   });
 
   if (!invoice) throw new Error("Invoice not found or access denied.");
+
+  // If amountPaid is custom, we store it formatted, otherwise default to invoice's amount
+  const finalAmountStr =
+    amountPaid && amountPaid > 0
+      ? `$${amountPaid.toLocaleString()}`
+      : invoice.amount;
 
   // Mark invoice as Processing, save receipt, clear rejectionReason
   await prisma.invoice.update({
@@ -312,12 +304,13 @@ export async function payInvoiceAction(invoiceId: string, method: string, receip
     },
   });
 
-  // Mark matching payment record as Processing
+  // Mark matching payment record as Processing and set custom amount
   await prisma.payment.updateMany({
     where: { invoice: invoiceId, billingEmail: user.email },
     data: {
       status: "Processing",
       method,
+      amount: finalAmountStr,
     },
   });
 
@@ -325,7 +318,7 @@ export async function payInvoiceAction(invoiceId: string, method: string, receip
   await prisma.notification.create({
     data: {
       title: "Receipt Uploaded",
-      description: `Your receipt for invoice ${invoiceId} has been uploaded. Status is now Processing. Awaiting admin verification.`,
+      description: `Your receipt for invoice ${invoiceId} has been uploaded for ${finalAmountStr}. Status is now Processing. Awaiting admin verification.`,
       date: new Date().toLocaleDateString(),
       category: "Finance",
       clientEmail: user.email,
@@ -355,4 +348,40 @@ export async function getClientNotificationsAction() {
     where: { clientEmail: user.email },
     orderBy: { createdAt: "desc" },
   });
+}
+
+// ─── ORDER PAYMENT SUMMARY ───────────────────────────────────────────────────
+
+export async function getOrderPaymentSummaryAction(orderId: string) {
+  const user = await requireUserSession();
+
+  const order = await prisma.order.findFirst({
+    where: { orderId, billingEmail: user.email },
+  });
+
+  if (!order) throw new Error("Order not found.");
+
+  const allInvoices = await prisma.invoice.findMany({
+    where: { orderId, billingEmail: user.email },
+  });
+
+  const paidAmount = allInvoices
+    .filter((inv) => inv.status === "Paid")
+    .reduce((sum, inv) => {
+      const val = parseFloat(inv.amount.replace(/[^0-9.-]+/g, ""));
+      return sum + (isNaN(val) ? 0 : val);
+    }, 0);
+
+  const remainingAmount = Math.max(0, order.amount - paidAmount);
+
+  return {
+    orderTotal: order.amount,
+    paidAmount,
+    remainingAmount,
+    invoices: allInvoices.map(inv => ({
+      invoiceId: inv.invoiceId,
+      amount: inv.amount,
+      status: inv.status,
+    })),
+  };
 }

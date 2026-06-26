@@ -10,9 +10,9 @@ const orderSchema = z.object({
   product: z.string().min(2),
   quantity: z.number().min(1),
   country: z.string().min(2),
-  paymentStatus: z.enum(["Paid", "Pending", "Failed"]),
+  paymentStatus: z.enum(["Paid", "Pending", "Failed", "Partially Paid"]),
   productionStatus: z.string().min(2),
-  status: z.enum(["Pending", "In Production", "Completed", "Cancelled"]),
+  status: z.enum(["Awaiting Quote", "Confirmed", "Pending", "In Production", "Completed", "Cancelled"]),
   amount: z.number().min(1),
   orderDate: z.string().min(10),
 });
@@ -209,6 +209,92 @@ export async function updateOrderAdminFieldsAction(
   }
 }
 
+/**
+ * Admin confirms an order: sets the quoted price, creates Invoice + Payment
+ * records, and moves the order status to "Confirmed".
+ */
+export async function confirmOrderAction(
+  orderId: string,
+  amount: number,
+  estimatedDelivery?: string,
+  shippingMethod?: string,
+): Promise<OrderResult> {
+  try {
+    await requireAdminSession();
+
+    if (amount <= 0) {
+      return { ok: false, error: "Quoted price must be greater than zero." };
+    }
+
+    const order = await prisma.order.findFirst({ where: { orderId } });
+    if (!order) return { ok: false, error: "Order not found." };
+
+    // Update order with confirmed price and move to Confirmed status
+    const updateData: any = {
+      amount,
+      status: "Confirmed",
+      updatedAt: new Date(),
+    };
+    if (estimatedDelivery) updateData.estimatedDelivery = estimatedDelivery;
+    if (shippingMethod)    updateData.shippingMethod    = shippingMethod;
+
+    const row = await prisma.order.update({ where: { orderId }, data: updateData });
+
+    const orderDate = new Date().toISOString().split("T")[0];
+    const suffix    = orderId.replace("ORD-", "");
+    const invoiceId = `INV-${suffix}`;
+    const paymentId = `PAY-${suffix}`;
+
+    // Create invoice only once
+    const existingInvoice = await prisma.invoice.findFirst({ where: { orderId } });
+    if (!existingInvoice) {
+      await prisma.invoice.create({
+        data: {
+          invoiceId,
+          date:         orderDate,
+          amount:       `$${amount.toLocaleString()}`,
+          status:       "Pending",
+          customer:     order.clientName,
+          orderId,
+          pdfUrl:       `/invoices/${invoiceId}.pdf`,
+          billingEmail: order.billingEmail,
+        },
+      });
+      await prisma.payment.create({
+        data: {
+          paymentId,
+          invoice:      invoiceId,
+          date:         orderDate,
+          amount:       `$${amount.toLocaleString()}`,
+          status:       "Pending",
+          method:       "To be confirmed",
+          billingEmail: order.billingEmail,
+        },
+      });
+    } else {
+      await prisma.invoice.updateMany({
+        where: { orderId },
+        data:  { amount: `$${amount.toLocaleString()}`, status: "Pending" },
+      });
+    }
+
+    // Notify client
+    await prisma.notification.create({
+      data: {
+        title:       "Order Confirmed — Invoice Ready",
+        description: `Your order ${orderId} has been confirmed with a quoted price of $${amount.toLocaleString()}. Your invoice is now available for payment.`,
+        date:        new Date().toLocaleDateString(),
+        category:    "Finance",
+        clientEmail: order.billingEmail,
+      },
+    });
+
+    return { ok: true, order: mapPrismaOrder(row) };
+  } catch (error: any) {
+    return { ok: false, error: error?.message || "Unable to confirm order." };
+  }
+}
+
 export async function deleteOrderAction(orderId: string) {
   try {
     await requireAdminSession();
@@ -227,7 +313,7 @@ export async function getAdminDashboardDataAction() {
     const totalOrders = await prisma.order.count();
     const activeOrders = await prisma.order.count({
       where: {
-        status: { in: ["Pending", "In Production"] },
+        status: { in: ["Awaiting Quote", "Confirmed", "Pending", "In Production"] },
       },
     });
 

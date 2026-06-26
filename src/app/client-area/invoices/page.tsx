@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { getClientInvoicesAction, payInvoiceAction } from "@/actions/client";
+import { getClientInvoicesAction, payInvoiceAction, getOrderPaymentSummaryAction } from "@/actions/client";
 import Badge, { statusVariant } from "@/components/ui/Badge";
 import CountUpNumber from "@/components/ui/CountUpNumber";
 import { Card } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import {
   CreditCard,
   FileCheck,
@@ -49,6 +50,16 @@ export default function InvoicesPage() {
   const [uploadingReceipt, setUploadingReceipt] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [paymentSuccess, setPaymentSuccess] = useState<string | null>(null);
+
+  // Partial payment stats & fields
+  const [paymentSummary, setPaymentSummary] = useState<{
+    orderTotal: number;
+    paidAmount: number;
+    remainingAmount: number;
+    invoices: any[];
+  } | null>(null);
+  const [loadingSummary, setLoadingSummary] = useState(false);
+  const [customPayAmount, setCustomPayAmount] = useState<string>("");
 
   // Copy clipboard states
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -92,14 +103,34 @@ export default function InvoicesPage() {
     setPaymentError(null);
     setPaymentSuccess(null);
 
+    const parsedAmount = parseFloat(customPayAmount);
+    const invoiceMaxAmount = Number(payingInvoice.amount.replace(/[^0-9.-]+/g, ""));
+
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      setPaymentError("Please enter a valid payment amount.");
+      setProcessingPayment(false);
+      return;
+    }
+
+    if (parsedAmount > invoiceMaxAmount) {
+      setPaymentError(`Payment amount cannot exceed the total invoice due of $${invoiceMaxAmount.toLocaleString()}.`);
+      setProcessingPayment(false);
+      return;
+    }
+
     try {
       // 1. Upload receipt to Cloudinary
       setUploadingReceipt(true);
       const receiptUrl = await uploadFileToCloudinary(receiptFile);
       setUploadingReceipt(false);
 
-      // 2. Submit payment action
-      const res = await payInvoiceAction(payingInvoice.invoiceId, paymentMethod, receiptUrl);
+      // 2. Submit payment action with custom amount
+      const res = await payInvoiceAction(
+        payingInvoice.invoiceId,
+        paymentMethod,
+        receiptUrl,
+        parsedAmount
+      );
       if (res.ok) {
         setPaymentSuccess("Receipt uploaded and payment submitted successfully!");
         setTimeout(() => {
@@ -207,6 +238,23 @@ export default function InvoicesPage() {
         setReceiptFile(null);
         setPaymentError(null);
         setPaymentSuccess(null);
+        
+        // Initial setup for partial payment
+        const invoiceNumeric = Number(inv.amount.replace(/[^0-9.-]+/g, ""));
+        setCustomPayAmount(isNaN(invoiceNumeric) ? "" : String(invoiceNumeric));
+
+        setLoadingSummary(true);
+        setPaymentSummary(null);
+        getOrderPaymentSummaryAction(inv.orderId)
+          .then((summary) => {
+            setPaymentSummary(summary);
+          })
+          .catch((err) => {
+            console.error("Failed to load payment summary:", err);
+          })
+          .finally(() => {
+            setLoadingSummary(false);
+          });
       },
     },
   ];
@@ -511,13 +559,48 @@ export default function InvoicesPage() {
                     <span className="font-mono text-xs text-slate-500">{payingInvoice.orderId}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Amount Due</span>
+                    <span className="text-slate-500">Invoice Amount Due</span>
                     <span className="font-bold text-sky-600">{payingInvoice.amount}</span>
                   </div>
+
+                  {loadingSummary && (
+                    <div className="flex items-center justify-center py-2 text-xs text-slate-400">
+                      <div className="mr-2 h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-sky-500" />
+                      Loading contract history...
+                    </div>
+                  )}
+
+                  {!loadingSummary && paymentSummary && (
+                    <div className="border-t border-slate-200/60 pt-2.5 mt-2.5 space-y-1.5 text-xs">
+                      <div className="flex justify-between text-slate-500">
+                        <span>Total Contract Value:</span>
+                        <span className="font-semibold text-slate-700">${paymentSummary.orderTotal.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-500">
+                        <span>Total Paid So Far:</span>
+                        <span className="font-semibold text-emerald-600">${paymentSummary.paidAmount.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-500">
+                        <span>Balance Remaining:</span>
+                        <span className="font-semibold text-rose-600">${paymentSummary.remainingAmount.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* ── Fields ────────────────────────────────────────────────── */}
                 <div className="space-y-4">
+                  <Input
+                    id="pay-custom-amount"
+                    label="Amount to Pay (USD $)"
+                    type="number"
+                    min="1"
+                    placeholder="e.g. 5000"
+                    value={customPayAmount}
+                    onChange={(e) => setCustomPayAmount(e.target.value)}
+                    required
+                  />
+
                   <div className="space-y-1">
                     <label className="text-xs font-semibold text-[#475569] uppercase tracking-wider">Payment Method</label>
                     <select

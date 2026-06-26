@@ -269,7 +269,13 @@ export default function MyOrdersPage() {
         className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
           order.status === "Completed"
             ? "bg-emerald-50 text-emerald-700"
+            : order.status === "Cancelled"
+            ? "bg-rose-50 text-rose-700"
             : order.status === "In Production"
+            ? "bg-sky-50 text-sky-700"
+            : order.status === "Confirmed"
+            ? "bg-violet-50 text-violet-700"
+            : order.status === "Awaiting Quote"
             ? "bg-amber-50 text-amber-700"
             : "bg-slate-100 text-slate-600"
         }`}
@@ -495,7 +501,24 @@ export default function MyOrdersPage() {
                       { label: "Order Date", value: selectedOrder.orderDate },
                       { label: "Estimated Delivery", value: selectedOrder.estimatedDelivery || "Pending" },
                       { label: "Fabric Info", value: selectedOrder.fabricDetails || "N/A" },
-                      { label: "Payment Status", value: selectedOrder.paymentStatus || "Pending" },
+                      {
+                        label: "Payment Status",
+                        value: (
+                          <span
+                            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                              selectedOrder.paymentStatus === "Paid"
+                                ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                                : selectedOrder.paymentStatus === "Partially Paid"
+                                ? "bg-indigo-50 text-indigo-700 border border-indigo-100"
+                                : selectedOrder.paymentStatus === "Failed"
+                                ? "bg-rose-50 text-rose-700 border border-rose-100"
+                                : "bg-amber-50 text-amber-700 border border-amber-100"
+                            }`}
+                          >
+                            {selectedOrder.paymentStatus || "Pending"}
+                          </span>
+                        ),
+                      },
                     ].map(({ label, value }) => (
                       <div key={label} className="col-span-2 sm:col-span-1">
                         <p

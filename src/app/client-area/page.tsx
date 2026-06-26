@@ -64,9 +64,15 @@ export default function ClientAreaPage() {
         className={`rounded-full px-2.5 py-1 text-xs font-semibold inline-block ${
           update.status === "Completed"
             ? "bg-emerald-50 text-emerald-700"
-            : update.status === "Pending"
+          : update.status === "Cancelled"
+            ? "bg-rose-50 text-rose-700"
+          : update.status === "In Production"
+            ? "bg-sky-50 text-sky-700"
+          : update.status === "Confirmed"
+            ? "bg-violet-50 text-violet-700"
+          : update.status === "Awaiting Quote"
             ? "bg-amber-50 text-amber-700"
-            : "bg-sky-50 text-sky-700"
+          : "bg-slate-100 text-slate-600"
         }`}
       >
         {update.status}
