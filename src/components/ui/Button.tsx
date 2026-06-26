@@ -44,11 +44,13 @@ export const Button = ({
       {isLoading ? (
         <Loader2 className="animate-spin" size={20} />
       ) : (
-        icon && (
-          <span className="flex-shrink-0 flex items-center">{icon}</span>
-        )
+        <>
+          {icon && (
+            <span className="flex-shrink-0 flex items-center">{icon}</span>
+          )}
+          {children && <span>{children}</span>}
+        </>
       )}
-      {children && <span>{children}</span>}
     </button>
   );
 };
