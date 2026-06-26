@@ -52,9 +52,10 @@ export default async function OrderDetailsPage({
 
             <div className="mt-[clamp(1rem,1.5vw,1.5rem)] grid gap-[clamp(0.75rem,1vw,1rem)] sm:grid-cols-3">
               {[
-                { label: "Quantity", value: `${order.quantity} pcs` },
-                { label: "Order Date", value: order.orderDate },
-                { label: "Est. Delivery", value: order.estimatedDelivery || "TBD" },
+              { label: "Quantity", value: `${order.quantity} pcs` },
+              { label: "Order Date", value: order.orderDate },
+              { label: "Est. Delivery", value: order.estimatedDelivery || "TBD" },
+              { label: "Order Total", value: order.amount === 0 ? "⏳ Awaiting Quote" : `$${order.amount.toLocaleString()}` },
               ].map(({ label, value }) => (
                 <div key={label} className="rounded-lg bg-sky-50 p-[clamp(0.75rem,1vw,1rem)]">
                   <p className="text-[clamp(10px,0.9vw,11px)] font-semibold uppercase tracking-[0.2em] text-slate-500">

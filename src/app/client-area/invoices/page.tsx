@@ -195,6 +195,10 @@ export default function InvoicesPage() {
       onClick: (row: { id: string }) => {
         const inv = invoicesList.find((i) => i.id === row.id);
         if (!inv) return;
+        if (inv.amount === "Awaiting Quote") {
+          alert("Your order price has not been confirmed yet. Please wait for the admin to set the quoted amount before making a payment.");
+          return;
+        }
         if (inv.status === "Processing") {
           alert("This invoice is currently under verification by the admin.");
           return;

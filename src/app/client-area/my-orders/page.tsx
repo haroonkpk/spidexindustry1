@@ -278,7 +278,9 @@ export default function MyOrdersPage() {
       </span>
     ),
     date: order.orderDate,
-    total: `$${order.amount.toLocaleString()}`,
+    total: order.amount === 0
+      ? <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700 border border-amber-100">Awaiting Quote</span>
+      : `$${order.amount.toLocaleString()}`,
   }));
 
   const tableButtons = [
@@ -462,12 +464,21 @@ export default function MyOrdersPage() {
                     >
                       Order Total
                     </p>
-                    <p
-                      className="font-bold tabular-nums text-sky-600"
-                      style={{ fontSize: "clamp(18px,3vw,28px)" }}
-                    >
-                      ${selectedOrder.amount.toLocaleString()}
-                    </p>
+                    {selectedOrder.amount === 0 ? (
+                      <div className="mt-1 flex flex-col gap-1">
+                        <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-amber-50 border border-amber-200 px-3 py-1.5 text-sm font-semibold text-amber-700">
+                          ⏳ Awaiting Quote
+                        </span>
+                        <p className="text-xs text-slate-400">Our team will set the final price shortly.</p>
+                      </div>
+                    ) : (
+                      <p
+                        className="font-bold tabular-nums text-sky-600"
+                        style={{ fontSize: "clamp(18px,3vw,28px)" }}
+                      >
+                        ${selectedOrder.amount.toLocaleString()}
+                      </p>
+                    )}
                   </div>
 
                   {/* Details grid */}

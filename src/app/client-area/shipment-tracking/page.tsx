@@ -7,7 +7,7 @@ import type { Order } from "@/types/order";
 import { Card } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { Truck, Package, Download } from "lucide-react";
+import { Truck, Package, Download, FileText } from "lucide-react";
 
 export default function ShipmentTrackingPage() {
   const [ordersList, setOrdersList] = useState<Order[]>([]);
@@ -94,8 +94,13 @@ export default function ShipmentTrackingPage() {
       onClick: (row: { id: string }) => {
         const order = ordersList.find((o) => o.id === row.id);
         if (!order) return;
+        if (!order.shipmentReceipt) {
+          alert("Shipment receipt document is pending upload by the admin.");
+          return;
+        }
         const suffix = order.id.replace("ORD-", "");
-        handleDownload("/receptPlaceholder.png", `DX-${suffix}987-receipt.png`);
+        const ext = order.shipmentReceipt.toLowerCase().includes(".pdf") ? "pdf" : "png";
+        handleDownload(order.shipmentReceipt, `DX-${suffix}987-receipt.${ext}`);
       },
     },
   ];
@@ -181,21 +186,45 @@ export default function ShipmentTrackingPage() {
                     <p><b>ETA:</b> {order.estimatedDelivery || "TBD"}</p>
                   </div>
 
-                  <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-                    <img
-                      src="/receptPlaceholder.png"
-                      alt="Shipment Receipt"
-                      className="h-48 w-full object-cover"
-                    />
-                  </div>
+                  {order.shipmentReceipt ? (
+                    <>
+                      <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                        {order.shipmentReceipt.toLowerCase().includes(".pdf") ? (
+                          <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
+                            <FileText className="h-12 w-12 text-red-500 mb-2" />
+                            <span className="text-xs font-semibold text-slate-700 truncate max-w-full">
+                              Shipment_Receipt_{order.id}.pdf
+                            </span>
+                          </div>
+                        ) : (
+                          <img
+                            src={order.shipmentReceipt}
+                            alt="Shipment Receipt"
+                            className="h-48 w-full object-cover"
+                          />
+                        )}
+                      </div>
 
-                  <button
-                    onClick={() => handleDownload("/receptPlaceholder.png", `${trackingNo}-receipt.png`)}
-                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 transition"
-                  >
-                    <Download className="h-4 w-4" />
-                    Download Shipping Receipt
-                  </button>
+                      <button
+                        onClick={() =>
+                          handleDownload(
+                            order.shipmentReceipt!,
+                            `${trackingNo}-receipt.${order.shipmentReceipt!.toLowerCase().includes(".pdf") ? "pdf" : "png"}`
+                          )
+                        }
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 transition"
+                      >
+                        <Download className="h-4 w-4" />
+                        Download Shipping Receipt
+                      </button>
+                    </>
+                  ) : (
+                    <div className="mt-4 flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50 p-6 text-center">
+                      <Truck className="h-8 w-8 text-slate-300 mb-2" />
+                      <p className="text-xs font-semibold text-slate-500">Shipping Document Pending</p>
+                      <p className="text-[10px] text-slate-400 mt-1 font-medium">Admin will upload the dispatch receipt shortly.</p>
+                    </div>
+                  )}
                 </Card>
               );
             })}

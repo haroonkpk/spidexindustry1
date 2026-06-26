@@ -43,6 +43,7 @@ model Order {
   estimatedDelivery  String
   paymentMethod      String
   productionTimeline Json     // Array of stages [{ label: string, completed: boolean }]
+  shipmentReceipt    String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 

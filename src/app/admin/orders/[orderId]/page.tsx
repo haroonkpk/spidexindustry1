@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { getOrderByIdAction } from "@/actions/orders";
+import { ShipmentReceiptUpload } from "@/components/admin/ShipmentReceiptUpload";
 import {
   User,
   Mail,
@@ -149,7 +150,7 @@ export default async function AdminOrderDetailPage({
                 { label: "Quantity", value: `${order.quantity.toLocaleString()} pcs` },
                 { label: "Order Date", value: order.orderDate },
                 { label: "Est. Delivery", value: order.estimatedDelivery || "TBD" },
-                { label: "Total Value", value: `$${order.amount.toLocaleString()}` },
+                { label: "Total Value", value: order.amount === 0 ? "⏳ Awaiting Quote" : `$${order.amount.toLocaleString()}` },
               ].map(({ label, value }) => (
                 <div key={label} className="rounded-lg bg-sky-50 p-3">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{label}</p>
@@ -270,6 +271,12 @@ export default async function AdminOrderDetailPage({
             </div>
           </Card>
 
+          {/* Shipment Receipt Upload */}
+          <ShipmentReceiptUpload
+            orderId={order.id}
+            initialReceiptUrl={order.shipmentReceipt}
+          />
+
           {/* Financial Summary */}
           <Card className="border border-slate-100 p-[clamp(1rem,1.5vw,1.5rem)] bg-white">
             <h2 className="text-[clamp(15px,1.3vw,17px)] font-semibold text-slate-900">
@@ -277,7 +284,7 @@ export default async function AdminOrderDetailPage({
             </h2>
             <div className="mt-4 space-y-3">
               {[
-                { label: "Order Value", value: `$${order.amount.toLocaleString()}` },
+                { label: "Order Value", value: order.amount === 0 ? "⏳ Awaiting Quote" : `$${order.amount.toLocaleString()}` },
                 { label: "Payment Status", value: order.paymentStatus },
                 { label: "Payment Method", value: order.paymentMethod || "Bank Transfer" },
               ].map(({ label, value }) => (

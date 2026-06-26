@@ -10,6 +10,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { listOrdersAction, updateOrderAdminFieldsAction, deleteOrderAction } from "@/actions/orders";
 
 function parseTechPackUrls(raw: string): string[] {
@@ -35,11 +36,11 @@ export default function AdminOrdersPage() {
   const [editingOrder, setEditingOrder] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
   const [formFields, setFormFields] = useState({
-    clientName: "", product: "", quantity: 100, amount: 1500,
-    country: "United States", paymentStatus: "Pending", status: "Pending",
-    productionStatus: "Order Received", estimatedDelivery: "",
-    fabricDetails: "", printingDetails: "", techPackFile: "",
-    clientPhone: "", billingEmail: "", address: "", shippingMethod: "", paymentMethod: "Bank Transfer",
+    amount: 0,
+    estimatedDelivery: "",
+    shippingMethod: "",
+    status: "Pending",
+    paymentStatus: "Pending",
   });
 
   const fetchOrders = async () => {
@@ -54,15 +55,11 @@ export default function AdminOrdersPage() {
 
   const handleOpenEdit = (order: any) => {
     setFormFields({
-      clientName: order.clientName || "", product: order.product || "",
-      quantity: order.quantity || 100, amount: order.amount || 0,
-      country: order.country || "United States", paymentStatus: order.paymentStatus || "Pending",
-      status: order.status || "Pending", productionStatus: order.productionStatus || "Order Received",
-      estimatedDelivery: order.estimatedDelivery || "", fabricDetails: order.fabricDetails || "",
-      printingDetails: order.printingDetails || "", techPackFile: order.techPackFile || "",
-      clientPhone: order.clientPhone || "", billingEmail: order.billingEmail || "",
-      address: order.address || "", shippingMethod: order.shippingMethod || "",
-      paymentMethod: order.paymentMethod || "Bank Transfer",
+      amount: order.amount || 0,
+      estimatedDelivery: order.estimatedDelivery || "",
+      shippingMethod: order.shippingMethod || "",
+      status: order.status || "Pending",
+      paymentStatus: order.paymentStatus || "Pending",
     });
     setEditingOrder(order);
   };
@@ -73,9 +70,9 @@ export default function AdminOrdersPage() {
     setSaving(true);
     try {
       const res = await updateOrderAdminFieldsAction(editingOrder.id, {
-        ...formFields,
-        quantity: Number(formFields.quantity),
         amount: Number(formFields.amount),
+        estimatedDelivery: formFields.estimatedDelivery,
+        shippingMethod: formFields.shippingMethod,
         paymentStatus: formFields.paymentStatus as any,
         status: formFields.status as any,
       });
@@ -120,7 +117,9 @@ export default function AdminOrdersPage() {
     clientName: <span className="font-semibold text-slate-800">{o.clientName}</span>,
     product: <span className="text-xs text-slate-500 font-mono">{o.product}</span>,
     qty: `${o.quantity.toLocaleString()} pcs`,
-    amount: <span className="font-semibold">${o.amount.toLocaleString()}</span>,
+    amount: o.amount === 0
+      ? <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700 border border-amber-100">Awaiting Quote</span>
+      : <span className="font-semibold">${o.amount.toLocaleString()}</span>,
     payment: (
       <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold border ${
         o.paymentStatus === "Paid" ? "bg-emerald-50 text-emerald-700 border-emerald-100"
@@ -255,9 +254,18 @@ export default function AdminOrdersPage() {
                   {/* Total */}
                   <div>
                     <p className="text-slate-500" style={{ fontSize: "clamp(10px,1.2vw,13px)", marginBottom: "clamp(2px,0.4vw,6px)" }}>Order Total</p>
-                    <p className="font-bold tabular-nums text-sky-600" style={{ fontSize: "clamp(18px,3vw,28px)" }}>
-                      ${viewingOrder.amount.toLocaleString()}
-                    </p>
+                    {viewingOrder.amount === 0 ? (
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-200 px-3 py-1 text-sm font-semibold text-amber-700">
+                          ⏳ Awaiting Quote
+                        </span>
+                        <p className="text-xs text-slate-400">Admin will set pricing shortly</p>
+                      </div>
+                    ) : (
+                      <p className="font-bold tabular-nums text-sky-600" style={{ fontSize: "clamp(18px,3vw,28px)" }}>
+                        ${viewingOrder.amount.toLocaleString()}
+                      </p>
+                    )}
                   </div>
 
                   {/* Details grid */}
@@ -330,69 +338,78 @@ export default function AdminOrdersPage() {
 
       {/* ── EDIT MODAL ── */}
       <Modal isOpen={editingOrder !== null} onClose={() => setEditingOrder(null)}
-        showHeader={false} className="w-full max-w-2xl bg-white overflow-hidden">
-        <div className="flex items-center justify-between bg-sky-600 p-4">
-          <span className="font-semibold text-white text-sm">Edit Order: {editingOrder?.id}</span>
+        showHeader={false} className="w-full max-w-lg bg-white overflow-hidden">
+        <div className="flex items-center justify-between bg-sky-600 px-5 py-4">
+          <div>
+            <span className="font-semibold text-white text-sm">Edit Order: {editingOrder?.id}</span>
+            <p className="text-xs text-sky-200 mt-0.5">Client: {editingOrder?.clientName}</p>
+          </div>
           <button onClick={() => setEditingOrder(null)} className="text-white/80 hover:text-white transition">
             <X className="h-5 w-5" />
           </button>
         </div>
-        <form onSubmit={handleSaveEdit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { key: "clientName", label: "Client Name", type: "text" },
-              { key: "billingEmail", label: "Billing Email", type: "email" },
-              { key: "clientPhone", label: "Phone", type: "text" },
-              { key: "country", label: "Country", type: "text" },
-              { key: "product", label: "Product SKU", type: "text" },
-              { key: "estimatedDelivery", label: "Est. Delivery", type: "date" },
-              { key: "shippingMethod", label: "Shipping Method", type: "text" },
-              { key: "techPackFile", label: "Tech Pack URL", type: "text" },
-            ].map(({ key, label, type }) => (
-              <div key={key} className="col-span-2 sm:col-span-1 flex flex-col gap-1">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">{label}</label>
-                <input type={type} value={(formFields as any)[key]}
-                  onChange={e => setFormFields({ ...formFields, [key]: e.target.value })}
-                  className="rounded-xl border border-slate-200 p-2.5 text-sm bg-slate-50 outline-none focus:border-sky-500 text-slate-800" />
-              </div>
-            ))}
-            <div className="col-span-2 sm:col-span-1 flex flex-col gap-1">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Quantity</label>
-              <input type="number" value={formFields.quantity}
-                onChange={e => setFormFields({ ...formFields, quantity: Number(e.target.value) })}
-                className="rounded-xl border border-slate-200 p-2.5 text-sm bg-slate-50 outline-none focus:border-sky-500 text-slate-800" />
-            </div>
-            <div className="col-span-2 sm:col-span-1 flex flex-col gap-1">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Amount ($)</label>
-              <input type="number" value={formFields.amount}
-                onChange={e => setFormFields({ ...formFields, amount: Number(e.target.value) })}
-                className="rounded-xl border border-slate-200 p-2.5 text-sm bg-slate-50 outline-none focus:border-sky-500 text-slate-800" />
-            </div>
-            <div className="col-span-2 sm:col-span-1 flex flex-col gap-1">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Payment Status</label>
-              <select value={formFields.paymentStatus} onChange={e => setFormFields({ ...formFields, paymentStatus: e.target.value })}
-                className="rounded-xl border border-slate-200 p-2.5 text-sm bg-slate-50 outline-none focus:border-sky-500 text-slate-800">
-                <option>Pending</option><option>Paid</option><option>Failed</option>
-              </select>
-            </div>
-            <div className="col-span-2 sm:col-span-1 flex flex-col gap-1">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Order Status</label>
-              <select value={formFields.status} onChange={e => setFormFields({ ...formFields, status: e.target.value })}
-                className="rounded-xl border border-slate-200 p-2.5 text-sm bg-slate-50 outline-none focus:border-sky-500 text-slate-800">
-                <option>Pending</option><option>In Production</option><option>Completed</option><option>Cancelled</option>
-              </select>
-            </div>
-            {(["address", "fabricDetails", "printingDetails"] as const).map(key => (
-              <div key={key} className="col-span-2 flex flex-col gap-1">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  {key === "address" ? "Shipping Address" : key === "fabricDetails" ? "Fabric Details" : "Printing Details"}
-                </label>
-                <textarea rows={2} value={formFields[key]}
-                  onChange={e => setFormFields({ ...formFields, [key]: e.target.value })}
-                  className="rounded-xl border border-slate-200 p-2.5 text-sm bg-slate-50 outline-none focus:border-sky-500 text-slate-800" />
-              </div>
-            ))}
+        <form onSubmit={handleSaveEdit} className="px-6 py-5 space-y-4 max-h-[80vh] overflow-y-auto">
+
+          <Input
+            id="edit-amount"
+            label="Quoted Price (USD $)"
+            type="number"
+            min="0"
+            placeholder="e.g. 12500"
+            value={formFields.amount}
+            onChange={e => setFormFields({ ...formFields, amount: Number(e.target.value) })}
+          />
+
+          <Input
+            id="edit-estimatedDelivery"
+            label="Est. Delivery Date"
+            type="date"
+            value={formFields.estimatedDelivery}
+            onChange={e => setFormFields({ ...formFields, estimatedDelivery: e.target.value })}
+          />
+
+          <Input
+            id="edit-shippingMethod"
+            label="Shipping Method"
+            type="text"
+            placeholder="e.g. Standard Air Freight"
+            value={formFields.shippingMethod}
+            onChange={e => setFormFields({ ...formFields, shippingMethod: e.target.value })}
+          />
+
+          <div className="flex flex-col gap-[clamp(0.3rem,1vw,0.5rem)]">
+            <label htmlFor="edit-status" className="text-[clamp(0.7rem,1vw,0.8rem)] font-bold text-[#475569] uppercase tracking-wide">
+              Order Status
+            </label>
+            <select
+              id="edit-status"
+              value={formFields.status}
+              onChange={e => setFormFields({ ...formFields, status: e.target.value })}
+              className="w-full bg-[var(--color-secondary)] text-[#1E293B] rounded-md outline-none transition-all duration-200 border border-transparent focus:border-[var(--color-primary)] focus:bg-white focus:shadow-sm p-[clamp(0.6rem,1.5vw,0.875rem)] text-[clamp(0.875rem,1vw+0.2rem,1rem)]"
+            >
+              <option>Pending</option>
+              <option>In Production</option>
+              <option>Completed</option>
+              <option>Cancelled</option>
+            </select>
           </div>
+
+          <div className="flex flex-col gap-[clamp(0.3rem,1vw,0.5rem)]">
+            <label htmlFor="edit-paymentStatus" className="text-[clamp(0.7rem,1vw,0.8rem)] font-bold text-[#475569] uppercase tracking-wide">
+              Payment Status
+            </label>
+            <select
+              id="edit-paymentStatus"
+              value={formFields.paymentStatus}
+              onChange={e => setFormFields({ ...formFields, paymentStatus: e.target.value })}
+              className="w-full bg-[var(--color-secondary)] text-[#1E293B] rounded-md outline-none transition-all duration-200 border border-transparent focus:border-[var(--color-primary)] focus:bg-white focus:shadow-sm p-[clamp(0.6rem,1.5vw,0.875rem)] text-[clamp(0.875rem,1vw+0.2rem,1rem)]"
+            >
+              <option>Pending</option>
+              <option>Paid</option>
+              <option>Failed</option>
+            </select>
+          </div>
+
           <div className="flex gap-3 justify-end pt-4 border-t border-slate-100">
             <Button type="button" variant="outline" disabled={saving} onClick={() => setEditingOrder(null)}>Cancel</Button>
             <Button type="submit" variant="primary" disabled={saving}>{saving ? "Saving..." : "Save Changes"}</Button>

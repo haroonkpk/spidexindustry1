@@ -54,6 +54,7 @@ function mapPrismaOrder(row: any): Order {
         : Array.isArray(row.productionTimeline)
         ? row.productionTimeline
         : [],
+    shipmentReceipt: row.shipmentReceipt || "",
   };
 }
 
@@ -161,10 +162,8 @@ export async function createClientOrderAction(input: {
   techPackFile?: string;
 }) {
   const user = await requireUserSession();
-
   const orderId = `ORD-${Date.now().toString().slice(-6)}`;
-  const rate = 15; // standard rate per item (admin can update per order)
-  const amount = input.quantity * rate;
+  const amount = 0;
 
   const fabricDetails = [
     input.gsm ? `Fabric/GSM: ${input.gsm}` : null,
@@ -215,7 +214,7 @@ export async function createClientOrderAction(input: {
     data: {
       invoiceId,
       date: orderDate,
-      amount: `$${amount.toLocaleString()}`,
+      amount: "Awaiting Quote",
       status: "Pending",
       customer: user.name,
       orderId,

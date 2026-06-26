@@ -27,6 +27,7 @@ export interface Order {
   estimatedDelivery: string;
   paymentMethod: string;
   productionTimeline: ProductionStage[];
+  shipmentReceipt?: string;
 }
 
 export interface OrderDocument extends Omit<Order, "id"> {
