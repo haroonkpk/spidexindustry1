@@ -19,16 +19,16 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12 lg:py-16">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
 
-          {/* Column 1: Logo + Newsletter */}
+
           <div className="col-span-1 sm:col-span-2 lg:col-span-1 space-y-6">
             <div className="space-y-3">
               <div className="flex items-center">
                 <Image
-                  src="/spidexlogo.png"
+                  src="/spidex.png"
                   alt="Spidex Industry"
                   width={180}
                   height={60}
-                  className="h-auto w-[160px] sm:w-[180px] object-contain"
+                  className="h-[450px] w-[160px] sm:w-[180px] object-contain"
                 />
               </div>
               <p className="text-slate-400 text-sm leading-relaxed max-w-xs">

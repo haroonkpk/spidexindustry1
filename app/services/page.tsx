@@ -4,6 +4,7 @@ import Image from "next/image";
 import PageHero from "../../components/ui/PageHero";
 import SectionHeading from "../../components/ui/SectionHeading";
 import FinalCTA from "../../components/sections/FinalCTA";
+import VideoCardGroup from "../../components/ui/VideoCardGroup";
 
 export const metadata = {
   title: "Custom Clothing Manufacturing Services | Speedx Industry",
@@ -36,7 +37,7 @@ export default function ServicesPage() {
       segment: "Sports Apparel",
       description:
         "Custom jerseys, shorts, tracksuits, training wear and sports uniforms manufactured according to your designs and branding requirements.",
-      image: "/img/10.jpeg",
+      image: "/sportswear/sport3.jpeg",
       features: [
         "Sublimation Printing",
         "Custom Team Branding",
@@ -50,7 +51,7 @@ export default function ServicesPage() {
       segment: "Activewear",
       description:
         "Premium gym wear including compression garments, leggings, fitness tops and performance apparel for growing fitness brands.",
-      image: "/img/2.jpeg",
+      image: "/gymwear/gym5.jpeg",
       features: [
         "4-Way Stretch Fabrics",
         "Moisture Wicking",
@@ -106,7 +107,7 @@ export default function ServicesPage() {
       segment: "Outerwear",
       description:
         "Custom varsity jackets, bomber jackets, windbreakers, fleece jackets and outerwear solutions.",
-      image: "/img/6.jpeg",
+      image: "/jackets/jacket.jpeg",
       features: [
         "Embroidery",
         "Custom Patches",
@@ -122,7 +123,7 @@ export default function ServicesPage() {
       title: "Custom Printing",
       description:
         "High-quality garment printing solutions for fashion brands, sportswear labels and promotional apparel.",
-      image: "/img/3.jpeg",
+      image: "/print.mp4",
       services: [
         "Screen Printing",
         "DTG Printing",
@@ -136,7 +137,7 @@ export default function ServicesPage() {
       title: " Embroidery Services",
       description:
         "Professional embroidery solutions for premium apparel, uniforms and private label clothing brands.",
-      image: "/img/4.jpeg",
+      image: "/embriodery.mp4",
       services: [
         "Flat Embroidery",
         "3D Puff Embroidery",
@@ -150,7 +151,7 @@ export default function ServicesPage() {
       title: "Custom Fabrics & Trims",
       description:
         "Fabric sourcing and custom trims development according to your brand requirements.",
-      image: "/img/2.jpeg",
+      image: "/fabric.mp4",
       services: [
         "Custom GSM",
         "Fabric Dyeing",
@@ -164,7 +165,7 @@ export default function ServicesPage() {
       title: "Private Label Branding",
       description:
         "Complete branding solutions to make your garments retail-ready.",
-      image: "/img/1.jpeg",
+      image: "/privatelabelpacking.mp4",
       services: [
         "Woven Labels",
         "Printed Labels",
@@ -299,44 +300,16 @@ export default function ServicesPage() {
             center={true}
           />
 
-          <div className="grid gap-10 mt-16 md:grid-cols-2">
-            {customizationServices.map((service) => (
-              <div
-                key={service.id}
-                className="bg-white rounded-xl overflow-hidden border"
-              >
-                <div className="relative h-64">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-3">
-                    {service.title}
-                  </h3>
-
-                  <p className="text-gray-600 mb-5">
-                    {service.description}
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    {service.services.map((item) => (
-                      <div
-                        key={item}
-                        className="text-sm text-gray-700"
-                      >
-                        ✓ {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <VideoCardGroup
+            className="grid gap-10 mt-16 md:grid-cols-2"
+            items={customizationServices.map((s) => ({
+              id: s.id,
+              title: s.title,
+              description: s.description,
+              videoSrc: s.image,
+              services: s.services,
+            }))}
+          />
         </div>
       </div>
 

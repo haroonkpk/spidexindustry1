@@ -356,7 +356,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
           {/* Public folder se image */}
           <img
-            src="/logo.png"
+            src="/spidexlogo.png"
             alt="Logo"
             className="w-[120px] h-auto object-contain"
           />

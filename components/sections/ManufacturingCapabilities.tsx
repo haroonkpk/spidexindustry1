@@ -27,19 +27,19 @@ const premiumCapabilities: CapabilityCard[] = [
     id: "sportswear",
     title: "Elite Sportswear",
     description: "Engineered performance apparel with moisture-wicking technology, 4-way stretch fabrics and ergonomic flatlock stitching for global brands.",
-    image: "/img/8.jpeg",
+    image: "/sportswear/sporthero.jpeg",
   },
   {
     id: "gymwear",
     title: "Gymwear",
     description: "Compression gear, seamless fits and high-durability training wear designed to withstand intense athletic performance while maintaining shape.",
-    image: "/img/3.jpeg",
+    image: "/gymwear/gym5.jpeg",
   },
   {
     id: "jackets",
     title: "Jackets",
     description: "Custom bomber jackets, windbreakers and heavy-duty outerwear featuring weather-resistant materials, custom zippers and internal premium linings.",
-    image: "/img/jacket2.jpeg",
+    image: "/jackets/jacket.jpeg",
   },
   {
     id: "gloves",
@@ -69,7 +69,7 @@ const premiumCapabilities: CapabilityCard[] = [
     id: "denim",
     title: "Jeans & Denim",
     description: "Custom denim jackets and jeans featuring heavy-duty construction, bespoke hardware, vintage distressed finishes and specialized washes.",
-    image: "/img/denim.jpeg",
+    image: "/jeans/jean1.jpeg",
   },
 ];
 
