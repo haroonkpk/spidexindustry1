@@ -48,10 +48,10 @@ const premiumCapabilities: CapabilityCard[] = [
     image: "/img/glove.jpeg",
   },
   {
-    id: "private-label",
-    title: "Private Label Goods",
-    description: "Full-service custom manufacturing from pattern drafting and fabric sourcing to bespoke custom labels, hangtags and sustainable packaging.",
-    image: "/img/6.jpeg",
+    id: "socks",
+    title: "Socks",
+    description: "High-quality custom socks manufacturing with breathable fabrics, durable stitching and fully customizable patterns and logos.",
+    image: "/socks/sock3.jpg",
   },
   {
     id: "accessories",
@@ -69,7 +69,7 @@ const premiumCapabilities: CapabilityCard[] = [
     id: "denim",
     title: "Jeans & Denim",
     description: "Custom denim jackets and jeans featuring heavy-duty construction, bespoke hardware, vintage distressed finishes and specialized washes.",
-    image: "/jeans/jeans1.jpeg",
+    image: "/jeans/jean1.jpeg",
   },
 ];
 

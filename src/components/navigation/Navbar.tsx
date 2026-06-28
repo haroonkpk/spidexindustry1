@@ -155,7 +155,7 @@ export default function Navbar() {
               const menuWidthClass = isServicesMenu
                 ? "lg:w-[290px]"
                 : isProductCategoryMenu
-                  ? "lg:w-[500px]"
+                  ? "lg:w-[280px]"
                   : "lg:w-[920px]";
 
               return (
@@ -203,7 +203,7 @@ export default function Navbar() {
 
                       {/* MEGA MENU MIDDLE: CATEGORIES */}
                       {!isServicesMenu && (
-                        <div className="w-60 border-r border-slate-800/60 p-4">
+                        <div className="w-full p-4 rounded-2xl">
                           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 px-3">Product Categories</h4>
                           {productCategories.map((cat) => {
                             const Icon = (CategoryIcons as any)[cat.icon];
@@ -215,7 +215,6 @@ export default function Navbar() {
                                 href={`/product-categories#${cat.id}`}
                                 onMouseEnter={() => {
                                   setHoveredCat(cat.id);
-                                  setHoveredSub(cat.sub?.[0]?.href ?? null);
                                 }}
                                 className={`flex w-full items-center gap-3 px-3 py-2 rounded-md text-sm transition-all duration-200 ${active ? "bg-blue-500/10 text-blue-400 font-semibold" : "hover:bg-white/5 text-slate-300 hover:text-white"
                                   }`}
@@ -227,59 +226,6 @@ export default function Navbar() {
                                   {cat.label}
                                 </span>
                               </Link>
-                            );
-                          })}
-                        </div>
-                      )}
-
-                      {/* MEGA MENU RIGHT: SUB-CATEGORIES & DETAILS */}
-                      {!isServicesMenu && (
-                        <div className="flex-1 p-5 bg-[#0B1224] rounded-r-2xl">
-                          {productCategories.map((cat) => {
-                            if (cat.id !== hoveredCat) return null;
-
-                            return (
-                              <div key={cat.id} className={`grid ${isProductCategoryMenu ? "grid-cols-1" : "grid-cols-2"} gap-6`}>
-                                <div>
-                                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Sub Categories</h4>
-                                  <div className="space-y-1">
-                                    {cat.sub.map((s) => (
-                                      <Link
-                                        key={s.href}
-                                        href={`/product-categories#${cat.id}`}
-                                        onMouseEnter={() => setHoveredSub(s.href)}
-                                        className={`w-full text-left px-2.5 py-2 rounded-md text-sm block transition-colors duration-150 ${hoveredSub === s.href
-                                          ? "bg-white/5 text-blue-400 font-medium"
-                                          : "text-slate-300 hover:bg-white/5 hover:text-white"
-                                          }`}
-                                      >
-                                        {s.label}
-                                      </Link>
-                                    ))}
-                                  </div>
-                                </div>
-
-                                {!isProductCategoryMenu && (
-                                  <div>
-                                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Material Options</h4>
-                                    <div className="space-y-1">
-                                      {cat.sub
-                                        .find((s) => s.href === hoveredSub)
-                                        ?.sub?.map((item) => (
-                                          <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            className="block text-sm text-slate-400 hover:text-blue-400 transition-colors duration-150 py-1"
-                                          >
-                                            {item.label}
-                                          </Link>
-                                        )) ?? (
-                                          <p className="text-sm text-slate-500">Select sub-category</p>
-                                        )}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
                             );
                           })}
                         </div>
@@ -325,7 +271,7 @@ export default function Navbar() {
 
         {/* ACTIONS */}
         <div className="hidden lg:flex items-center gap-4">
-          
+
           {/* Quick Dashboard Access Button */}
           {user && (
             <Link

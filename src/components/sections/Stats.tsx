@@ -34,9 +34,9 @@ export default function TeamShowcase() {
               <Image
                 src="/team/ceo.jpeg"
                 alt="Founder & CEO"
-                width={200}
-                height={200}
-                className="rounded-full object-cover mb-4 relative z-10 border-4 border-slate-100 shadow-inner"
+                width={250}
+                height={250}
+                className="w-[250px] h-[250px] rounded-full object-cover mb-4 relative z-10 border-4 border-slate-100 shadow-inner"
               />
               <h4 className="text-xl font-bold text-slate-900 relative z-10">Founder &amp; CEO</h4>
               <p className="mt-2 text-sm text-slate-600 text-center relative z-10">
@@ -52,9 +52,9 @@ export default function TeamShowcase() {
               <Image
                 src="/team/director.jpeg"
                 alt="Managing Director"
-                width={200}
-                height={200}
-                className="rounded-full object-cover mb-4 relative z-10 border-4 border-slate-100 shadow-inner"
+                width={250}
+                height={250}
+                className="w-[250px] h-[250px] rounded-full object-cover mb-4 relative z-10 border-4 border-slate-100 shadow-inner"
               />
               <h4 className="text-xl font-bold text-slate-900 relative z-10">Managing Director</h4>
               <p className="mt-2 text-sm text-slate-600 text-center relative z-10">

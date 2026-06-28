@@ -25,45 +25,45 @@ export default function ProcessTimeline() {
 
   const steps: ProcessStep[] = [
     {
-      title: "Consultation",
+      title: "Fabric Cutting",
       description:
-        "We discuss your requirements, fabric preferences, branding elements, quantities and production timelines to create a clear project roadmap.",
-      imageUrl: "/images/cloth.jpg",
+        "The process begins with precision pattern making and careful fabric cutting to ensure accurate sizing and a perfect fit for every garment.",
+      imageUrl: "/images/cuttings.jpg",
     },
     {
-      title: "Design Review",
+      title: "Precision Sewing",
       description:
-        "Our team reviews artwork, logos, color combinations, sizing specifications and mockups to ensure every detail meets your expectations.",
-      imageUrl: "/images/guideline.jpg",
+        "Our experienced tailors assemble the cut panels using advanced stitching techniques, guaranteeing durability and strong, clean seams.",
+      imageUrl: "/images/sewing.jpg",
     },
     {
-      title: "Sampling",
+      title: "Custom Printing",
       description:
-        "A physical sample is produced for approval, allowing you to verify fit, fabric quality, stitching and overall appearance before bulk production.",
-      imageUrl: "/images/sampling.jpg",
+        "We apply vibrant designs and logos using high-quality and durable printing methods including DTF, sublimation, and screen printing.",
+      imageUrl: "/images/dtfprint.jpg",
     },
     {
-      title: "Production",
+      title: "Premium Embroidery",
       description:
-        "Once approved, bulk manufacturing begins using premium materials, advanced machinery and experienced craftsmanship for consistent quality.",
+        "Intricate branding and logos are stitched with premium threads using state-of-the-art multi-head embroidery machinery for a professional finish.",
       imageUrl: "/images/embroid.jpg",
     },
     {
       title: "Quality Inspection",
       description:
-        "Every product undergoes strict quality checks, including measurements, stitching accuracy, print durability and finishing standards.",
+        "Every completed product undergoes strict quality control checks to verify measurements, stitching accuracy, and overall garment construction.",
       imageUrl: "/images/quality.jpg",
     },
     {
-      title: "Packaging",
+      title: "Finishing & Packaging",
       description:
-        "Finished products are carefully folded, tagged, packed, and prepared according to your branding and shipping requirements.",
+        "Finished garments are carefully ironed, folded, tagged, and securely packed into custom polybags according to your specific requirements.",
       imageUrl: "/images/packingstuf.jpg",
     },
     {
-      title: "Worldwide Delivery",
+      title: "Global Dispatch",
       description:
-        "Orders are shipped worldwide through trusted logistics partners with secure packaging and tracking for reliable delivery.",
+        "The final packed orders are prepared in our facility and dispatched worldwide through trusted logistics partners for reliable delivery.",
       imageUrl: "/images/warehouse.jpg",
     },
   ];
