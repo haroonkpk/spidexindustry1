@@ -39,11 +39,6 @@ export default function Navbar() {
   const [user, setUser] = useState<MeResponse["user"]>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
-  /**
-   * Fetch the current session from the server via /api/auth/me.
-   * The server reads the Supabase cookie and returns role from
-   * app_metadata — the single, secure source of truth.
-   */
   const fetchMe = async () => {
     try {
       const res = await fetch("/api/auth/me", { cache: "no-store" });
@@ -82,6 +77,7 @@ export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [authDropdownOpen, setAuthDropdownOpen] = useState(false);
+  const [mobileCatOpen, setMobileCatOpen] = useState(false);
 
   const [hoveredCat, setHoveredCat] = useState<string | null>(
     productCategories[0]?.id ?? null
@@ -381,19 +377,9 @@ export default function Navbar() {
 
       {/* MOBILE & TABLET DRAWER SLIDE-IN FROM RIGHT */}
       <div className={`fixed inset-0 z-[9999] w-screen bg-slate-900 backdrop-blur-lg border-l border-white/10 shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${menuOpen ? "translate-x-0" : "translate-x-full"}`}>
-        {/* <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-          <Logo className="text-white w-[120px] h-auto" />
-          <button onClick={() => setMenuOpen(false)} className="p-1.5 rounded-full hover:bg-white/5 text-slate-300 hover:text-white transition-colors">
-            <XMarkIcon className="w-6 h-6" />
-          </button>
-        </div> */}
+
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-          {/* Public folder se image */}
-          <img
-            src="/spidexlogo.png"
-            alt="Logo"
-            className="w-[120px] h-auto object-contain"
-          />
+
 
           <button onClick={() => setMenuOpen(false)} className="p-1.5 rounded-full hover:bg-white/5 text-slate-300 hover:text-white transition-colors">
             <XMarkIcon className="w-6 h-6" />
@@ -408,33 +394,6 @@ export default function Navbar() {
             className="text-base py-3 border-b border-white/10 text-white hover:text-blue-200 font-semibold transition-colors flex justify-between items-center"
           >
             Home
-          </Link>
-
-          <div className="py-3 border-b border-white/10">
-            <span className="text-xs font-bold uppercase tracking-wider text-white/60 block mb-3">Services & Capabilities</span>
-            <div className="pl-2 space-y-3">
-              <Link href="/services" onClick={() => setMenuOpen(false)} className="block text-sm text-white hover:text-blue-200 font-medium transition-colors">Sourcing & Services</Link>
-              <Link href="/factory-production" onClick={() => setMenuOpen(false)} className="block text-sm text-white hover:text-blue-200 font-medium transition-colors">Factory & Facilities</Link>
-              <Link href="/product-categories" onClick={() => setMenuOpen(false)} className="block text-sm text-white hover:text-blue-200 font-medium transition-colors">Complete Catalog</Link>
-            </div>
-          </div>
-
-          {/* Mobile Product Category */}
-          <Link
-            href="/product-categories"
-            onClick={() => setMenuOpen(false)}
-            className="text-base py-3 border-b border-white/10 text-white hover:text-blue-200 font-semibold transition-colors flex justify-between items-center"
-          >
-            Product Category
-          </Link>
-
-          {/* Mobile Portfolio */}
-          <Link
-            href="/portfolio"
-            onClick={() => setMenuOpen(false)}
-            className="text-base py-3 border-b border-white/10 text-white hover:text-blue-200 font-semibold transition-colors flex justify-between items-center"
-          >
-            Portfolio
           </Link>
 
           {/* Mobile About Us Dropdown */}
@@ -453,6 +412,58 @@ export default function Navbar() {
               ))}
             </div>
           </div>
+
+          <div className="py-3 border-b border-white/10">
+            <span className="text-xs font-bold uppercase tracking-wider text-white/60 block mb-3">Services & Capabilities</span>
+            <div className="pl-2 space-y-3">
+              <Link href="/services" onClick={() => setMenuOpen(false)} className="block text-sm text-white hover:text-blue-200 font-medium transition-colors">Sourcing & Services</Link>
+              <Link href="/factory-production" onClick={() => setMenuOpen(false)} className="block text-sm text-white hover:text-blue-200 font-medium transition-colors">Factory & Facilities</Link>
+              <Link href="/product-categories" onClick={() => setMenuOpen(false)} className="block text-sm text-white hover:text-blue-200 font-medium transition-colors">Complete Catalog</Link>
+            </div>
+          </div>
+
+          {/* Mobile Product Category */}
+          <div className="py-3 border-b border-white/10">
+            <button
+              onClick={() => setMobileCatOpen(!mobileCatOpen)}
+              className="w-full text-base text-white hover:text-blue-200 font-semibold transition-colors flex justify-between items-center"
+            >
+              Product Category
+              <ChevronDownIcon className={`w-4 h-4 transition-transform ${mobileCatOpen ? 'rotate-180' : ''}`} />
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 ${mobileCatOpen ? 'max-h-[1000px] mt-3 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className="pl-2 space-y-3 pb-1">
+                <Link
+                  href="/product-categories"
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-sm text-blue-400 hover:text-blue-300 font-semibold transition-colors mb-2"
+                >
+                  View All Categories
+                </Link>
+                {productCategories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/product-categories#${cat.id}`}
+                    onClick={() => setMenuOpen(false)}
+                    className="block text-sm text-white hover:text-blue-200 font-medium transition-colors"
+                  >
+                    {cat.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Portfolio */}
+          <Link
+            href="/portfolio"
+            onClick={() => setMenuOpen(false)}
+            className="text-base py-3 border-b border-white/10 text-white hover:text-blue-200 font-semibold transition-colors flex justify-between items-center"
+          >
+            Portfolio
+          </Link>
+
+
 
           {/* Mobile Contact */}
           <Link
