@@ -82,8 +82,8 @@ export async function verifyInvoiceAction(
       });
 
       const totalPaid = updatedInvoices
-        .filter((inv) => inv.status === "Paid")
-        .reduce((sum, inv) => {
+        .filter((inv: any) => inv.status === "Paid")
+        .reduce((sum: number, inv: any) => {
           const val = parseFloat(inv.amount.replace(/[^0-9.-]+/g, ""));
           return sum + (isNaN(val) ? 0 : val);
         }, 0);
